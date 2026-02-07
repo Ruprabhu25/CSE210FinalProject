@@ -1,5 +1,6 @@
 /**
  * Calculates ecosystem health based on species scores and trophic level ratios
+ * Health is returned in the range [0, 1], akes it easier to treat health as normalized value
  */
 import { IDEAL_RATIOS } from "./ecosystemConfig.js";
 
@@ -38,7 +39,7 @@ export function calculateEcosystemBalance(speciesByTrophicLevel) {
     species.forEach((spec) => {
       totalScore += calculateSpeciesScore(spec.population, spec.biomassPerIndividual, spec.energyPerIndividual);
     });
-    return { level, score: totalScore, ideal: IDEAL_RATIOS[level].biomass };
+    return { level, score: totalScore, ideal: IDEAL_RATIOS[level].idealRatio };
   });
   console.log("Level Scores:", levelScores);
   const normalizedScores = levelScores.map((curr, i) => {
@@ -47,23 +48,28 @@ export function calculateEcosystemBalance(speciesByTrophicLevel) {
     // Penalize based on deviation from next level
     if (i < levelScores.length - 1) {
       const next = levelScores[i + 1];
-      const actualRatio = curr.score / (next.score); // avoid div by 0
+      const actualRatio = curr.score / (next.score); 
       const idealRatio = curr.ideal / next.ideal;
       const deviation = Math.abs(actualRatio - idealRatio) / idealRatio;
+      // Allow ±20% natural tolerance
       if (deviation < 0.2) {
         currScore = 1;
       }
       else{
-        const levelPenalty = Math.max(0.1, 1 - deviation); // dynamic penalty
+        // Dynamic penalty: worse imbalance → stronger punishment
+        const levelPenalty = Math.max(0.1, 1 - deviation);
         currScore *= levelPenalty;
       }
     }
     const normalizedScore = Math.min(1, currScore);
-
     return normalizedScore;
   });
-  const averageScore = normalizedScores.reduce((a, b) => a + b, 0) / normalizedScores.length;
-  const ecosystemHealth =averageScore;
 
+  /**
+   * Final ecosystem health.
+   * Health is the average of all normalized trophic levels
+   * Returned in range [0, 1]
+   */
+  const ecosystemHealth = normalizedScores.reduce((a, b) => a + b, 0) / normalizedScores.length;
   return ecosystemHealth;
 }
