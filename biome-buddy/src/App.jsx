@@ -1,34 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
+import GameBlank from './Game'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [started, setStarted] = useState(false)
+
+  function handleStart() {
+    // switch to the blank game page
+    setStarted(true)
+    try {
+      window.history.pushState({}, '', '/game')
+    } catch (e) {}
+  }
+
+  // Keep started state in sync with browser history so back/forward work as expected.
+  useEffect(() => {
+    function syncFromLocation() {
+      if (typeof window !== 'undefined') {
+        setStarted(window.location.pathname === '/game')
+      }
+    }
+
+    // set initial state
+    syncFromLocation()
+
+    // listen for history navigation
+    window.addEventListener('popstate', syncFromLocation)
+    return () => window.removeEventListener('popstate', syncFromLocation)
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="home-container">
+      <div className="left-pane">
+        <div className="left-inner">
+          <h1 className="title">Biome Buddy</h1>
+          {!started ? (
+            <button className="start-button" onClick={handleStart}>
+              Start
+            </button>
+          ) : (
+            <GameBlank />
+          )}
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className="right-pane">
+        <div className="right-inner">
+          {/* decorative area - could show an image, animation, or instructions */}
+          <div className="decor">
+            <div className="leaf" />
+          </div>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
