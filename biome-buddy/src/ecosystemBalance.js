@@ -1,6 +1,6 @@
 /**
  * Calculates ecosystem health based on species scores and trophic level ratios
- * Health is returned in the range [0, 1], akes it easier to treat health as normalized value
+ * Health is returned in the range [0, 1], makes it easier to treat health as normalized value
  */
 import { IDEAL_RATIOS } from "./ecosystemConfig.js";
 
