@@ -1,0 +1,69 @@
+/**
+ * Calculates ecosystem health based on species scores and trophic level ratios
+ */
+import { IDEAL_RATIOS } from "./ecosystemConfig.js";
+
+/**
+ * Calculate species score based on biomass and energy
+ * @param {number} population - Number of individuals
+ * @param {number} biomassPerIndividual - Biomass per individual
+ * @param {number} energyPerIndividual - Energy per individual
+ * @param {number} wB - Weight for biomass
+ * @param {number} wE - Weight for energy
+ * @returns {number} Total species score
+ */
+function calculateSpeciesScore(population, biomassPerIndividual, energyPerIndividual, wB = 0.5, wE = 0.5) {
+  const biomassScore = population * biomassPerIndividual;
+  const energyScore = population * energyPerIndividual;
+  return wB * biomassScore + wE * energyScore;
+}
+
+/**
+ * Calculate ecosystem health considering trophic level 
+ * @param {Object} speciesByTrophicLevel - Species grouped by trophic level
+ *   Structure: {
+ *     producer: [{name, population, biomassPerIndividual, energyPerIndividual }, ...],
+ *     herbivore: [...], primaryCarnivore: [...], secondaryCarnivore: [...]
+ *   }
+ * @returns {number} Ecosystem health
+ */
+export function calculateEcosystemBalance(speciesByTrophicLevel) {
+  const sortedLevels = Object.keys(speciesByTrophicLevel).sort(
+    (a, b) => IDEAL_RATIOS[a].priority - IDEAL_RATIOS[b].priority
+  );
+
+  const levelScores = sortedLevels.map((level) => {
+    const species = speciesByTrophicLevel[level] || [];
+    let totalScore = 0;
+    species.forEach((spec) => {
+      totalScore += calculateSpeciesScore(spec.population, spec.biomassPerIndividual, spec.energyPerIndividual);
+    });
+    return { level, score: totalScore, ideal: IDEAL_RATIOS[level].biomass };
+  });
+  console.log("Level Scores:", levelScores);
+  const normalizedScores = levelScores.map((curr, i) => {
+    let currScore = curr.score / curr.ideal;
+    
+    // Penalize based on deviation from next level
+    if (i < levelScores.length - 1) {
+      const next = levelScores[i + 1];
+      const actualRatio = curr.score / (next.score); // avoid div by 0
+      const idealRatio = curr.ideal / next.ideal;
+      const deviation = Math.abs(actualRatio - idealRatio) / idealRatio;
+      if (deviation < 0.2) {
+        currScore = 1;
+      }
+      else{
+        const levelPenalty = Math.max(0.1, 1 - deviation); // dynamic penalty
+        currScore *= levelPenalty;
+      }
+    }
+    const normalizedScore = Math.min(1, currScore);
+
+    return normalizedScore;
+  });
+  const averageScore = normalizedScores.reduce((a, b) => a + b, 0) / normalizedScores.length;
+  const ecosystemHealth =averageScore;
+
+  return ecosystemHealth;
+}
