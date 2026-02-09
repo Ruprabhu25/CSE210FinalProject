@@ -69,6 +69,7 @@ export function calculateEcosystemBalance(speciesByTrophicLevel) {
     const normalizedScore = Math.min(1, currScore);
     return normalizedScore;
   });
+  console.log("Normalized Scores:", normalizedScores);
   /**
    * Final ecosystem health.
    * Health is the average of all normalized trophic levels
