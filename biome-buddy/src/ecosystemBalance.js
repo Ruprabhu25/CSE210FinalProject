@@ -41,7 +41,6 @@ export function calculateEcosystemBalance(speciesByTrophicLevel) {
     });
     return { level, score: totalScore, ideal: IDEAL_RATIOS[level].idealRatio };
   });
-  console.log("Level Scores:", levelScores);
   const normalizedScores = levelScores.map((curr, i) => {
     let currScore = curr.score / curr.ideal;
     
@@ -51,20 +50,25 @@ export function calculateEcosystemBalance(speciesByTrophicLevel) {
       const actualRatio = curr.score / (next.score); 
       const idealRatio = curr.ideal / next.ideal;
       const deviation = Math.abs(actualRatio - idealRatio) / idealRatio;
-      // Allow ±20% natural tolerance
-      if (deviation < 0.2) {
-        currScore = 1;
-      }
-      else{
-        // Dynamic penalty: worse imbalance → stronger punishment
-        const levelPenalty = Math.max(0.1, 1 - deviation);
-        currScore *= levelPenalty;
+      if (next.score === 0) {
+        // Total collapse above this level → severe penalty
+        currScore *= 0.1; // or even 0
+      } 
+      else {
+        // Allow ±20% natural tolerance
+        if (deviation < 0.2) {
+          currScore = 1;
+        }
+        else{
+          // Dynamic penalty: worse imbalance → stronger punishment
+          const levelPenalty = Math.max(0.1, 1 - deviation);
+          currScore *= levelPenalty;
+        }
       }
     }
     const normalizedScore = Math.min(1, currScore);
     return normalizedScore;
   });
-
   /**
    * Final ecosystem health.
    * Health is the average of all normalized trophic levels
