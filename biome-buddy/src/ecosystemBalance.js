@@ -51,16 +51,16 @@ export function calculateEcosystemBalance(speciesByTrophicLevel) {
       const idealRatio = curr.ideal / next.ideal;
       const deviation = Math.abs(actualRatio - idealRatio) / idealRatio;
       if (next.score === 0) {
-        // Total collapse above this level → severe penalty
-        currScore *= 0.1; // or even 0
+        // Total collapse above this level 
+        currScore *= 0.1; 
       } 
       else {
-        // Allow ±20% natural tolerance
+        // Allow 20% tolerance
         if (deviation < 0.2) {
           currScore = 1;
         }
         else{
-          // Dynamic penalty: worse imbalance → stronger punishment
+          // Dynamic penalty: worse imbalance -> stronger punishment
           const levelPenalty = Math.max(0.1, 1 - deviation);
           currScore *= levelPenalty;
         }
