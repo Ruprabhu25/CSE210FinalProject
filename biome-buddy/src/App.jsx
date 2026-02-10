@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-// import GameBlank from './Game'
+import GameBlank from './Game'
 import californiaImg from './assets/california.png'
 import forestIcon from './assets/forest-icon.png'
 
@@ -34,9 +34,7 @@ function App() {
 
   // When started is true, render the game view
   if (started) {
-    alert('This will navigate to a new game session');
-    return null;
-    // return <GameBlank />
+    return <GameBlank />
   }
 
   return (
