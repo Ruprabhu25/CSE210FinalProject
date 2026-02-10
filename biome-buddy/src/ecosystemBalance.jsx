@@ -39,8 +39,12 @@ export function calculateEcosystemBalance(speciesByTrophicLevel) {
     species.forEach((spec) => {
       totalScore += calculateSpeciesScore(spec.population, spec.biomassPerIndividual, spec.energyPerIndividual);
     });
-    return { level, score: totalScore, ideal: IDEAL_RATIOS[level].idealRatio };
+    return {level, score: totalScore, ideal: IDEAL_RATIOS[level].idealRatio};
   });
+  // If trophic is 0, the health is 0 
+  if (levelScores.some(ls => ls.score === 0)) {
+    return 0; 
+  }
   const normalizedScores = levelScores.map((curr, i) => {
     let currScore = curr.score / curr.ideal;
     
@@ -50,26 +54,21 @@ export function calculateEcosystemBalance(speciesByTrophicLevel) {
       const actualRatio = curr.score / (next.score); 
       const idealRatio = curr.ideal / next.ideal;
       const deviation = Math.abs(actualRatio - idealRatio) / idealRatio;
-      if (next.score === 0) {
-        // Total collapse above this level 
-        currScore *= 0.1; 
-      } 
-      else {
-        // Allow 20% tolerance
-        if (deviation < 0.2) {
-          currScore = 1;
-        }
-        else{
-          // Dynamic penalty: worse imbalance -> stronger punishment
-          const levelPenalty = Math.max(0.1, 1 - deviation);
-          currScore *= levelPenalty;
-        }
+    
+      // Allow 20% tolerance
+      if (deviation < 0.2) {
+        currScore = 1;
       }
+      else{
+        // Dynamic penalty: worse imbalance -> stronger punishment
+        const levelPenalty = Math.max(0.1, 1 - deviation);
+        currScore *= levelPenalty;
+      }
+      
     }
     const normalizedScore = Math.min(1, currScore);
     return normalizedScore;
   });
-  console.log("Normalized Scores:", normalizedScores);
   /**
    * Final ecosystem health.
    * Health is the average of all normalized trophic levels
