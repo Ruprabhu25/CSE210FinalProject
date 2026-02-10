@@ -1,19 +1,27 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { subscribe } from './disasterBus'
 import './App.css'
 
 export default function DisasterPopup() {
     const [active, setActive] = useState(null)
 
+    const timerRef = useRef(null)
     useEffect(() => {
         const unsub = subscribe((payload) => {
             setActive(payload)
+            // clear any previous timer
+            if (timerRef.current) {
+                clearTimeout(timerRef.current)
+                timerRef.current = null
+            }
             if (payload && payload.autoDismiss !== false) {
-                const t = setTimeout(() => setActive(null), payload.duration ?? 6000)
-                return () => clearTimeout(t)
+                timerRef.current = setTimeout(() => setActive(null), payload.duration ?? 6000)
             }
         })
-        return unsub
+        return () => {
+            unsub()
+            if (timerRef.current) clearTimeout(timerRef.current)
+        }
     }, [])
 
     if (!active) return null
