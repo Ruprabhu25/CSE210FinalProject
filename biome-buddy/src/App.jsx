@@ -2,12 +2,14 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import DisasterDemo from './components/disasterpopup/disasterdemo'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+      {/* Vite starter UI remains for now; keep/demo code below during integration */}
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -28,6 +30,9 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+
+      {/* TEMP: Sprint 1 demo only – mounts the disaster popup showcase */}
+      <DisasterDemo />
     </>
   )
 }
