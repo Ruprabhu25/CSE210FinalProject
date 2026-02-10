@@ -13,9 +13,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -24,6 +26,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -71,9 +74,11 @@
 
 .disaster-popup-inline {
   position: fixed;
-  right: 1rem;
-  top: 1rem;
-  z-index: 60;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  pointer-events: auto;
 }
 
 .disaster-popup-card {
@@ -81,8 +86,9 @@
   padding: 0.75rem 1rem;
   border-radius: 2px;
   max-width: 360px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   text-align: left;
+  position: relative;
 }
 
 .disaster-title {
@@ -98,8 +104,23 @@
   color: #000;
 }
 
-.popup-actions {
-  margin-top: 0.75rem;
-  text-align: right;
+.popup-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: none;
+  background: #d9534f;
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
+.popup-close:focus {
+  outline: 2px solid rgba(0, 0, 0, 0.2);
+}
