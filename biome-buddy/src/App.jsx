@@ -1,13 +1,17 @@
 import './App.css'
 import DisasterManager from './DisasterManager'
 import DisasterPopup from './DisasterPopup'
+import GameLog from './GameLog'
 
 function App() {
   return (
     <div className="app-root">
-      <main>
-        <DisasterManager />
+      <main className="app-main">
+        <div className="content">
+          <DisasterManager />
+        </div>
       </main>
+      <GameLog />
       <DisasterPopup />
     </div>
   )

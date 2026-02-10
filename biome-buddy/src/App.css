@@ -50,6 +50,17 @@
   margin-bottom: 1rem;
 }
 
+.app-root {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1 1 auto;
+}
+
 .disaster-root {
   display: flex;
   flex-direction: column;
@@ -79,6 +90,49 @@
   transform: translate(-50%, -50%);
   z-index: 9999;
   pointer-events: auto;
+}
+
+/* Game log styles */
+.game-log {
+  width: 320px;
+  flex: 0 0 320px;
+  background: #ffb867;
+  border-radius: 0 0 0 0;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.game-log-header {
+  font-family: 'Irish Grover', cursive;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.game-log-list {
+  overflow: auto;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+  flex: 1 1 auto;
+}
+
+.game-log-entry {
+  background: rgba(0, 0, 0, 0.04);
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.game-log-empty {
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  padding: 1rem 0;
 }
 
 .disaster-popup-card {
