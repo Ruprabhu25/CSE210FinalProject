@@ -3,19 +3,18 @@ import { Producer, PrimaryConsumer, SecondaryConsumer, TertiaryConsumer } from '
 import './Game.css'
 
 export default function GameBlank() {
-  // create some example species for the panel and keep them in state so updates re-render
+  // --- State ---
   const [speciesArr, setSpeciesArr] = useState([
     new Producer('Grass', 1, 0.05, 1000, 0.12),
     new PrimaryConsumer('Rabbit', 4, 0.5, 200, 0.08),
     new SecondaryConsumer('Fox', 20, 5, 20, 0.02),
     new TertiaryConsumer('Hawk', 45, 6, 5, 0.01),
   ])
-
   const [selected, setSelected] = useState(0)
   const [growthInput, setGrowthInput] = useState(Number(speciesArr[0].growthRate).toFixed(2))
-  const [hovered, setHovered] = useState(null)
+  const [currentSeason, setCurrentSeason] = useState(1) // Tracks the seasons
+  const [notifications, setNotifications] = useState([]) // Simple notifications
 
-  
   const icons = {
     'producer': '🌿',
     'primary-consumer': '🐇',
@@ -25,117 +24,115 @@ export default function GameBlank() {
 
   const sel = speciesArr[selected]
 
-  // keep growthInput in sync when selection changes
+  // --- Sync growth input when selection changes ---
   useEffect(() => {
     if (sel) setGrowthInput(Number(sel.growthRate).toFixed(2))
   }, [selected, speciesArr])
 
+  // --- Update growth rate for selected species ---
   function updateGrowthForSelected(newRate) {
     if (!sel) return
     const r = Math.round((Number(newRate) || 0) * 100) / 100
     sel.setGrowthRate(r)
-    // force re-render by replacing the array reference
     setSpeciesArr((prev) => [...prev])
     setGrowthInput(Number(r).toFixed(2))
   }
 
-  // change the input value by delta but do not apply until user presses Enter
   function changeGrowth(delta) {
     const current = Number(growthInput) || 0
     const next = Math.round((current + delta) * 100) / 100
     setGrowthInput(Number(next).toFixed(2))
   }
 
-return (
-  <div className='rootStyle' onClick={() => setSelected(null)}>
+  // --- Add new species dynamically ---
+  function addSpecies(species) {
+    setSpeciesArr(prev => [...prev, species])
+    setNotifications(prev => [...prev, `New species introduced: ${species.name}!`])
+  }
 
-    {/* Top HUD */}
-    <div className="topBar">
-      <div className="healthContainer">
-        <div className="healthFill" />
-        <div className="healthText">EcoSystem Health: 70%</div>
+  // --- Example: Introduce species as seasons progress ---
+  useEffect(() => {
+    if (currentSeason === 3) {
+      const newPlant = new Producer('Berry Bush', 2, 0.08, 500, 0.1)
+      addSpecies(newPlant)
+    }
+    if (currentSeason === 5) {
+      const newHerbivore = new PrimaryConsumer('Deer', 10, 0.3, 50, 0.05)
+      addSpecies(newHerbivore)
+    }
+  }, [currentSeason])
+
+  // --- Advance season for testing (e.g., button click or game loop) ---
+  function nextSeason() {
+    setCurrentSeason(prev => prev + 1)
+  }
+
+  return (
+    <div className='rootStyle' onClick={() => setSelected(null)}>
+      {/* Top HUD */}
+      <div className="topBar">
+        <div className="healthContainer">
+          <div className="healthFill" />
+          <div className="healthText">EcoSystem Health: 70%</div>
+        </div>
+        <div className="seasonBadge">Season {currentSeason}</div>
       </div>
 
-      <div className="seasonBadge">Summer</div>
-    </div>
+      {/* Notifications */}
+      <div className="notificationContainer" style={{ position: 'absolute', top: 80, right: 20 }}>
+        {notifications.map((note, i) => (
+          <div key={i} className="notification" style={{ background: '#fff9c4', padding: 8, marginBottom: 6, borderRadius: 6, boxShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
+            {note}
+          </div>
+        ))}
+      </div>
 
-    {/* Empty canvas */}
-    <div style={{ flex: 1 }} />
-
-    {/* Bottom species panel */}
-    <div className='outerPanelStyle' aria-hidden>
-      <div className='innerPanelStyle' aria-label="Species panel">
-
-        <div className="speciesTitle">Active Species</div>
-
-        <div className='selectorStyle' role="listbox" aria-label="Species selector">
-          {speciesArr.map((s, i) => (
-            <div
-              key={s.name}
-              className={`itemStyle ${selected === i ? 'selected' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation()
-                setSelected(i)
-              }}
-            >
-              <div className="iconStyle">
-                {icons[s.trophic] || '🐾'}
+      {/* Bottom species panel */}
+      <div className='outerPanelStyle'>
+        <div className='innerPanelStyle' aria-label="Species panel">
+          <div className="speciesTitle">Active Species</div>
+          <div className='selectorStyle' role="listbox" aria-label="Species selector">
+            {speciesArr.map((s, i) => (
+              <div
+                key={s.name}
+                className={`itemStyle ${selected === i ? 'selected' : ''}`}
+                onClick={(e) => { e.stopPropagation(); setSelected(i) }}
+              >
+                <div className="iconStyle">{icons[s.trophic] || '🐾'}</div>
+                <div>
+                  <div className="speciesName">{s.name}</div>
+                  <div className="speciesPop">{Math.round(s.population)}</div>
+                </div>
               </div>
+            ))}
+          </div>
 
-              <div>
-                <div className="speciesName">{s.name}</div>
-                <div className="speciesPop">{Math.round(s.population)}</div>
+          {/* Controls */}
+          <div style={{ height: 8 }} />
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>Growth rate</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <button onClick={() => changeGrowth(-0.01)} style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>-</button>
+              <input
+                type="text"
+                value={growthInput}
+                onChange={(e) => setGrowthInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') updateGrowthForSelected(parseFloat(growthInput) || 0) }}
+                style={{ width: 84, padding: '6px 8px', borderRadius: 8, border: '1px solid #ccc' }}
+              />
+              <button onClick={() => changeGrowth(0.01)} style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>+</button>
+              <button onClick={() => updateGrowthForSelected(parseFloat(growthInput) || 0)} style={{ padding: '6px 10px', borderRadius: 8, border: 'none', cursor: 'pointer', marginLeft: 6, fontSize: 12 }}>Enter</button>
+
+              {/* Temp button for testing adding species based off some season*/}
+              <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 16 }}>
+                <button onClick={nextSeason} style={{ padding: '10px 18px', borderRadius: 8 }}>Next Season</button>
+              
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Controls */}
-        <div style={{ height: 8 }} />
-
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>Growth rate</div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <button
-              onClick={() => changeGrowth(-0.01)}
-              style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}
-            >
-              -
-            </button>
-
-            <input
-              type="text"
-              value={growthInput}
-              onChange={(e) => setGrowthInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  updateGrowthForSelected(parseFloat(growthInput) || 0)
-                }
-              }}
-              style={{ width: 84, padding: '6px 8px', borderRadius: 8, border: '1px solid #ccc' }}
-            />
-
-            <button
-              onClick={() => changeGrowth(0.01)}
-              style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}
-            >
-              +
-            </button>
-
-            <button
-              onClick={() => updateGrowthForSelected(parseFloat(growthInput) || 0)}
-              style={{ padding: '6px 10px', borderRadius: 8, border: 'none', cursor: 'pointer', marginLeft: 6, fontSize: 12 }}
-            >
-              Enter
-            </button>
           </div>
-        </div>
 
+        </div>
       </div>
     </div>
-
-  </div>
-)
-
+  )
 }
