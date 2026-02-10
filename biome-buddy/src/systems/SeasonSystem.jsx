@@ -1,3 +1,5 @@
+import System from "./System"
+
 class SeasonSystem extends System {
     constructor() {
         super("SeasonSystem")

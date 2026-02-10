@@ -1,3 +1,5 @@
+import Population from "./Population"
+
 // Encapsulates game state
 class GameContext {
     constructor() {

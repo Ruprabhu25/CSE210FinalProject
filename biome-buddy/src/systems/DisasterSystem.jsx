@@ -1,3 +1,5 @@
+import System from "./System"
+
 class DisasterSystem extends System {
     constructor() {
         super("DisasterSystem")

@@ -1,4 +1,8 @@
 import GameContext from "./GameContext"
+import SeasonSystem from "./systems/SeasonSystem"
+import PlayerActionSystem from "./systems/PlayerActionSystem"
+import FoodChainSystem from "./systems/FoodChainSystem"
+import DisasterSystem from "./systems/DisasterSystem"
 
 class GameEngine {
     constructor() {
@@ -21,3 +25,5 @@ class GameEngine {
         return this.context
     }
 }
+
+export default GameEngine

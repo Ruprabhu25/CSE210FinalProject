@@ -1,3 +1,5 @@
+import System from "./System"
+
 class PlayerActionSystem extends System {
     constructor() {
         super("PlayerActionSystem")
