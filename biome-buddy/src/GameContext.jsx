@@ -1,11 +1,17 @@
 import Population from "./Population"
+import { ProducerTrophic, PrimaryConsumerTrophic, SecondaryConsumerTrophic, TertiaryConsumerTrophic } from "./Trophic"
 
 // Encapsulates game state
 class GameContext {
     constructor() {
         this.roundNumber = 1 //int - the current round number
         this.populations = new Map() // speciesID -> Population instance
-        this.trophicLevel = new Map() // level -> array of speciesIDs at that trophic level
+        const trophicLevels = [
+          new ProducerTrophic(),
+          new PrimaryConsumerTrophic(),
+          new SecondaryConsumerTrophic(),
+          new TertiaryConsumerTrophic()
+        ];
         for (const speciesId of [1, 2, 3]) { // TODO: replace with actual values
             this.populations.set(speciesId, new Population(speciesId))
         }
