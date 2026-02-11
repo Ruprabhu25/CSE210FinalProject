@@ -62,7 +62,7 @@ export default function GameBlank() {
     }
   }, [currentSeason])
 
-  // --- Advance season for testing (e.g., button click or game loop) ---
+  // --- Advance season for testing  ---
   function nextSeason() {
     setCurrentSeason(prev => prev + 1)
   }
@@ -71,6 +71,7 @@ export default function GameBlank() {
     <div className='rootStyle' onClick={() => setSelected(null)}>
       {/* Top HUD */}
       <div className="topBar">
+        {/* Temp: This healthbar section will be replaced with component */}
         <div className="healthContainer">
           <div className="healthFill" />
           <div className="healthText">EcoSystem Health: 70%</div>
@@ -78,7 +79,7 @@ export default function GameBlank() {
         <div className="seasonBadge">Season {currentSeason}</div>
       </div>
 
-      {/* Notifications */}
+      {/* Notifications (Temp will be replaced with pop up)*/}
       <div className="notificationContainer" style={{ position: 'absolute', top: 80, right: 20 }}>
         {notifications.map((note, i) => (
           <div key={i} className="notification" style={{ background: '#fff9c4', padding: 8, marginBottom: 6, borderRadius: 6, boxShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
@@ -112,7 +113,7 @@ export default function GameBlank() {
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>Growth rate</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <button onClick={() => changeGrowth(-0.01)} style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>-</button>
+              <button onClick={() => changeGrowth(-0.05)} style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>-</button>
               <input
                 type="text"
                 value={growthInput}
@@ -120,7 +121,7 @@ export default function GameBlank() {
                 onKeyDown={(e) => { if (e.key === 'Enter') updateGrowthForSelected(parseFloat(growthInput) || 0) }}
                 style={{ width: 84, padding: '6px 8px', borderRadius: 8, border: '1px solid #ccc' }}
               />
-              <button onClick={() => changeGrowth(0.01)} style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>+</button>
+              <button onClick={() => changeGrowth(0.05)} style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>+</button>
               <button onClick={() => updateGrowthForSelected(parseFloat(growthInput) || 0)} style={{ padding: '6px 10px', borderRadius: 8, border: 'none', cursor: 'pointer', marginLeft: 6, fontSize: 12 }}>Enter</button>
 
               {/* Temp button for testing adding species based off some season*/}
