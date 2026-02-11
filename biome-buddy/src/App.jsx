@@ -30,9 +30,6 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-
-      {/* TEMP: Sprint 1 demo only – mounts the disaster popup showcase */}
-      <DisasterDemo />
     </>
   )
 }
