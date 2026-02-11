@@ -6,6 +6,7 @@ class GameContext {
         this.roundNumber = 1 //int - the current round number
         this.populations = new Map() // speciesID -> Population instance
         this.trophicLevel = new Map() // level -> array of speciesIDs at that trophic level
+        this.ecosystemHealth = 1 // normalized [0,1]
         for (const speciesId of [1, 2, 3]) { // TODO: replace with actual values
             this.populations.set(speciesId, new Population(speciesId))
         }
@@ -13,7 +14,7 @@ class GameContext {
     }
 
     determineSeason() {
-        const seasons = ["Spring", "Summer", "Fall", "Winter"] 
+        const seasons = ["Spring", "Summer", "Fall", "Winter"]
         // season should last for a certain number of rounds
         const currentSeasonIndex = Math.floor((this.roundNumber - 1) / this.numRoundsInSeason) % seasons.length
         return seasons[currentSeasonIndex]

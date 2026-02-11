@@ -1,3 +1,5 @@
+import System from "./System"
+
 class GameLogSystem extends System {
     constructor() {
         this.entries = []
