@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -28,6 +30,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* prevent vertical and horizontal scrolling for full-bleed pages */
+  overflow: hidden;
 }
 
 h1 {
