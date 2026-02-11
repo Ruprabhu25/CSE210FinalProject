@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap");
+
+/* Dark overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Leafy border frame */
+.popup-frame {
+  position: relative;
+  background-color: #f7f4e9;
+  border: 2px solid #6f4b2f;
+  border-radius: 12px;
+  max-width: 520px;
+  padding: 1.75rem 1.5rem 1.5rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.popup-frame::before,
+.popup-frame::after {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: url("../../assets/borders/leafy-border.png") no-repeat center/contain;
+  pointer-events: none;
+}
+
+.popup-frame::before {
+  top: -28px;
+  left: -30px;
+  transform: rotate(-2deg);
+}
+
+.popup-frame::after {
+  bottom: -30px;
+  right: -30px;
+  transform: scale(-1, -1) rotate(2deg);
+}
+
+/* Inner content */
+.popup-content {
+  text-align: center;
+  font-family: "Irish Grover", cursive;
+  color: #3b2f2a;
+}
+
+.popup-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.disaster-icon {
+  width: 56px;
+  height: 56px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+}
+
+/* Headings */
+.popup-content h2 {
+  margin-top: 0;
+  font-size: 1.6rem;
+}
+
+.popup-content h4 {
+  margin-bottom: 0.25rem;
+}
+
+.impact-line {
+  margin: 0.35rem 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.impact-label {
+  font-weight: 700;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 34px;
+  height: 34px;
+  background: #6f4b2f;
+  color: #f7f4e9;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Buttons */
+.actions {
+  margin-top: 1.2rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+button {
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+button.primary {
+  background-color: #1f7a3f;
+  color: white;
+}
+
+button.secondary {
+  background-color: #1f7a3f;
+  color: white;
+}
