@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DisasterPopup from "./DisasterPopup";
 import { disasters } from "../../data/disasters";
-import logStore from "../../logStore";
+import gameLogSystem from "../../systems/GameLogSystem";
 
 export default function DisasterDemo() {
   const [active, setActive] = useState(null);
@@ -18,7 +18,7 @@ export default function DisasterDemo() {
               const d = disasters[key]
               setActive(d)
               // add structured log entry using disasters data
-              logStore.addEntry({ season: 'Season 1', message: `${d.title}: ${d.description}` })
+                gameLogSystem.addEntry({ season: 'Season 1', message: `${d.title}: ${d.description}` })
             }}
           >
             Trigger {disasters[key].title}

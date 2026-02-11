@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import logStore from '../../logStore'
+import logStore from '../../systems/GameLogSystem'
 import './GameLog.css'
 
 export default function GameLog() {

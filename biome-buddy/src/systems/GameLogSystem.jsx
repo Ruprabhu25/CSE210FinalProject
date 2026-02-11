@@ -1,7 +1,11 @@
-class LogStore {
+class GameLogSystem extends System {
     constructor() {
         this.entries = []
         this.listeners = []
+    }
+
+    apply(context) {
+        // no-op
     }
 
     addEntry({ season = 'Unknown', message = '', name = '', timestamp = Date.now() } = {}) {
@@ -39,10 +43,10 @@ class LogStore {
     emit() {
         const snapshot = this.getEntries()
         this.listeners.forEach((fn) => {
-            try { fn(snapshot) } catch (e) { console.error('logStore listener error', e) }
+            try { fn(snapshot) } catch (e) { console.error('GameLogSystem listener error', e) }
         })
     }
 }
 
-const store = new LogStore()
-export default store
+const gameLogSystem = new GameLogSystem()
+export default gameLogSystem
