@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './App.css'
 // import GameBlank from './Game'
-import californiaImg from './assets/california.png'
-import forestIcon from './assets/forest-icon.png'
+import LeftPane from './home/LeftPane'
+import RightPane from './home/RightPane'
+import ConfirmModal from './home/ConfirmModal'
 
 function App() {
   const [started, setStarted] = useState(false)
@@ -38,67 +39,27 @@ function App() {
     return null;
     // return <GameBlank />
   }
+  const handleForestClick = () => setShowConfirm(true)
+
+  const handleConfirm = () => {
+    setConfirmedBiome('forest')
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', '/game')
+    }
+    setStarted(true)
+    setShowConfirm(false)
+  }
 
   return (
     <>
-    <div className="home-container">
-      <div className="left-pane">
-        <div className="left-inner">
-          <div className="left-image-wrap">
-            <img src={californiaImg} alt="California" className="left-image" />
-            <button
-              type="button"
-              className="forest-button"
-              aria-label="Choose Forest Biome"
-              onClick={() => {
-                setShowConfirm(true)
-              }}
-            >
-              <img src={forestIcon} alt="Forest icon" className="forest-icon" />
-            </button>
-          </div>
-             <p className="left-footer">Click on a biome to get started</p>
-        </div>
+      <div className="home-container">
+        <LeftPane onForestClick={handleForestClick} />
+        <RightPane />
       </div>
-      <div className="right-pane">
-        <div className="right-inner">
-          <h1 className="title">Biome Buddy</h1>
-          <div className="right-description">
-            <p>Step into the role of a community working to restore an ecosystem.</p>
-            <p>Over the course of the seasons and years, your choices will directly affect the food chain and ecosystem balance.</p>
-            <p>Learn how small actions can lead to big changes as you work to protect biodiversity.</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    {showConfirm ? (
-      <div className="confirm-backdrop" role="dialog" aria-modal="true" aria-label="Confirm biome choice" onClick={() => setShowConfirm(false)}>
-        <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
-          <button className="confirm-close" aria-label="Close" onClick={() => setShowConfirm(false)}>✕</button>
-          <h2>You chose the Forest Biome</h2>
-          <p style={{ marginTop: 8, marginBottom: 18 }}>Be prepared to encounter wildfires, landslides, outbreaks and more!
- </p>
-          <div className="confirm-actions">
-            <button
-              className="btn-primary"
-              onClick={() => {
-                // mark the biome, update history and show the game view
-                setConfirmedBiome('forest')
-                if (typeof window !== 'undefined') {
-                  window.history.pushState({}, '', '/game')
-                }
-                setStarted(true)
-                setShowConfirm(false)
-              }}
-            >
-              Get started
-            </button>
-            <button className="btn-ghost" onClick={() => setShowConfirm(false)}>Go back</button>
-          </div>
-        </div>
-      </div>
-    ) : null}
+      {showConfirm ? (
+        <ConfirmModal onClose={() => setShowConfirm(false)} onConfirm={handleConfirm} />
+      ) : null}
     </>
   )
 }
