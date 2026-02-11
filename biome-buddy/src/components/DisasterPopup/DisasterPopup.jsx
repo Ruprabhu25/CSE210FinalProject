@@ -1,5 +1,5 @@
 // Popup for a single disaster; rendered only when a disaster prop is provided
-import "./disasterpopup.css";
+import "./DisasterPopup.css";
 
 export default function DisasterPopup({ disaster, onClose }) {
   if (!disaster) return null;

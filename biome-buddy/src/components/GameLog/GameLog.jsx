@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { subscribe } from '../../disasterBus'
 import logStore from '../../logStore'
 import './GameLog.css'
 
@@ -9,18 +8,11 @@ export default function GameLog() {
     const listRef = useRef(null)
 
     useEffect(() => {
-        // bridge disasterBus events into the log store
-        const unsubBus = subscribe((payload) => {
-            const season = payload?.season ?? payload?.seasonName ?? 'Unknown'
-            const message = payload?.message ?? payload?.name ?? String(payload)
-            logStore.addEntry({ season, message })
-        })
         // subscribe to store updates for UI
         const unsubStore = logStore.subscribe((list) => {
             setEntries(list)
         })
         return () => {
-            unsubBus()
             unsubStore()
         }
     }, [])
