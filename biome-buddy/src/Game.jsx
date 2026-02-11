@@ -113,7 +113,7 @@ export default function GameBlank() {
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>Growth rate</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <button onClick={() => changeGrowth(-0.05)} style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>-</button>
+              <button onClick={() => changeGrowth(-0.05)} className='growthButtons'>-</button>
               <input
                 type="text"
                 value={growthInput}
@@ -122,12 +122,11 @@ export default function GameBlank() {
                 style={{ width: 84, padding: '6px 8px', borderRadius: 8, border: '1px solid #ccc' }}
               />
               <button onClick={() => changeGrowth(0.05)} style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>+</button>
-              <button onClick={() => updateGrowthForSelected(parseFloat(growthInput) || 0)} style={{ padding: '6px 10px', borderRadius: 8, border: 'none', cursor: 'pointer', marginLeft: 6, fontSize: 12 }}>Enter</button>
+              <button onClick={() => updateGrowthForSelected(parseFloat(growthInput) || 0)} className='growthButtons'>Enter</button>
 
               {/* Temp button for testing adding species based off some season*/}
               <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 16 }}>
-                <button onClick={nextSeason} style={{ padding: '10px 18px', borderRadius: 8 }}>Next Season</button>
-              
+                <button onClick={nextSeason} className='growthButtons'>Next Season</button>
               </div>
             </div>
           </div>
