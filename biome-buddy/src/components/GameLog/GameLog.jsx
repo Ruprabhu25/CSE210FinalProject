@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { subscribe } from '../../disasterBus'
+import logStore from '../../logStore'
 import './GameLog.css'
 
 export default function GameLog() {
@@ -8,11 +9,20 @@ export default function GameLog() {
     const listRef = useRef(null)
 
     useEffect(() => {
-        const unsub = subscribe((payload) => {
-            const text = payload?.message ?? payload?.name ?? String(payload)
-            setEntries((s) => [{ text: `Season 1 — ${text}` }, ...s])
+        // bridge disasterBus events into the log store
+        const unsubBus = subscribe((payload) => {
+            const season = payload?.season ?? payload?.seasonName ?? 'Unknown'
+            const message = payload?.message ?? payload?.name ?? String(payload)
+            logStore.addEntry({ season, message })
         })
-        return unsub
+        // subscribe to store updates for UI
+        const unsubStore = logStore.subscribe((list) => {
+            setEntries(list)
+        })
+        return () => {
+            unsubBus()
+            unsubStore()
+        }
     }, [])
 
     useEffect(() => {
@@ -37,8 +47,11 @@ export default function GameLog() {
                 {entries.length === 0 ? (
                     <div className="game-log-empty">No events yet</div>
                 ) : (
-                    entries.map((e, i) => (
-                        <div className="game-log-entry" key={i}>{e.text}</div>
+                    entries.map((e) => (
+                        <div className="game-log-entry" key={e.id}>
+                            <div className="game-log-entry-season">{e.season}</div>
+                            <div className="game-log-entry-message">{e.message}</div>
+                        </div>
                     ))
                 )}
             </div>
