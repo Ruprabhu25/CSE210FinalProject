@@ -6,7 +6,7 @@ class GameContext {
     constructor() {
         this.roundNumber = 1 //int - the current round number
         this.populations = new Map() // speciesID -> Population instance
-        const trophicLevels = [
+        this.trophicLevels = [
           new ProducerTrophic(),
           new PrimaryConsumerTrophic(),
           new SecondaryConsumerTrophic(),
