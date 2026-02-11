@@ -6,7 +6,6 @@
 export const IDEAL_RATIOS = {
   producer: {
     idealRatio: 1000,
-    cap: 100000, // Maximum producer biomass allowed
     priority: 0, 
   },
   herbivore: {

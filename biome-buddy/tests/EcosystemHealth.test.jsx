@@ -45,7 +45,7 @@ test("empty ecosystem returns zero health", () => {
   expect(health).toBeCloseTo(0, 6);
 });
 
-test("exact ideal ratios produce full health", () => {
+test("exact ideal ratios", () => {
   const ecosystem = {
     producer: [
       { name: "Grass", population: 100, biomassPerIndividual: 1000, energyPerIndividual: 100 }],
@@ -63,7 +63,7 @@ test("exact ideal ratios produce full health", () => {
   expect(health).toBeCloseTo(1, 6);
 });
 
-test("producer present but next level empty uses penalty floor", () => {
+test("producer present but none of the other levels", () => {
   const ecosystem = {
     producer: [
       { name: "Grass", population: 100, biomassPerIndividual: 10, energyPerIndividual: 10 },
