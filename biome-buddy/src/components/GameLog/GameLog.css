@@ -1,0 +1,85 @@
+/* Game log styles */
+.game-log {
+    width: 320px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background: #F5F5DC;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    z-index: 40;
+}
+
+/* collapsed state: slide mostly off screen to the right leaving a small tab */
+.game-log.collapsed {
+    transform: translateX(calc(100% - 10px));
+    transition: transform 250ms ease-in-out;
+}
+
+.game-log {
+    transition: transform 250ms ease-in-out;
+}
+
+.game-log-header {
+    font-family: 'Irish Grover', cursive;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.game-log-tab {
+    position: absolute;
+    left: -40px;
+    top: 48%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F5F5DC;
+    border: none;
+    border-radius: 6px 0 0 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.game-log-tab .tab-arrow {
+    font-size: 18px;
+    color: #000;
+
+/* remove default focus outline/ring for the tab (keeps behavior accessible via other cues if needed) */
+.game-log-tab:focus {
+    outline: none;
+    box-shadow: none;
+}
+.game-log-tab::-moz-focus-inner {
+    border: 0;
+}
+}
+
+.game-log-list {
+    overflow: auto;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+    flex: 1 1 auto;
+}
+
+.game-log-entry {
+    background: rgba(0, 0, 0, 0.04);
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.game-log-empty {
+    color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    padding: 1rem 0;
+}

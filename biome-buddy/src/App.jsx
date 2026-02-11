@@ -1,7 +1,7 @@
 import './App.css'
 import DisasterManager from './DisasterManager'
 import DisasterPopup from './DisasterPopup'
-import GameLog from './GameLog'
+import GameLog from './components/GameLog/GameLog'
 
 function App() {
   return (
