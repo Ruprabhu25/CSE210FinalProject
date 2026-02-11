@@ -4,6 +4,7 @@ import './App.css'
 import LeftPane from './home/LeftPane'
 import RightPane from './home/RightPane'
 import ConfirmModal from './home/ConfirmModal'
+import DisasterDemo from './components/disasterpopup/disasterdemo'
 
 function App() {
   const [started, setStarted] = useState(false)
