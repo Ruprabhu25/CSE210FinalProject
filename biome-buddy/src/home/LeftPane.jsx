@@ -1,4 +1,5 @@
 import React from 'react'
+import './LeftPane.css'
 import californiaImg from '../assets/california.png'
 import forestIcon from '../assets/forest-icon.png'
 

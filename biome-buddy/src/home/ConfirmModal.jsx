@@ -1,5 +1,5 @@
 import React from 'react'
-
+import './ConfirmModal.css'
 export default function ConfirmModal({ onClose, onConfirm }) {
   return (
     <div className="confirm-backdrop" role="dialog" aria-modal="true" aria-label="Confirm biome choice" onClick={onClose}>

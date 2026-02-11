@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import './App.css'
+import './home.css'
 // import GameBlank from './Game'
-import LeftPane from './home/LeftPane'
-import RightPane from './home/RightPane'
-import ConfirmModal from './home/ConfirmModal'
-import DisasterDemo from './components/disasterpopup/disasterdemo'
+import LeftPane from './LeftPane'
+import RightPane from './RightPane'
+import ConfirmModal from './ConfirmModal'
 
 function App() {
   const [started, setStarted] = useState(false)
