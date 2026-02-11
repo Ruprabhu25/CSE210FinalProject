@@ -2,6 +2,9 @@
  * Species base class and consumer/producer subclasses.
  * Simple model for population, biomass and energy bookkeeping.
  */
+
+let _nextSpeciesId = 1
+
 export class Species {
   /**
    * @param {string} name
@@ -10,37 +13,20 @@ export class Species {
    * @param {number} population
    * @param {number} growthRate - fractional growth per update (e.g. 0.1 = +10%)
    */
-  constructor(name, energy, biomass, population = 0, growthRate = 0) {
+  constructor(name, energy, biomass) {
     this.name = String(name)
     this.energy = Number(energy) || 0
     this.biomass = Number(biomass) || 0
-    this.population = Number(population) || 0
-    this.growthRate = Number(growthRate) || 0
-  }
-
-  // directly update growth rate
-  setGrowthRate(newRate) {
-    this.growthRate = Number(newRate) || 0
+    // assign a unique numeric id to each species instance
+    this.speciesid = _nextSpeciesId++
   }
 
   getTotalBiomass() {
-    return this.biomass * this.population
+    return this.biomass * this._population.getCurrentSize()
   }
 
   getTotalEnergy() {
-    return this.energy * this.population
-  }
-
-  /**
-   * Update population according to growthRate.
-   * Keeps population non-negative. Population may be fractional; caller
-   * can round if integer counts are required.
-   * @returns {number} new population
-   */
-  updatePopulation() {
-    const next = this.population + this.population * this.growthRate
-    this.population = Math.max(0, next)
-    return this.population
+    return this.energy * this._population.getCurrentSize()
   }
 
   toJSON() {
@@ -48,8 +34,9 @@ export class Species {
       name: this.name,
       energy: this.energy,
       biomass: this.biomass,
-      population: this.population,
-      growthRate: this.growthRate,
+      population: this._population.getCurrentSize(),
+      growthRate: this._population.baseGrowthRate,
+      speciesid: this.speciesid,
     }
   }
 }
