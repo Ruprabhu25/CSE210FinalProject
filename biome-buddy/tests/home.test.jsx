@@ -1,7 +1,7 @@
 import { describe, test, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import App from '../App'
+import App from '../src/home/home'
 
 describe('Home biome flow', () => {
   test('Clicking Forest opens modal', async () => {

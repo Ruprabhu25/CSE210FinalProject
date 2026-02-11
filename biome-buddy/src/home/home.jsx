@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import './home.css'
-// import GameBlank from './Game'
 import LeftPane from './LeftPane'
 import RightPane from './RightPane'
 import ConfirmModal from './ConfirmModal'
@@ -37,7 +36,6 @@ function App() {
   if (started) {
     alert('This will navigate to a new game session');
     return null;
-    // return <GameBlank />
   }
   const handleForestClick = () => setShowConfirm(true)
 
