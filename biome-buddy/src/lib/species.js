@@ -3,6 +3,8 @@
  * Simple model for population, biomass and energy bookkeeping.
  */
 
+import Population from '../Population'
+
 let _nextSpeciesId = 1
 
 export class Species {
@@ -13,12 +15,15 @@ export class Species {
    * @param {number} population
    * @param {number} growthRate - fractional growth per update (e.g. 0.1 = +10%)
    */
-  constructor(name, energy, biomass) {
+  constructor(name, energy, biomass, population = 0, growthRate = 0.1) {
     this.name = String(name)
     this.energy = Number(energy) || 0
     this.biomass = Number(biomass) || 0
     // assign a unique numeric id to each species instance
     this.speciesid = _nextSpeciesId++
+
+    // initialize population tracking
+    this._population = new Population(this.speciesid, Number(population) || 0, Number(growthRate) || 0)
   }
 
   getTotalBiomass() {
@@ -38,6 +43,19 @@ export class Species {
       growthRate: this._population.baseGrowthRate,
       speciesid: this.speciesid,
     }
+  }
+
+  // convenience accessors used by UI and tests
+  get population() {
+    return this._population ? this._population.getCurrentSize() : 0
+  }
+
+  get growthRate() {
+    return this._population ? this._population.baseGrowthRate : 0
+  }
+
+  setGrowthRate(r) {
+    if (this._population) this._population.baseGrowthRate = Number(r) || 0
   }
 }
 
