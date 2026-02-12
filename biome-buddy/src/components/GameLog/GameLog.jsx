@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import logStore from '../../systems/GameLogSystem'
 import './GameLog.css'
 
-export default function GameLog() {
+export default function GameLog({ onCollapsedChange }) {
     const [entries, setEntries] = useState([])
     const [collapsed, setCollapsed] = useState(false)
     const listRef = useRef(null)
@@ -23,6 +23,13 @@ export default function GameLog() {
             listRef.current.scrollTop = 0
         }
     }, [entries])
+
+    useEffect(() => {
+        // notify parent when collapsed state changes
+        if (onCollapsedChange) {
+            onCollapsedChange(collapsed)
+        }
+    }, [collapsed, onCollapsedChange])
 
     return (
         <aside className={"game-log" + (collapsed ? ' collapsed' : '')} aria-hidden={collapsed}>

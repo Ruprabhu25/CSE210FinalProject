@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Producer, PrimaryConsumer, SecondaryConsumer, TertiaryConsumer } from './lib/species'
+import GameLog from './components/GameLog/GameLog'
 import './Game.css'
 
 export default function GameBlank() {
@@ -15,6 +16,7 @@ export default function GameBlank() {
   const [growthInput, setGrowthInput] = useState(initialGrowthRate)
   const [currentSeason, setCurrentSeason] = useState(1) // Tracks the seasons
   const [notifications, setNotifications] = useState([]) // Simple notifications
+  const [gameLogCollapsed, setGameLogCollapsed] = useState(false) // Track GameLog collapse state
 
   const icons = {
     'producer': '🌿',
@@ -77,7 +79,12 @@ export default function GameBlank() {
           <div className="healthFill" />
           <div className="healthText">EcoSystem Health: 70%</div>
         </div>
-        <div className="seasonBadge">Season {currentSeason}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 10 }}>
+          <div className="seasonBadge">Season {currentSeason}</div>
+          <div style={{ width: 320 }}>
+            <GameLog onCollapsedChange={setGameLogCollapsed} />
+          </div>
+        </div>
       </div>
 
       {/* Notifications (Temp will be replaced with pop up)*/}
@@ -90,7 +97,12 @@ export default function GameBlank() {
       </div>
 
       {/* Bottom species panel */}
-      <div className='outerPanelStyle'>
+      <div 
+        className='outerPanelStyle'
+        style={{
+          width: gameLogCollapsed ? 'calc(100% - 2rem)' : 'calc(100% - 320px - 2rem)'
+        }}
+      >
         <div className='innerPanelStyle' aria-label="Species panel">
           <div className="speciesTitle">Active Species</div>
           <div className='selectorStyle' role="listbox" aria-label="Species selector">
