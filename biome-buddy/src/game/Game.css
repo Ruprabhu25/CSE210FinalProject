@@ -1,0 +1,29 @@
+.rootStyle {
+  position: fixed;
+  inset: 0;
+  background-image: url('../assets/summer-forest.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  font-family: "Georgia", serif;
+}
+
+/* table helpers (keep in global file) */
+.tableStyle {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.thStyle {
+  text-align: left;
+  font-size: 0.5625rem;
+  color: #6b6b6b;
+  padding: 0.375rem 0.5rem;
+}
+
+.tdStyle {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.59375rem;
+  color: #222;
+}
