@@ -64,6 +64,7 @@
   border-radius: 12px;
   background: linear-gradient(180deg, #7a4f26 0%, #5d3418 50%, #8b5a33 100%);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) inset, 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: width 250ms ease-in-out;
 }
 
 /* inner panel (lighter tone) */
