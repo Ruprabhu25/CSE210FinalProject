@@ -1,0 +1,54 @@
+.right-pane {
+  flex: 0 0 50%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+  background: #F9F7E6;
+  color: #213547;
+  overflow: visible;
+}
+
+.right-inner { background: #F9F7E6; z-index: 2; }
+
+.title {
+  font-size: 3.5rem;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -1px;
+  color: #000000;
+  font-family: 'Irish Grover', cursive;
+}
+
+.right-description {
+  margin-top: 1.1rem;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #213547;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  opacity: 0.95;
+  text-align: left;
+  font-family: 'Irish Grover', cursive;
+}
+
+.right-pane::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -39px;
+  width: calc(100% + 24px);
+  height: 100%;
+  background-image: url('../assets/border-landing-page.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@media (max-width: 700px) {
+  .right-pane::before { left: 0; width: 100%; }
+}
