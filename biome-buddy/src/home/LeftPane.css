@@ -1,0 +1,146 @@
+.left-pane {
+  flex: 0 0 50%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.map-wrap {
+  position: relative;
+  width: 420px;
+  height: 420px;
+}
+
+.california-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: none;
+  border-radius: 18px;
+}
+
+/* Alias classes used in App/JSX to avoid breaking existing markup */
+.left-inner { max-width: 920px; padding: 2rem; text-align: center; display:flex; flex-direction:column; box-sizing:border-box; height:100%; }
+.left-image-wrap { position: relative; display: inline-block; margin-top: 5rem; }
+.left-image, .california-img { max-width: 85%; width: 600px; height: auto; display:block; object-fit: cover; }
+.forest-icon { width: 100%; height: 100%; object-fit: contain; display:block; pointer-events: none; }
+.left-footer { margin-top: auto; color: #0f1720; font-size: 2rem; text-align: center; opacity: 0.95; font-family: 'Irish Grover', cursive; }
+
+.forest-button {
+  position: absolute;
+  left: 28%;
+  top: 54%;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  outline-offset: 4px;
+}
+
+.forest-button img { width: 100%; height: 100%; display: block; }
+
+.forest-button:hover,
+.forest-button:focus { transform: scale(1.06); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
+
+@media (max-width: 700px) {
+  .map-wrap { width: 320px; height: 320px; }
+  .forest-button { left: 26%; top: 52%; }
+}
+.left-pane {
+  flex: 0 0 50%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-pane {
+  background: linear-gradient(180deg, #d7f0d6 0%, #c6e9c4 100%);
+  color: #000000;
+}
+
+.left-inner {
+  max-width: 920px;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.left-image {
+  max-width: 85%;
+  width: 600px;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.left-image-wrap {
+  position: relative;
+  display: inline-block;
+  margin-top: 5rem;
+}
+
+.forest-button {
+  position: absolute;
+  top: 160px;
+  left: 90px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+}
+
+.forest-button:focus { outline: none; }
+
+.forest-button:focus-visible {
+  box-shadow: 0 0 0 3px rgba(100,150,100,0.22);
+  border-radius: 8px;
+}
+
+.forest-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.forest-button { will-change: transform, filter; transition: transform 200ms cubic-bezier(.2,.9,.2,1), filter 200ms ease; transform-origin: center center; }
+
+.forest-button:hover .forest-icon,
+.forest-button:focus-visible .forest-icon {
+  transform: translateY(-6px) scale(1.08);
+  filter: drop-shadow(0 10px 14px rgba(0,0,0,0.18));
+}
+
+.forest-button:active .forest-icon { transform: translateY(-2px) scale(0.98); }
+
+@media (prefers-reduced-motion: reduce) {
+  .forest-button { transition: none; }
+  .forest-button .forest-icon { transform: none !important; }
+}
+
+.left-footer {
+  margin-top: auto;
+  color: #0f1720;
+  font-size: 2rem;
+  text-align: center;
+  opacity: 0.95;
+  font-family: 'Irish Grover', cursive;
+}
+
+@media (max-width: 700px) {
+  .left-image { width: clamp(320px, 48vw, 760px); max-width: 95%; height: auto; display: block; object-fit: cover; }
+}
