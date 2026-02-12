@@ -20,45 +20,54 @@ function calculateSpeciesScore(population, biomassPerIndividual, energyPerIndivi
 
 /**
  * Calculate ecosystem health considering trophic level 
- * @param {Object} context - GameContext instance with trophicLevels and populations
+ * @param trophicLevels - Array of trophic level objects
+ * @param populations - Map of speciesId to Population objects
  * @returns {number} Ecosystem health
  */
-export function calculateEcosystemBalance(context) {
-  const trophicLevels = context.trophicLevels || [];
-  const populations = context.populations || new Map();
+export function EcosystemHealth(trophicLevels, populations) {
   let hasExtinction = false;
-
   const levelScores = trophicLevels.map((trophicLevel) => {
+    let totalPop = 0;
     let totalScore = 0;
     const speciesMap = trophicLevel.speciesMap || {};
-    
-    Object.entries(speciesMap).forEach(([speciesId, speciesData]) => {
+    const speciesEntries = Object.entries(speciesMap);
+
+    // If no species in this trophic level, consider it extinct
+    if (speciesEntries.length === 0) {
+      hasExtinction = true;
+      return;
+    }
+
+    speciesEntries.forEach(([speciesId, speciesData]) => {
       const pop = populations.get(Number(speciesId));
       let size = 0;
       if (pop) {
         size = pop.getCurrentSize();
-      } 
+      }
       if (size === 0) {
         hasExtinction = true;
         return;
       }
-      // change once getter functions are added
       const biomass = speciesData.biomass;
       const energy = speciesData.energy;
+      totalPop += size;
       totalScore += calculateSpeciesScore(size, biomass, energy);
     });
-    return {level: trophicLevel.name, score: totalScore, ideal: trophicLevel.idealRatio || 1};
+    return {level: trophicLevel.name, totalPop: totalPop, score: totalScore, ideal: trophicLevel.idealRatio};
   });
+
+  if (hasExtinction) {
+    return 0;
+  }
   const normalizedScores = levelScores.map((curr, i) => {
-    let currScore = curr.score / curr.ideal;
+    let currScore = 1;
     
     // Penalize based on deviation from next level
     if (i < levelScores.length - 1) {
-      const next = levelScores[i + 1];
-      const actualRatio = curr.score / (next.score); 
-      const idealRatio = curr.ideal / next.ideal;
+      const nextTrophicLevel = levelScores[i + 1];
+      const actualRatio = curr.totalPop / (nextTrophicLevel.totalPop); 
+      const idealRatio = curr.ideal / nextTrophicLevel.ideal;
       const deviation = Math.abs(actualRatio - idealRatio) / idealRatio;
-    
       // Allow 20% tolerance
       if (deviation < 0.2) {
         currScore = 1;
