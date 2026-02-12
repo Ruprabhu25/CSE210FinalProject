@@ -1,5 +1,6 @@
 import Population from "./Population"
 import { ProducerTrophic, PrimaryConsumerTrophic, SecondaryConsumerTrophic, TertiaryConsumerTrophic } from "./Trophic"
+import { EcosystemHealth } from "./EcosystemHealth"
 
 // Encapsulates game state
 class GameContext {
@@ -17,7 +18,10 @@ class GameContext {
         }
         this.numRoundsInSeason = 3 //int - the number of rounds in each season, which determines how long each season lasts. 
     }
-
+    calculateEcosystemBalance() {
+        return EcosystemHealth(this.trophicLevels, this.populations)
+    }
+    
     determineSeason() {
         const seasons = ["Spring", "Summer", "Fall", "Winter"] 
         // season should last for a certain number of rounds
