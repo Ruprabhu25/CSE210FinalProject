@@ -2,6 +2,7 @@
  * Calculates ecosystem health based on species scores and trophic level ratios
  * Health is returned in the range [0, 1], makes it easier to treat health as normalized value
  */
+import { getTotalPopulation, calculateRatioDeviation, deviationToScore } from './helperFunctions/healthCalculateHelperFunctions';
 
 /**
  * Calculate species score based on biomass and energy
@@ -65,22 +66,10 @@ export function EcosystemHealth(trophicLevels, populations) {
     // Penalize based on deviation from next level
     if (i < levelScores.length - 1) {
       const nextTrophicLevel = levelScores[i + 1];
-      const actualRatio = curr.totalPop / (nextTrophicLevel.totalPop); 
-      const idealRatio = curr.ideal / nextTrophicLevel.ideal;
-      const deviation = Math.abs(actualRatio - idealRatio) / idealRatio;
-      // Allow 20% tolerance
-      if (deviation < 0.2) {
-        currScore = 1;
-      }
-      else{
-        // Dynamic penalty: worse imbalance -> stronger punishment
-        const levelPenalty = Math.max(0.1, 1 - deviation);
-        currScore *= levelPenalty;
-      }
-      
+      const deviation = calculateRatioDeviation(curr.totalPop, nextTrophicLevel.totalPop, curr.ideal, nextTrophicLevel.ideal);
+      currScore = deviationToScore(deviation, 0.2);
     }
-    const normalizedScore = Math.min(1, currScore);
-    return normalizedScore;
+    return currScore;
   });
   /**
    * Final ecosystem health.
