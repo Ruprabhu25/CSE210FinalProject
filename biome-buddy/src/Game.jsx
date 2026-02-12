@@ -97,7 +97,7 @@ export default function GameBlank() {
       </div>
 
       {/* Bottom species panel */}
-      <div 
+      <div
         className='outerPanelStyle'
         style={{
           width: gameLogCollapsed ? 'calc(100% - 2rem)' : 'calc(100% - 320px - 2rem)'
