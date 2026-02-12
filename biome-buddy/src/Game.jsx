@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Producer, PrimaryConsumer, SecondaryConsumer, TertiaryConsumer } from './lib/species'
 import GameLog from './components/GameLog/GameLog'
-import DisasterPopup from './components/DisasterPopup/DisasterPopup'
+import DisasterPopup from './components/disasterpopup/DisasterPopup'
 import gameLogSystem from './systems/GameLogSystem'
 import { disasters } from './data/disasters'
 import { calculateEcosystemBalance } from './ecosystemBalance'
@@ -157,6 +157,28 @@ export default function GameBlank() {
     setCurrentSeason(newSeason)
   }
 
+  // Apply immediate population effect from chosen disaster action
+  function handleDisasterAction(action) {
+    if (!action) {
+      setCurrentDisaster(null)
+      return
+    }
+
+    // Find the species targeted by the selected disaster action.
+    const targetSpecies = speciesArr.find((s) => s.name === action.target)
+    if (targetSpecies?._population) {
+      // Read current population, apply the disaster action's population delta, and clamp at 0.
+      const currentPop = targetSpecies._population.getCurrentSize()
+      const nextPop = Math.max(0, Math.round(currentPop + (action.deltaPopulation || 0)))
+      // Persist the updated population so this disaster action immediately affects species count.
+      targetSpecies._population.size = nextPop
+      // Trigger re-render so the UI reflects the new population level.
+      setSpeciesArr([...speciesArr])
+    }
+
+    setCurrentDisaster(null)
+  }
+
   return (
     <div className='rootStyle' onClick={() => setSelected(null)}>
       {/* Top HUD */}
@@ -237,7 +259,7 @@ export default function GameBlank() {
       {/* Disaster Popup */}
       <DisasterPopup
         disaster={currentDisaster}
-        onClose={() => setCurrentDisaster(null)}
+        onAction={handleDisasterAction}
       />
     </div>
   )
