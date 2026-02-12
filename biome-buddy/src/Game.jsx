@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Producer, PrimaryConsumer, SecondaryConsumer, TertiaryConsumer } from './lib/species'
 import GameLog from './components/GameLog/GameLog'
+import DisasterPopup from './components/DisasterPopup/DisasterPopup'
+import gameLogSystem from './systems/GameLogSystem'
+import { disasters } from './data/disasters'
 import './Game.css'
 
 export default function GameBlank() {
@@ -17,6 +20,7 @@ export default function GameBlank() {
   const [currentSeason, setCurrentSeason] = useState(1) // Tracks the seasons
   const [notifications, setNotifications] = useState([]) // Simple notifications
   const [gameLogCollapsed, setGameLogCollapsed] = useState(false) // Track GameLog collapse state
+  const [currentDisaster, setCurrentDisaster] = useState(null) // Track current disaster for popup
 
   const icons = {
     'producer': '🌿',
@@ -67,7 +71,30 @@ export default function GameBlank() {
 
   // --- Advance season for testing  ---
   function nextSeason() {
-    setCurrentSeason(prev => prev + 1)
+    const newSeason = currentSeason + 1
+    
+    // Add event to game log
+    gameLogSystem.addEntry({
+      season: `Season ${newSeason}`,
+      message: 'Advanced to next season',
+    })
+    
+    // 40% chance to generate a random disaster
+    if (Math.random() < 0.4) {
+      const disasterKeys = Object.keys(disasters)
+      const randomKey = disasterKeys[Math.floor(Math.random() * disasterKeys.length)]
+      const disaster = disasters[randomKey]
+      setCurrentDisaster(disaster)
+      
+      // Add disaster event to log
+      gameLogSystem.addEntry({
+        season: `Season ${newSeason}`,
+        name: disaster.title,
+        message: `${disaster.title}: ${disaster.description}`,
+      })
+    }
+    
+    setCurrentSeason(newSeason)
   }
 
   return (
@@ -146,6 +173,12 @@ export default function GameBlank() {
 
         </div>
       </div>
+
+      {/* Disaster Popup */}
+      <DisasterPopup 
+        disaster={currentDisaster} 
+        onClose={() => setCurrentDisaster(null)} 
+      />
     </div>
   )
 }
