@@ -4,6 +4,7 @@ import GameLog from './components/GameLog/GameLog'
 import DisasterPopup from './components/DisasterPopup/DisasterPopup'
 import gameLogSystem from './systems/GameLogSystem'
 import { disasters } from './data/disasters'
+import { calculateEcosystemBalance } from './ecosystemBalance'
 import './Game.css'
 
 export default function GameBlank() {
@@ -21,6 +22,7 @@ export default function GameBlank() {
   const [notifications, setNotifications] = useState([]) // Simple notifications
   const [gameLogCollapsed, setGameLogCollapsed] = useState(false) // Track GameLog collapse state
   const [currentDisaster, setCurrentDisaster] = useState(null) // Track current disaster for popup
+  const [ecosystemHealth, setEcosystemHealth] = useState(0.7) // normalized [0..1]
 
   const icons = {
     'producer': '🌿',
@@ -72,28 +74,86 @@ export default function GameBlank() {
   // --- Advance season for testing  ---
   function nextSeason() {
     const newSeason = currentSeason + 1
-    
+
     // Add event to game log
     gameLogSystem.addEntry({
       season: `Season ${newSeason}`,
       message: 'Advanced to next season',
     })
-    
+
     // 40% chance to generate a random disaster
     if (Math.random() < 0.4) {
       const disasterKeys = Object.keys(disasters)
       const randomKey = disasterKeys[Math.floor(Math.random() * disasterKeys.length)]
       const disaster = disasters[randomKey]
       setCurrentDisaster(disaster)
-      
+
       // Add disaster event to log
       gameLogSystem.addEntry({
         season: `Season ${newSeason}`,
         name: disaster.title,
         message: `${disaster.title}: ${disaster.description}`,
       })
+
+      // compute new ecosystem balance from current species (map species to expected trophic keys)
+      try {
+        const speciesByTrophicLevel = {
+          producer: [],
+          herbivore: [],
+          primaryCarnivore: [],
+          secondaryCarnivore: [],
+        }
+
+        speciesArr.forEach((s) => {
+          const population = s.population ?? (s._population && s._population.getCurrentSize ? s._population.getCurrentSize() : 1)
+          const biomassPerIndividual = s.biomass ?? s.biomassPerIndividual ?? 1
+          const energyPerIndividual = s.energy ?? s.energyPerIndividual ?? 1
+
+          const item = { name: s.name, population, biomassPerIndividual, energyPerIndividual }
+
+          // map trophic keys from species.trophic
+          if (s.trophic === 'producer') speciesByTrophicLevel.producer.push(item)
+          else if (s.trophic === 'primary-consumer') speciesByTrophicLevel.herbivore.push(item)
+          else if (s.trophic === 'secondary-consumer') speciesByTrophicLevel.primaryCarnivore.push(item)
+          else if (s.trophic === 'tertiary-consumer') speciesByTrophicLevel.secondaryCarnivore.push(item)
+        })
+
+        const balance = calculateEcosystemBalance(speciesByTrophicLevel)
+        // If balance calculation yields a valid positive value, use it; otherwise fallback to reducing current health
+        if (typeof balance === 'number' && balance > 0) {
+          // reduce health by 20% (absolute 0.2) for now when disaster happens
+          const newHealth = Math.max(0, balance - 0.2)
+          setEcosystemHealth(newHealth)
+
+          // log the new health
+          gameLogSystem.addEntry({
+            season: `Season ${newSeason}`,
+            message: `Ecosystem health now ${Math.round(newHealth * 100)}%`,
+          })
+        } else {
+          // fallback: decrement current health by 20 percentage points
+          setEcosystemHealth((h) => {
+            const nh = Math.max(0, h - 0.2)
+            gameLogSystem.addEntry({
+              season: `Season ${newSeason}`,
+              message: `Ecosystem health now ${Math.round(nh * 100)}%`,
+            })
+            return nh
+          })
+        }
+      } catch (e) {
+        // fallback: reduce by 0.2 from current (clamped at 0)
+        setEcosystemHealth((h) => {
+          const nh = Math.max(0, h - 0.2)
+          gameLogSystem.addEntry({
+            season: `Season ${newSeason}`,
+            message: `Ecosystem health now ${Math.round(nh * 100)}%`,
+          })
+          return nh
+        })
+      }
     }
-    
+
     setCurrentSeason(newSeason)
   }
 
@@ -103,8 +163,8 @@ export default function GameBlank() {
       <div className="topBar">
         {/* Temp: This healthbar section will be replaced with component */}
         <div className="healthContainer">
-          <div className="healthFill" />
-          <div className="healthText">EcoSystem Health: 70%</div>
+          <div className="healthFill" style={{ width: `${Math.round(ecosystemHealth * 100)}%` }} />
+          <div className="healthText">EcoSystem Health: {Math.round(ecosystemHealth * 100)}%</div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 10 }}>
           <div className="seasonBadge">Season {currentSeason}</div>
@@ -175,9 +235,9 @@ export default function GameBlank() {
       </div>
 
       {/* Disaster Popup */}
-      <DisasterPopup 
-        disaster={currentDisaster} 
-        onClose={() => setCurrentDisaster(null)} 
+      <DisasterPopup
+        disaster={currentDisaster}
+        onClose={() => setCurrentDisaster(null)}
       />
     </div>
   )

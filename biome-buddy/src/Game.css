@@ -32,6 +32,7 @@
   background: #f0ad63;
   border-radius: 0.875rem 0 0 0.875rem;
   padding: .5rem;
+  transition: width 250ms ease-in-out;
 }
 
 .healthText {
