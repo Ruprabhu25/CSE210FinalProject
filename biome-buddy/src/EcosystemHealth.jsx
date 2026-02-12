@@ -2,7 +2,6 @@
  * Calculates ecosystem health based on species scores and trophic level ratios
  * Health is returned in the range [0, 1], makes it easier to treat health as normalized value
  */
-import { IDEAL_RATIOS } from "./ecosystemConfig.jsx";
 
 /**
  * Calculate species score based on biomass and energy
@@ -21,30 +20,35 @@ function calculateSpeciesScore(population, biomassPerIndividual, energyPerIndivi
 
 /**
  * Calculate ecosystem health considering trophic level 
- * @param {Object} speciesByTrophicLevel - Species grouped by trophic level
- *   Structure: {
- *     producer: [{name, population, biomassPerIndividual, energyPerIndividual }, ...],
- *     herbivore: [...], primaryCarnivore: [...], secondaryCarnivore: [...]
- *   }
+ * @param {Object} context - GameContext instance with trophicLevels and populations
  * @returns {number} Ecosystem health
  */
-export function calculateEcosystemBalance(speciesByTrophicLevel) {
-  const sortedLevels = Object.keys(speciesByTrophicLevel).sort(
-    (a, b) => IDEAL_RATIOS[a].priority - IDEAL_RATIOS[b].priority
-  );
+export function calculateEcosystemBalance(context) {
+  const trophicLevels = context.trophicLevels || [];
+  const populations = context.populations || new Map();
+  let hasExtinction = false;
 
-  const levelScores = sortedLevels.map((level) => {
-    const species = speciesByTrophicLevel[level] || [];
+  const levelScores = trophicLevels.map((trophicLevel) => {
     let totalScore = 0;
-    species.forEach((spec) => {
-      totalScore += calculateSpeciesScore(spec.population, spec.biomassPerIndividual, spec.energyPerIndividual);
+    const speciesMap = trophicLevel.speciesMap || {};
+    
+    Object.entries(speciesMap).forEach(([speciesId, speciesData]) => {
+      const pop = populations.get(Number(speciesId));
+      let size = 0;
+      if (pop) {
+        size = pop.getCurrentSize();
+      } 
+      if (size === 0) {
+        hasExtinction = true;
+        return;
+      }
+      // change once getter functions are added
+      const biomass = speciesData.biomass;
+      const energy = speciesData.energy;
+      totalScore += calculateSpeciesScore(size, biomass, energy);
     });
-    return {level, score: totalScore, ideal: IDEAL_RATIOS[level].idealRatio};
+    return {level: trophicLevel.name, score: totalScore, ideal: trophicLevel.idealRatio || 1};
   });
-  // If trophic is 0, the health is 0 
-  if (levelScores.some(ls => ls.score === 0)) {
-    return 0; 
-  }
   const normalizedScores = levelScores.map((curr, i) => {
     let currScore = curr.score / curr.ideal;
     
