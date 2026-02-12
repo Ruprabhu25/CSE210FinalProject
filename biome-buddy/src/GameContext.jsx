@@ -18,7 +18,7 @@ class GameContext {
         }
         this.numRoundsInSeason = 3 //int - the number of rounds in each season, which determines how long each season lasts. 
     }
-    calculateEcosystemBalance() {
+    calculateEcosystemHealth() {
         return EcosystemHealth(this.trophicLevels, this.populations)
     }
     
