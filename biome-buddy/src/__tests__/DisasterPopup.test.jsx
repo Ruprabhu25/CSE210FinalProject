@@ -1,37 +1,32 @@
 import React from 'react'
-import { describe, test, expect } from 'vitest'
+import { describe, test, expect, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 // jest-dom matchers are loaded via vitest setup file
 
-import DisasterPopup from '../DisasterPopup'
-import { showDisaster, DISASTER_TEXTS } from '../disasterBus'
+import DisasterPopup from '../components/DisasterPopup/DisasterPopup'
+import { disasters } from '../data/disasters'
 
 describe('DisasterPopup', () => {
-    test('shows message when showDisaster is called with key', async () => {
-        render(<DisasterPopup />)
+    test('shows message when disaster prop is provided', () => {
+        const onClose = vi.fn()
+        render(<DisasterPopup disaster={disasters.wildfire} onClose={onClose} />)
 
-        showDisaster('forest_fire')
-
-        const title = await screen.findByText(/Natural Disaster has hit!/i)
+        const title = screen.getByRole('heading', { name: /Wildfire/i })
         expect(title).toBeInTheDocument()
 
-        const body = await screen.findByText(DISASTER_TEXTS['forest_fire'])
+        const body = screen.getByText(/Extreme heat and prolonged drought ignited a wildfire\./i)
         expect(body).toBeInTheDocument()
     })
 
-    test('closes when close button is clicked', async () => {
-        render(<DisasterPopup />)
-        showDisaster('flood')
+    test('closes when close button is clicked', () => {
+        const onClose = vi.fn()
+        render(<DisasterPopup disaster={disasters.flood} onClose={onClose} />)
 
-        const close = await screen.findByRole('button', { name: /close/i })
+        const close = screen.getByText('\u2715')
         expect(close).toBeInTheDocument()
 
-        const ue = userEvent.setup()
-        await ue.click(close)
+        close.click()
 
-        await waitFor(() => {
-            expect(screen.queryByText(/Natural Disaster has hit!/i)).not.toBeInTheDocument()
-        })
+        expect(onClose).toHaveBeenCalled()
     })
 })

@@ -2,6 +2,7 @@ import System from "./System"
 
 class GameLogSystem extends System {
     constructor() {
+        super()
         this.entries = []
         this.listeners = []
     }

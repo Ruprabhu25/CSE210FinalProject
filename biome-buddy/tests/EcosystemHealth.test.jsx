@@ -1,14 +1,15 @@
-import {calculateEcosystemBalance} from "./ecosystemBalance";
+import { calculateEcosystemBalance } from "../src/ecosystemBalance";
 import { test, expect } from "vitest";
 
 // Tests for possible inputs 
 // Did not test against negative inputs oo missing trophic levels
 test("close to ideal ecosystem returns ~100% health", () => {
-  const ecosystem = {producer: [{name: "Grass", population: 50, biomassPerIndividual: 10, energyPerIndividual: 10,carryingCapacity: 150}, 
-      {name: "tree", population: 50, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150}],
-    herbivore: [{name: "Deer", population: 85, biomassPerIndividual: 10, energyPerIndividual: 0.1, carryingCapacity: 60}],
-    primaryCarnivore: [{name: "Wolf", population: 30, biomassPerIndividual: 10, energyPerIndividual: 0.01, carryingCapacity: 30}],
-    secondaryCarnivore: [{name: "Bear", population: 160, biomassPerIndividual: 1, energyPerIndividual: 0.001,carryingCapacity: 100}]
+  const ecosystem = {
+    producer: [{ name: "Grass", population: 50, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150 },
+    { name: "tree", population: 50, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150 }],
+    herbivore: [{ name: "Deer", population: 85, biomassPerIndividual: 10, energyPerIndividual: 0.1, carryingCapacity: 60 }],
+    primaryCarnivore: [{ name: "Wolf", population: 30, biomassPerIndividual: 10, energyPerIndividual: 0.01, carryingCapacity: 30 }],
+    secondaryCarnivore: [{ name: "Bear", population: 160, biomassPerIndividual: 1, energyPerIndividual: 0.001, carryingCapacity: 100 }]
   };
 
   const health = calculateEcosystemBalance(ecosystem);
@@ -18,12 +19,13 @@ test("close to ideal ecosystem returns ~100% health", () => {
 
 
 test("overpopulated producers lowers health", () => {
-  
-  const ecosystem = {producer: [{name: "Grass", population: 150, biomassPerIndividual: 10, energyPerIndividual: 10,carryingCapacity: 150}, 
-      {name: "tree", population: 150, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150}],
-    herbivore: [{name: "Deer", population: 200, biomassPerIndividual: 10, energyPerIndividual: 0.1, carryingCapacity: 60}],
-    primaryCarnivore: [{name: "Wolf", population: 15, biomassPerIndividual: 10, energyPerIndividual: 0.01, carryingCapacity: 30}],
-    secondaryCarnivore: [{name: "Bear", population: 80, biomassPerIndividual: 1, energyPerIndividual: 0.001,carryingCapacity: 100}]
+
+  const ecosystem = {
+    producer: [{ name: "Grass", population: 150, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150 },
+    { name: "tree", population: 150, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150 }],
+    herbivore: [{ name: "Deer", population: 200, biomassPerIndividual: 10, energyPerIndividual: 0.1, carryingCapacity: 60 }],
+    primaryCarnivore: [{ name: "Wolf", population: 15, biomassPerIndividual: 10, energyPerIndividual: 0.01, carryingCapacity: 30 }],
+    secondaryCarnivore: [{ name: "Bear", population: 80, biomassPerIndividual: 1, energyPerIndividual: 0.001, carryingCapacity: 100 }]
   };
 
   const health = calculateEcosystemBalance(ecosystem);
@@ -82,7 +84,7 @@ test("producer present but none of the other levels", () => {
 test("randome trohpic becomes 0", () => {
   const ecosystem = {
     producer: [
-      { name: "Grass", population: 10000, biomassPerIndividual: 100, energyPerIndividual: 10 }, 
+      { name: "Grass", population: 10000, biomassPerIndividual: 100, energyPerIndividual: 10 },
     ],
     herbivore: [
       { name: "Deer", population: 0, biomassPerIndividual: 80, energyPerIndividual: 10 }

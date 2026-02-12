@@ -1,15 +1,16 @@
+import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import GameBlank from '../Game.jsx'
-import { Producer, PrimaryConsumer } from '../lib/species'
+import GameBlank from '../src/Game.jsx'
+import { Producer, PrimaryConsumer } from '../src/lib/species'
 
 describe('GameBlank Component', () => {
 
   test('renders top HUD and initial species', () => {
     render(<GameBlank />)
-    
+
     // Check ecosystem health
     expect(screen.getByText(/EcoSystem Health/i)).toBeInTheDocument()
-    
+
     // Check initial season
     expect(screen.getByText(/Season 1/i)).toBeInTheDocument()
 
@@ -25,22 +26,23 @@ describe('GameBlank Component', () => {
 
     const rabbit = screen.getByText('Rabbit')
     fireEvent.click(rabbit)
-    
+
     // The parent div should have "selected" class
     expect(rabbit.closest('.itemStyle')).toHaveClass('selected')
   })
 
-test('changing growth input updates growth rate', () => {
-  render(<GameBlank />)
+  test('changing growth input updates growth rate', () => {
+    render(<GameBlank />)
 
-  const input = screen.getByRole('textbox')
-  expect(input.value).toBe('0.12') // assert initial value
+    const input = screen.getByDisplayValue('0.12')
+    expect(input).toBeInTheDocument()
 
-  fireEvent.change(input, { target: { value: '0.10' } })
-  fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+    fireEvent.change(input, { target: { value: '0.10' } })
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
 
-  expect(input.value).toBe('0.10') // updated value
-})
+    const updated = screen.getByDisplayValue('0.10')
+    expect(updated).toBeInTheDocument()
+  })
 
 
   test('addSpecies function introduces new species and notification', () => {
@@ -68,7 +70,7 @@ test('changing growth input updates growth rate', () => {
 
     expect(screen.getByText('Berry Bush')).toBeInTheDocument()
     expect(screen.getByText('Deer')).toBeInTheDocument()
-    
+
     expect(screen.getByText(/New species introduced: Berry Bush!/i)).toBeInTheDocument()
     expect(screen.getByText(/New species introduced: Deer!/i)).toBeInTheDocument()
   })

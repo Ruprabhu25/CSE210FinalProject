@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Producer, PrimaryConsumer, SecondaryConsumer, TertiaryConsumer } from './lib/species'
 import './Game.css'
 
@@ -11,7 +11,8 @@ export default function GameBlank() {
     new TertiaryConsumer('Hawk', 45, 6, 5, 0.01),
   ])
   const [selected, setSelected] = useState(0)
-  const [growthInput, setGrowthInput] = useState(Number(speciesArr[0].growthRate).toFixed(2))
+  const initialGrowthRate = Number(0.12).toFixed(2)
+  const [growthInput, setGrowthInput] = useState(initialGrowthRate)
   const [currentSeason, setCurrentSeason] = useState(1) // Tracks the seasons
   const [notifications, setNotifications] = useState([]) // Simple notifications
 

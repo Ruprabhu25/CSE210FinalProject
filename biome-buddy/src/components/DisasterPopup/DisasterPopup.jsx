@@ -1,5 +1,6 @@
 // Popup for a single disaster; rendered only when a disaster prop is provided
 import "./DisasterPopup.css";
+import React from "react";
 
 export default function DisasterPopup({ disaster, onClose }) {
   if (!disaster) return null;
