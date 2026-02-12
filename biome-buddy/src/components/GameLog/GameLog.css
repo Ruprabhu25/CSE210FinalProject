@@ -1,15 +1,14 @@
 /* Game log styles */
 .game-log {
-    width: 320px;
-    position: fixed;
-    right: 0;
-    top: 0;
+    width: 260px;
+    position: relative;
     background: #F5F5DC;
     padding: 0.5rem;
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    height: 85vh;
     z-index: 40;
 }
 
@@ -34,7 +33,7 @@
 .game-log-tab {
     position: absolute;
     left: -40px;
-    top: 48%;
+    top: 50%;
     transform: translateY(-50%);
     width: 36px;
     height: 72px;

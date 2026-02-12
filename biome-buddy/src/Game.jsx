@@ -81,7 +81,7 @@ export default function GameBlank() {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 10 }}>
           <div className="seasonBadge">Season {currentSeason}</div>
-          <div style={{ width: 320 }}>
+          <div style={{ width: 260 }}>
             <GameLog onCollapsedChange={setGameLogCollapsed} />
           </div>
         </div>
@@ -100,7 +100,7 @@ export default function GameBlank() {
       <div
         className='outerPanelStyle'
         style={{
-          width: gameLogCollapsed ? 'calc(100% - 2rem)' : 'calc(100% - 320px - 2rem)'
+          width: gameLogCollapsed ? 'calc(100% - 2rem)' : 'calc(100% - 280px - 2rem)'
         }}
       >
         <div className='innerPanelStyle' aria-label="Species panel">
