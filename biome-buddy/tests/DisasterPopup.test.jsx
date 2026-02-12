@@ -3,8 +3,8 @@ import { describe, test, expect, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 // jest-dom matchers are loaded via vitest setup file
 
-import DisasterPopup from '../components/DisasterPopup/DisasterPopup'
-import { disasters } from '../data/disasters'
+import DisasterPopup from '../src/components/DisasterPopup/DisasterPopup'
+import { disasters } from '../src/data/disasters'
 
 describe('DisasterPopup', () => {
     test('shows message when disaster prop is provided', () => {

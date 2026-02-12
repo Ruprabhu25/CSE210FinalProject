@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import gameLogSystem from '../systems/GameLogSystem'
+import gameLogSystem from '../src/systems/GameLogSystem'
 
 describe('GameLogSystem', () => {
     beforeEach(() => {

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import DisasterSystem from '../systems/DisasterSystem'
-import gameLogSystem from '../systems/GameLogSystem'
+import DisasterSystem from '../src/systems/DisasterSystem'
+import gameLogSystem from '../src/systems/GameLogSystem'
 
 function makeMockContext() {
     const populations = new Map()

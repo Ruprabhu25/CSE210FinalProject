@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import GameBlank from '../src/Game.jsx'
-import { Producer, PrimaryConsumer } from '../src/lib/species'
 
 describe('GameBlank Component', () => {
 
