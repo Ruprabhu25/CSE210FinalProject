@@ -1,8 +1,13 @@
 // Popup for a single disaster; rendered only when a disaster prop is provided
 import "./disasterpopup.css";
 
-export default function DisasterPopup({ disaster, onClose }) {
+export default function DisasterPopup({ disaster, onClose, onAction }) {
   if (!disaster) return null;
+
+  const handleAction = (action) => {
+    if (onAction) onAction(action);
+    if (onClose) onClose();
+  };
 
   return (
     <div className="overlay">
@@ -28,8 +33,12 @@ export default function DisasterPopup({ disaster, onClose }) {
 
           <div className="actions">
             {disaster.actions.map((action, i) => (
-              <button key={i} className="primary">
-                {action}
+              <button
+                key={i}
+                className="primary"
+                onClick={() => handleAction(action)}
+              >
+                {action.label}
               </button>
             ))}
             <button className="secondary" onClick={onClose}>

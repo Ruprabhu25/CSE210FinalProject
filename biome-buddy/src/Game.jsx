@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Producer, PrimaryConsumer, SecondaryConsumer, TertiaryConsumer } from './lib/species'
+import { disasters } from './data/disasters' // disaster data (labels only; no effects)
+import DisasterPopup from './components/DisasterPopup/DisasterPopup' // popup UI
 import './Game.css'
 
 export default function GameBlank() {
@@ -14,6 +16,7 @@ export default function GameBlank() {
   const [growthInput, setGrowthInput] = useState(Number(speciesArr[0].growthRate).toFixed(2))
   const [currentSeason, setCurrentSeason] = useState(1) // Tracks the seasons
   const [notifications, setNotifications] = useState([]) // Simple notifications
+  const [activeDisaster, setActiveDisaster] = useState(null) // tracks a popup to show (no game effect)
 
   const icons = {
     'producer': '🌿',
@@ -64,6 +67,12 @@ export default function GameBlank() {
 
   // --- Advance season for testing  ---
   function nextSeason() {
+    // 25% chance to display a random disaster popup (no state changes)
+    if (Math.random() < 0.25) {
+      const pool = Object.values(disasters)
+      const picked = pool[Math.floor(Math.random() * pool.length)]
+      setActiveDisaster(picked)
+    }
     setCurrentSeason(prev => prev + 1)
   }
 
@@ -133,6 +142,12 @@ export default function GameBlank() {
 
         </div>
       </div>
+
+      {/* Disaster popup UI only (no numeric effects) */}
+      <DisasterPopup
+        disaster={activeDisaster}
+        onClose={() => setActiveDisaster(null)}
+      />
     </div>
   )
 }

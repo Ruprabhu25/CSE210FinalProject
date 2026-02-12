@@ -13,7 +13,10 @@ export const disasters = {
       "Extreme heat and prolonged drought ignited a wildfire.",
     impact:
       "Forest loss, wildlife displacement, and reduced air quality.",
-    actions: ["Replant Trees", "Restrict Logging"],
+    actions: [
+      { label: "Replant Trees", target: "Grass", deltaPopulation: 200 },
+      { label: "Clear Burning Brush", target: "Grass", deltaPopulation: -150 }
+    ],
     icon: wildfireIcon
   },
 
@@ -23,7 +26,10 @@ export const disasters = {
       "Heavy rainfall destabilized hillside terrain.",
     impact:
       "Severe soil erosion and blocked waterways.",
-    actions: ["Stabilize Slopes", "Restore Vegetation"],
+    actions: [
+      { label: "Stabilize Slopes", target: "Grass", deltaPopulation: 150 },
+      { label: "Leave Debris", target: "Grass", deltaPopulation: -100 }
+    ],
     icon: landslideIcon
   },
 
@@ -33,7 +39,10 @@ export const disasters = {
       "Overflowing rivers flooded the ecosystem.",
     impact:
       "Plant loss and water contamination.",
-    actions: ["Drain Excess Water", "Rebuild Wetlands"],
+    actions: [
+      { label: "Drain Away Water", target: "Grass", deltaPopulation: 140 },
+      { label: "Dig Extra Ditches", target: "Grass", deltaPopulation: -120 }
+    ],
     icon: floodIcon
   },
 
@@ -43,7 +52,10 @@ export const disasters = {
       "Extended lack of rainfall stressed the biome.",
     impact:
       "Crop failure and wildlife decline.",
-    actions: ["Conserve Water", "Introduce Hardy Plants"],
+    actions: [
+      { label: "Conserve Water", target: "Grass", deltaPopulation: 160 },
+      { label: "Truck In Water", target: "Grass", deltaPopulation: 80 }
+    ],
     icon: droughtIcon
   },
 
@@ -53,7 +65,10 @@ export const disasters = {
       "A non-native species spread rapidly.",
     impact:
       "Native species populations declined.",
-    actions: ["Remove Invasive Species", "Restore Native Species"],
+    actions: [
+      { label: "Remove Invaders", target: "Grass", deltaPopulation: 140 },
+      { label: "Contain Spread", target: "Grass", deltaPopulation: -90 }
+    ],
     icon: invasiveIcon
   }
 };
