@@ -1,4 +1,4 @@
-import {calculateEcosystemBalance} from "./ecosystemBalance";
+import {calculateEcosystemBalance} from "../src/ecosystemBalance";
 import { test, expect } from "vitest";
 
 // Tests for possible inputs 

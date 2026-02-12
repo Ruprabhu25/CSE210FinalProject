@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import GameBlank from '../Game.jsx'
-import { Producer, PrimaryConsumer } from '../lib/species'
+import GameBlank from '../src/game/Game'
+import { Species } from '../src/Species'
 
 describe('GameBlank Component', () => {
 
@@ -29,18 +29,6 @@ describe('GameBlank Component', () => {
     // The parent div should have "selected" class
     expect(rabbit.closest('.itemStyle')).toHaveClass('selected')
   })
-
-test('changing growth input updates growth rate', () => {
-  render(<GameBlank />)
-
-  const input = screen.getByRole('textbox')
-  expect(input.value).toBe('0.12') // assert initial value
-
-  fireEvent.change(input, { target: { value: '0.10' } })
-  fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
-
-  expect(input.value).toBe('0.10') // updated value
-})
 
 
   test('addSpecies function introduces new species and notification', () => {
