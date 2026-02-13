@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './home.css'
-import GameBlank from '../Game'
+import GameBlank from '../game/Game'
 import LeftPane from './LeftPane'
 import RightPane from './RightPane'
 import ConfirmModal from './ConfirmModal'
