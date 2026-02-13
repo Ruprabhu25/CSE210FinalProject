@@ -17,11 +17,10 @@ export default function GameBlank() {
   // GameEngine instance (kept in a ref so it persists across rerenders)
   const gameEngineRef = useRef(null)
   const hasLoggedInitial = useRef(false)
-  const populationsRef = useRef(new Map())
+
   // Species metadata (UI display purposes)
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(0)
-  const [notifications, setNotifications] = useState([]) // Simple notifications
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
 
   // Initialize GameEngine with species
@@ -101,7 +100,6 @@ export default function GameBlank() {
     playerSystem.chosenSpeciesName = speciesName
     engine.runRound()
     setGameContextState({ ...engine.context })
-    setNotifications([])
   }
 
   // --- Example: Introduce species as seasons progress ---
