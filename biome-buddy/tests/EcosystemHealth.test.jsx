@@ -3,7 +3,7 @@ import { test, expect } from "vitest";
 import { ProducerTrophic, PrimaryConsumerTrophic, SecondaryConsumerTrophic, TertiaryConsumerTrophic } from "../src/Trophic";
 import Population from "../src/Population";
 
-function createTestData(speciesByLevel) {
+function MockTestData(speciesByLevel) {
   const trophicLevels = [
     new ProducerTrophic(),
     new PrimaryConsumerTrophic(),
@@ -11,15 +11,13 @@ function createTestData(speciesByLevel) {
     new TertiaryConsumerTrophic()
   ];
   
-  // Set ideal ratios based on IDEAL_RATIOS config
+  // Set ideal ratios
   trophicLevels[0].idealRatio = 1000;   // Producers
   trophicLevels[1].idealRatio = 400;    // Primary Consumers
   trophicLevels[2].idealRatio = 150;    // Secondary Consumers
   trophicLevels[3].idealRatio = 80;     // Tertiary Consumers
   
   const populations = new Map();
-
-  // Reset trophic levels' speciesMaps
   trophicLevels.forEach(level => {
     level.speciesMap = {};
   });
@@ -39,9 +37,8 @@ function createTestData(speciesByLevel) {
   return { trophicLevels, populations };
 }
 
-// Tests for possible inputs 
 test("close to ideal ecosystem returns ~100% health", () => {
-  const { trophicLevels, populations } = createTestData({
+  const { trophicLevels, populations } = MockTestData({
     "Producers": [
       { population: 50, biomass: 100, energy: 10 },
       { population: 50, biomass: 100, energy: 10 }
@@ -63,7 +60,7 @@ test("close to ideal ecosystem returns ~100% health", () => {
 });
 
 test("overpopulated producers lowers health", () => {
-  const { trophicLevels, populations } = createTestData({
+  const { trophicLevels, populations } = MockTestData({
     "Producers": [
       { population: 150, biomass: 100, energy: 10 },
       { population: 150, biomass: 100, energy: 10 }
@@ -85,7 +82,7 @@ test("overpopulated producers lowers health", () => {
 });
 
 test("empty ecosystem returns zero health", () => {
-  const { trophicLevels, populations } = createTestData({
+  const { trophicLevels, populations } = MockTestData({
     "Producers": [],
     "Primary Consumers": [],
     "Secondary Consumers": [],
@@ -98,7 +95,7 @@ test("empty ecosystem returns zero health", () => {
 });
 
 test("exact ideal ratios", () => {
-  const { trophicLevels, populations } = createTestData({
+  const { trophicLevels, populations } = MockTestData({
     "Producers": [
       { population: 100, biomass: 1000, energy: 100 }
     ],
@@ -119,7 +116,7 @@ test("exact ideal ratios", () => {
 });
 
 test("producer present but none of the other levels returns 0", () => {
-  const { trophicLevels, populations } = createTestData({
+  const { trophicLevels, populations } = MockTestData({
     "Producers": [
       { population: 100, biomass: 10, energy: 10 }
     ],
@@ -134,7 +131,7 @@ test("producer present but none of the other levels returns 0", () => {
 });
 
 test("random trophic becomes 0 returns 0 health", () => {
-  const { trophicLevels, populations } = createTestData({
+  const { trophicLevels, populations } = MockTestData({
     "Producers": [
       { population: 10000, biomass: 100, energy: 10 }
     ],
@@ -155,7 +152,7 @@ test("random trophic becomes 0 returns 0 health", () => {
 });
 
 test("apex predator extinct but lower levels healthy", () => {
-  const { trophicLevels, populations } = createTestData({
+  const { trophicLevels, populations } = MockTestData({
     "Producers": [
       { population: 100, biomass: 10, energy: 10 }
     ],

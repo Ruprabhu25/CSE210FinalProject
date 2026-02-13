@@ -20,6 +20,8 @@ export function calculateRatioDeviation(actualNumerator, actualDenominator, idea
  * @returns {number} Normalized score
  */
 export function deviationToScore(deviation, tolerance = 0.2) {
-  if (deviation < tolerance) return 1;
-  return Math.max(0.1, 1 - deviation);
+  if (deviation < tolerance){
+    return 1
+  };
+  return 1 - deviation;
 }

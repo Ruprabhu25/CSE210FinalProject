@@ -1,7 +1,7 @@
 import System from "./System"
-import {calculateRatioDeviation, deviationToScore } from '../helperFunctions/healthCalculateHelperFunctions';
+import {calculateRatioDeviation, deviationToScore } from '../helperFunctions/healthCalculateHelperFunctions'
 
-MULTIPLIER_DIVISION_FACTOR = 2
+const MULTIPLIER_DIVISION_FACTOR = 4;
 class FoodChainSystem extends System {
     constructor() {
         super("FoodChainSystem")
@@ -33,39 +33,44 @@ class FoodChainSystem extends System {
             const totalPrey = this.getTotalPopulation(preySpeciesIds)
             const totalPredator = this.getTotalPopulation(predatorSpeciesIds)
 
-            if (totalPrey === 0 || totalPredator === 0) continue
+            if (totalPrey === 0 || totalPredator === 0) {
+                continue
+            }; 
             const actualRatio = totalPrey / totalPredator
             const idealRatio = preyLevel.idealRatio / predatorLevel.idealRatio
             const deviation = calculateRatioDeviation(totalPrey, totalPredator, preyLevel.idealRatio, predatorLevel.idealRatio,)
 
             // Allow 20% tolerance
             const multiplier = deviationToScore(deviation, 0.2)
+            if (multiplier == 1) {
+                continue
+            }; 
 
             // If prey are scarce relative to predators, predators decline and prey recover
             if (actualRatio < idealRatio) {
                 for (const id of predatorSpeciesIds) {
                     const pop = this.populations.get(Number(id))
-                        pop.updatePopulationByMortalityRate(1 + multiplier*MULTIPLIER_DIVISION_FACTOR)
+                        pop.updatePopulationByMortalityRate(1 + (1-multiplier)*MULTIPLIER_DIVISION_FACTOR)
                 }
                 for (const id of preySpeciesIds) {
                     const pop = this.populations.get(Number(id))
                     if (pop) {
-                        pop.updatePopulationByGrowthRate(1 + deviation)
+                        pop.updatePopulationByMortalityRate(1 + (1-multiplier)*MULTIPLIER_DIVISION_FACTOR)
                     }
                 }
             } 
             else {
-                // If prey are abundant, predators grow and prey face slightly higher mortality
+                // If prey are abundant, predators grow and prey decrease slightly
                 for (const id of predatorSpeciesIds) {
                     const pop = this.populations.get(Number(id))
                     if (pop) {
-                        pop.updatePopulationByGrowthRate(1 + deviation)
+                        pop.updatePopulationByGrowthRate(1 + deviation*MULTIPLIER_DIVISION_FACTOR)
                     }
                 }
                 for (const id of preySpeciesIds) {
                     const pop = this.populations.get(Number(id))
                     if (pop) {
-                        pop.updatePopulationByMortalityRate(1+multiplier/MULTIPLIER_DIVISION_FACTOR)
+                        pop.updatePopulationByMortalityRate(1+(1-multiplier)/MULTIPLIER_DIVISION_FACTOR)
                     }
                 }
             }
