@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import React from 'react'
 import GameEngine from '../GameEngine.jsx'
 import './Game.css'
 import GameTop from './GameTop.jsx'
@@ -21,7 +22,7 @@ export default function GameBlank() {
 
   // Species metadata (UI display purposes)
   const [speciesMetadata, setSpeciesMetadata] = useState([])
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(null)
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
 
   // Initialize GameEngine with species

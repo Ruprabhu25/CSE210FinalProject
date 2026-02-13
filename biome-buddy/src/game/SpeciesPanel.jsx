@@ -1,6 +1,8 @@
 import './SpeciesPanel.css'
+import React from 'react'
 
-export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize, onPlayerAction }) {
+
+export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize,  onPlayerAction = () => {} }) {
   return (
     <div className='outerPanelStyle'>
       <div className='innerPanelStyle' aria-label="Species panel">
@@ -27,9 +29,8 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
           
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <button onClick={() => {
-              // Always call onPlayerAction; pass undefined when no species selected
               const name = speciesArr?.[selected]?.name
-              onPlayerAction?.(name)
+              onPlayerAction?.(name) // calls only if defined; passes undefined if no species selected
             }} className='growthButtons'>Next Season</button>
             <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>
             {speciesArr?.[selected]
