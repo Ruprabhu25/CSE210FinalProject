@@ -178,7 +178,7 @@ function advanceRound() {
   }
 
   return (
-    <div className='rootStyle' onClick={() => setSelected(null)}>
+    <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
       <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} />
       <Notifications notifications={notifications} />
       <SpeciesPanel
