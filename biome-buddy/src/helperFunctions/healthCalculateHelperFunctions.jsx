@@ -23,5 +23,5 @@ export function deviationToScore(deviation, tolerance = 0.2) {
   if (deviation < tolerance){
     return 1
   };
-  return 1 - deviation;
+  return Math.max(0, 1 - deviation);
 }

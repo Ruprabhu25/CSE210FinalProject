@@ -55,7 +55,7 @@ test("close to ideal ecosystem returns ~100% health", () => {
   });
 
   const health = EcosystemHealth(trophicLevels, populations);
-  console.log("Ecosystem Health:", health);
+  
   expect(health).toBeCloseTo(1, 1);
 });
 
@@ -77,7 +77,7 @@ test("overpopulated producers lowers health", () => {
   });
 
   const health = EcosystemHealth(trophicLevels, populations);
-  console.log("Ecosystem Health:", health);
+  
   expect(health).toBeLessThan(1);
 });
 
@@ -90,7 +90,7 @@ test("empty ecosystem returns zero health", () => {
   });
 
   const health = EcosystemHealth(trophicLevels, populations);
-  console.log("Ecosystem Health:", health);
+  
   expect(health).toBeCloseTo(0, 6);
 });
 
@@ -111,7 +111,7 @@ test("exact ideal ratios", () => {
   });
 
   const health = EcosystemHealth(trophicLevels, populations);
-  console.log("Ecosystem Health:", health);
+  
   expect(health).toBeCloseTo(1);
 });
 
@@ -126,7 +126,7 @@ test("producer present but none of the other levels returns 0", () => {
   });
 
   const health = EcosystemHealth(trophicLevels, populations);
-  console.log("Ecosystem Health:", health);
+  
   expect(health).toBeCloseTo(0);
 });
 
@@ -147,7 +147,7 @@ test("random trophic becomes 0 returns 0 health", () => {
   });
 
   const health = EcosystemHealth(trophicLevels, populations);
-  console.log("Ecosystem Health:", health);
+  
   expect(health).toBe(0);
 });
 

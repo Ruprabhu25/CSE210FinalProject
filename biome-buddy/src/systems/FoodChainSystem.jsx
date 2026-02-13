@@ -42,7 +42,7 @@ class FoodChainSystem extends System {
 
             // Allow 20% tolerance
             const multiplier = deviationToScore(deviation, 0.2)
-            if (multiplier == 1) {
+            if (multiplier === 1) {
                 continue
             }; 
 
@@ -70,7 +70,7 @@ class FoodChainSystem extends System {
                 for (const id of preySpeciesIds) {
                     const pop = this.populations.get(Number(id))
                     if (pop) {
-                        pop.updatePopulationByMortalityRate(1+(1-multiplier)/MULTIPLIER_DIVISION_FACTOR)
+                        pop.updatePopulationByMortalityRate(1 - Math.max(0, multiplier/MULTIPLIER_DIVISION_FACTOR))
                     }
                 }
             }
