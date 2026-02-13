@@ -11,7 +11,6 @@ import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
 import bgFall from '../assets/forest-fa.png'
 
-//TODO: Connect next season button to PlayerActionSystem once that is merged into master branch
 
 export default function GameBlank() {
   // --- State ---
@@ -54,7 +53,6 @@ export default function GameBlank() {
 
   const engine = gameEngineRef.current
   const context = engine?.context
-  const sel = speciesMetadata[selected]
 
   const icons = {
     'Producers': '🌿',
@@ -93,8 +91,6 @@ export default function GameBlank() {
       grassPop: getPopulationSize(speciesMetadata[0]?.speciesid),
     })
     setGameContextState({ ...engine.context })
-    // Clear notifications after round completes
-    setNotifications([])
   }
 
   // --- Player action: set chosen species and run a round ---
@@ -117,13 +113,6 @@ export default function GameBlank() {
         : 'Life goes on as usual in the forest'
     })
   }
-
-  // --- Example: Introduce species as seasons progress ---
-  useEffect(() => {
-    if (!context) return
-    const currentSeason = context.determineSeason()
-    // Add logic here if needed based on season changes
-  }, [gameContextState])
 
   // --- Log season changes ---
   const currentSeason = context?.determineSeason()

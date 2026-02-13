@@ -31,7 +31,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
             <button onClick={() => {
               const name = speciesArr?.[selected]?.name
               onPlayerAction?.(name) // calls only if defined; passes undefined if no species selected
-            }} className='growthButtons'>Next Season</button>
+            }} className='growthButtons'>Next Round</button>
             <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>
             {speciesArr?.[selected]
               ? `You have selected ${speciesArr[selected].name}, their population growth rate will increase.`
