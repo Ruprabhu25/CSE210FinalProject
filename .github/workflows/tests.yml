@@ -21,6 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: biome-buddy
 
       - name: Run tests
         run: npm test
