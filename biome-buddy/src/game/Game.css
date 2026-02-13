@@ -6,7 +6,7 @@
   background-position: center;
   display: flex;
   flex-direction: column;
-  font-family: "Georgia", serif;
+  font-family: 'Irish Grover', cursive;
 }
 
 .rootStyle > aside {
