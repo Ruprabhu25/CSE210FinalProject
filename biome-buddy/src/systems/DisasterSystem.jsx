@@ -1,6 +1,6 @@
 import System from "./System"
 import { disasters } from "../data/disasters"
-import { calculateEcosystemBalance } from "../ecosystemBalance"
+import { calculateEcosystemHealth } from "../GameContext"
 import gameLogSystem from "./GameLogSystem"
 
 class DisasterSystem extends System {

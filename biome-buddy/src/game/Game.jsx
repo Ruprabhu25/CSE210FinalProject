@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Species } from '../Species.jsx'
 import Population from '../Population.jsx'
 import './Game.css'
