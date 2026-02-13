@@ -1,7 +1,8 @@
-import React from 'react'
 import './SpeciesPanel.css'
+import React from 'react'
 
-export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, growthInput, changeGrowth, updateGrowthForSelected, setGrowthInput, nextSeason, populations }) {
+
+export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize,  onPlayerAction = () => {} }) {
   return (
     <div className='outerPanelStyle'>
       <div className='innerPanelStyle' aria-label="Species panel">
@@ -16,7 +17,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
               <div className="iconStyle">{icons[s.trophic] || '🐾'}</div>
               <div>
                 <div className="speciesName">{s.name}</div>
-                <div className="speciesPop">{Math.round(populations?.get(s.name)?.getCurrentSize() ?? s.population ?? 0)}</div>
+                <div className="speciesPop">{Math.round(getPopulationSize?.(s.speciesid) ?? 0)}</div>
               </div>
             </div>
           ))}
@@ -25,22 +26,17 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
         {/* Controls */}
         <div style={{ height: 8 }} />
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>Growth rate</div>
+          
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <button onClick={() => changeGrowth(-0.05)} className='growthButtons'>-</button>
-            <input
-              type="text"
-              value={growthInput}
-              onChange={(e) => setGrowthInput(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') updateGrowthForSelected(parseFloat(growthInput) || 0) }}
-              style={{ width: 84, padding: '6px 8px', borderRadius: 8, border: '1px solid #ccc' }}
-            />
-            <button onClick={() => changeGrowth(0.05)} style={{ padding: '6px 8px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>+</button>
-            <button onClick={() => updateGrowthForSelected(parseFloat(growthInput) || 0)} className='growthButtons'>Enter</button>
-
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 16 }}>
-              <button onClick={nextSeason} className='growthButtons'>Next Season</button>
-            </div>
+            <button onClick={() => {
+              const name = speciesArr?.[selected]?.name
+              onPlayerAction?.(name) // calls only if defined; passes undefined if no species selected
+            }} className='growthButtons'>Next Round</button>
+            <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>
+            {speciesArr?.[selected]
+              ? `You have selected ${speciesArr[selected].name}, their population growth rate will increase.`
+              : 'You have not selected a species, the population growth rate will stay as is.'}
+          </div>
           </div>
         </div>
 

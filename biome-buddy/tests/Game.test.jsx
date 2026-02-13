@@ -1,77 +1,110 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, test, beforeEach, expect, vi } from 'vitest'
 import GameBlank from '../src/game/Game'
+import SpeciesPanel from '../src/game/SpeciesPanel'
+import GameTop from '../src/game/GameTop'
 import gameLogSystem from '../src/components/GameLog/GameLogSystem'
 
-describe('GameBlank Component', () => {
+describe('Game integration and components', () => {
 
-  beforeEach(() => {
-    // Clear the game log before each test to prevent duplicates
-    gameLogSystem.clear()
-  })
+	beforeEach(() => {
+		// ensure game log is clean between tests
+		gameLogSystem.clear()
+	})
 
-  test('renders top HUD and initial species', () => {
-    render(<GameBlank />)
+	test('GameTop shows health text and season badge', () => {
+		render(<GameTop currentSeason={'Spring'} />)
+		expect(screen.getByText(/EcoSystem Health/i)).toBeInTheDocument()
+		expect(screen.getByText('Spring')).toBeInTheDocument()
+	})
 
-    // Check ecosystem health
-    expect(screen.getByText(/EcoSystem Health/i)).toBeInTheDocument()
+	test('SpeciesPanel renders species and Next Round behavior (no selection)', () => {
+		const mockOnPlayer = vi.fn()
+		const speciesArr = [
+			{ name: 'Grass', speciesid: 1, trophic: 'Producers' },
+			{ name: 'Rabbit', speciesid: 4, trophic: 'Primary Consumers' }
+		]
 
-    // Check initial season - now appears in both badge and game log
-    const seasonElements = screen.getAllByText(/Season 1/i)
-    expect(seasonElements.length).toBeGreaterThanOrEqual(1)
+		render(
+			<SpeciesPanel
+				speciesArr={speciesArr}
+				selected={null}
+				setSelected={() => {}}
+				icons={{ 'Primary Consumers': '🐇', 'Producers': '🌿' }}
+				nextSeason={() => {}}
+				onPlayerAction={mockOnPlayer}
+				getPopulationSize={() => 0}
+			/>
+		)
 
-    // Check species names
-    expect(screen.getByText('Grass')).toBeInTheDocument()
-    expect(screen.getByText('Rabbit')).toBeInTheDocument()
-    expect(screen.getByText('Fox')).toBeInTheDocument()
-    expect(screen.getByText('Hawk')).toBeInTheDocument()
-  })
+		// both species names should render
+		expect(screen.getByText('Grass')).toBeInTheDocument()
+		expect(screen.getByText('Rabbit')).toBeInTheDocument()
 
-  test('selecting a species updates selection', () => {
-    render(<GameBlank />)
+		// message should indicate no selection
+		expect(screen.getByText(/You have not selected a species/i)).toBeInTheDocument()
 
-    const rabbit = screen.getByText('Rabbit')
-    fireEvent.click(rabbit)
+		// Next Round should call onPlayerAction with undefined
+		fireEvent.click(screen.getByText(/Next Round/i))
+		expect(mockOnPlayer).toHaveBeenCalledWith(undefined)
+	})
 
-    // The parent div should have "selected" class
-    expect(rabbit.closest('.itemStyle')).toHaveClass('selected')
-  })
+	test('SpeciesPanel passes selected species name to onPlayerAction', () => {
+		const mockOnPlayer = vi.fn()
+		const speciesArr = [
+			{ name: 'Grass', speciesid: 1, trophic: 'Producers' },
+			{ name: 'Rabbit', speciesid: 4, trophic: 'Primary Consumers' }
+		]
 
+		render(
+			<SpeciesPanel
+				speciesArr={speciesArr}
+				selected={1}
+				setSelected={() => {}}
+				icons={{ 'Primary Consumers': '🐇', 'Producers': '🌿' }}
+				nextSeason={() => {}}
+				onPlayerAction={mockOnPlayer}
+				getPopulationSize={() => 0}
+			/>
+		)
 
-  test('addSpecies function introduces new species and notification', () => {
-    render(<GameBlank />)
+		fireEvent.click(screen.getByText(/Next Round/i))
+		expect(mockOnPlayer).toHaveBeenCalledWith('Rabbit')
+	})
 
-    // Click next season until new species added (Berry Bush at season 3)
-    const nextSeasonBtn = screen.getByText(/Next Season/i)
-    fireEvent.click(nextSeasonBtn) // Season 2
-    fireEvent.click(nextSeasonBtn) // Season 3 -> triggers Berry Bush
+	test('GameBlank renders initial UI and species list', () => {
+		render(<GameBlank />)
 
-    // New species should appear
-    expect(screen.getByText('Berry Bush')).toBeInTheDocument()
+		expect(screen.getByText(/EcoSystem Health/i)).toBeInTheDocument()
+		// season badge or initial game log entry should include Season or Year
+		const seasonEls = screen.getAllByText(/Season 1|Year 1/i)
+		expect(seasonEls.length).toBeGreaterThanOrEqual(1)
 
-    // Notification should appear in both notification area and game log
-    const messages = screen.getAllByText(/New species introduced: Berry Bush!/i)
-    expect(messages.length).toBeGreaterThanOrEqual(1)
-  })
+		// initial species are present
+		expect(screen.getByText('Grass')).toBeInTheDocument()
+		expect(screen.getByText('Rabbit')).toBeInTheDocument()
+		expect(screen.getByText('Fox')).toBeInTheDocument()
+		expect(screen.getByText('Hawk')).toBeInTheDocument()
+	})
 
-  test('multiple season changes introduce multiple species', () => {
-    render(<GameBlank />)
+	test('GameBlank Next Round logs messages with and without selection', () => {
+		render(<GameBlank />)
 
-    const nextSeasonBtn = screen.getByText(/Next Season/i)
+		const nextBtn = screen.getByText(/Next Round/i)
 
-    // Advance to season 5
-    for (let i = 0; i < 5; i++) fireEvent.click(nextSeasonBtn)
+		// no selection -> life goes on message
+		fireEvent.click(nextBtn)
+		const entriesA = gameLogSystem.getEntries()
+		expect(entriesA.length).toBeGreaterThanOrEqual(1)
+		expect(entriesA[0].message).toMatch(/Life goes on as usual in the forest/i)
 
-    expect(screen.getByText('Berry Bush')).toBeInTheDocument()
-    expect(screen.getByText('Deer')).toBeInTheDocument()
-
-    // Messages appear in both notification area and game log
-    const berryMessages = screen.getAllByText(/New species introduced: Berry Bush!/i)
-    expect(berryMessages.length).toBeGreaterThanOrEqual(1)
-
-    const deerMessages = screen.getAllByText(/New species introduced: Deer!/i)
-    expect(deerMessages.length).toBeGreaterThanOrEqual(1)
-  })
+		// select Rabbit and advance -> should log Rabbit growth
+		const rabbit = screen.getByText('Rabbit')
+		fireEvent.click(rabbit)
+		fireEvent.click(nextBtn)
+		const entriesB = gameLogSystem.getEntries()
+		expect(entriesB[0].message).toMatch(/Rabbit population is growing faster than usual/i)
+	})
 
 })
-

@@ -11,7 +11,7 @@ class PlayerActionSystem extends System {
         if (this.chosenSpeciesName != "") {
             const population = context.populations.get(this.chosenSpeciesName)
             if (population == null) throw new Error(`Population with species name ${this.chosenSpeciesName} not found in GameContext populations.`)
-            population.applyGrowthRateMultiplier(GROWTH_RATE_MULTIPLIER) 
+            population.updatePopulationByGrowthRate(GROWTH_RATE_MULTIPLIER) 
         }
         this.chosenSpeciesName = "" // Reset the choice after applying the system
     }

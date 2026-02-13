@@ -6,7 +6,21 @@
   background-position: center;
   display: flex;
   flex-direction: column;
-  font-family: "Georgia", serif;
+  font-family: 'Irish Grover', cursive;
+}
+
+.rootStyle > aside {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.rootStyle > aside {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .rootStyle > aside {
