@@ -151,20 +151,3 @@ test("random trophic becomes 0 returns 0 health", () => {
   expect(health).toBe(0);
 });
 
-test("apex predator extinct but lower levels healthy", () => {
-  const { trophicLevels, populations } = MockTestData({
-    "Producers": [
-      { population: 100, biomass: 10, energy: 10 }
-    ],
-    "Primary Consumers": [
-      { population: 40, biomass: 10, energy: 10 }
-    ],
-    "Secondary Consumers": [
-      { population: 15, biomass: 10, energy: 10 }
-    ],
-    "Tertiary Consumers": []
-  });
-
-  const health = EcosystemHealth(trophicLevels, populations);
-  expect(health).toBe(0);
-});

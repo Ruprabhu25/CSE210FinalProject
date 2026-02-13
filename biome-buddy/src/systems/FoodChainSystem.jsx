@@ -50,7 +50,9 @@ class FoodChainSystem extends System {
             if (actualRatio < idealRatio) {
                 for (const id of predatorSpeciesIds) {
                     const pop = this.populations.get(Number(id))
+                    if (pop) {
                         pop.updatePopulationByMortalityRate(1 + (1-multiplier)*MULTIPLIER_DIVISION_FACTOR)
+                    }
                 }
                 for (const id of preySpeciesIds) {
                     const pop = this.populations.get(Number(id))

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import FoodChainSystem from '../src/systems/FoodChainSystem';
-import Population from '../src/Population';
+import {Population} from '../src/Population';
 import { ProducerTrophic, PrimaryConsumerTrophic, SecondaryConsumerTrophic, TertiaryConsumerTrophic } from '../src/Trophic';
 
 function MockTestData({producers, primary, secondary, tertiary}, ) {
