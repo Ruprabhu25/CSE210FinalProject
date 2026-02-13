@@ -27,11 +27,9 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
           
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <button onClick={() => {
-              if (speciesArr[selected]) {
-                onPlayerAction?.(speciesArr[selected].name)
-              } else {
-                nextSeason?.()
-              }
+              // Always call onPlayerAction; pass undefined when no species selected
+              const name = speciesArr?.[selected]?.name
+              onPlayerAction?.(name)
             }} className='growthButtons'>Next Season</button>
             <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>
             {speciesArr?.[selected]

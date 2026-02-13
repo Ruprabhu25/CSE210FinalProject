@@ -17,6 +17,7 @@ export default function GameBlank() {
   // GameEngine instance (kept in a ref so it persists across rerenders)
   const gameEngineRef = useRef(null)
   const hasLoggedInitial = useRef(false)
+  const lastLoggedSeason = useRef(null)
 
   // Species metadata (UI display purposes)
   const [speciesMetadata, setSpeciesMetadata] = useState([])
@@ -38,7 +39,10 @@ export default function GameBlank() {
     for (const species of speciesArray) {
       const pop = engine.context.populations.get(species.name)
       if (pop) {
+        // keep lookup by numeric speciesid for UI helpers
         populationsBySpeciesId.set(species.speciesid, pop)
+        // also keep lookup by species name so systems that expect name-keyed maps still work
+        populationsBySpeciesId.set(species.name, pop)
       }
     }
     engine.context.populations = populationsBySpeciesId
@@ -56,20 +60,20 @@ export default function GameBlank() {
     'Primary Consumers': '🐇',
     'Secondary Consumers': '🦊',
     'Tertiary Consumers': '🦅',
-    'Producers': '🌿',
-    'Primary Consumers': '🐇',
-    'Secondary Consumers': '🦊',
-    'Tertiary Consumers': '🦅',
   }
 
   // --- Log initial game start ---
   useEffect(() => {
     if (!hasLoggedInitial.current) {
       hasLoggedInitial.current = true
-      gameLogSystem.addEntry({
-        season: 'Season 1',
-        message: 'Game started - Welcome to Biome Buddy!'
-      })
+      // Avoid duplicate startup entries (can happen in Strict Mode / hot reload)
+      const already = gameLogSystem.getEntries().some(e => e.message === 'Game started - Welcome to Biome Buddy!')
+      if (!already) {
+        gameLogSystem.addEntry({
+          season: 'Year 1',
+          message: 'Game started - Welcome to Biome Buddy!'
+        })
+      }
     }
   }, [])
 
@@ -104,10 +108,12 @@ export default function GameBlank() {
     playerSystem.chosenSpeciesName = speciesName
     engine.runRound()
     setGameContextState({ ...engine.context })
-
+    const currentSeason = context?.determineSeason()
     gameLogSystem.addEntry({
-      season: `Season ${currentSeason}`,
-      message: `New species introduced: ${species.name}!`
+      season: currentSeason,
+      message: speciesName
+        ? `${speciesName} population is growing faster than usual`
+        : 'Life goes on as usual in the forest'
     })
   }
 
@@ -117,6 +123,21 @@ export default function GameBlank() {
     const currentSeason = context.determineSeason()
     // Add logic here if needed based on season changes
   }, [gameContextState])
+
+  // --- Log season changes ---
+  const currentSeason = context?.determineSeason()
+  useEffect(() => {
+    if (!currentSeason) return
+    // If we have a previous value and it differs, log the change
+    if (lastLoggedSeason.current && lastLoggedSeason.current !== currentSeason) {
+      gameLogSystem.addEntry({
+        season: currentSeason,
+        message: `Season changed to ${currentSeason}`
+      })
+    }
+    // Update the ref for future comparisons
+    lastLoggedSeason.current = currentSeason
+  }, [currentSeason])
 
   if (!engine || !context) {
     return <div>Loading game...</div>
@@ -143,13 +164,7 @@ export default function GameBlank() {
     backgroundPosition: 'center',
   }
 
-    // --- Log season changes ---
-  useEffect(() => {
-    if (currentSeason > 1 && lastLoggedSeason.current < currentSeason) {
-      lastLoggedSeason.current = currentSeason
-      
-    }
-  }, [currentSeason])
+  
 
   return (
     <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
