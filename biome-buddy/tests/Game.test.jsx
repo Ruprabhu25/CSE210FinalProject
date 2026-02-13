@@ -19,7 +19,7 @@ describe('Game integration and components', () => {
 		expect(screen.getByText('Spring')).toBeInTheDocument()
 	})
 
-	test('SpeciesPanel renders species and Next Season behavior (no selection)', () => {
+	test('SpeciesPanel renders species and Next Round behavior (no selection)', () => {
 		const mockOnPlayer = vi.fn()
 		const speciesArr = [
 			{ name: 'Grass', speciesid: 1, trophic: 'Producers' },
@@ -45,8 +45,8 @@ describe('Game integration and components', () => {
 		// message should indicate no selection
 		expect(screen.getByText(/You have not selected a species/i)).toBeInTheDocument()
 
-		// Next Season should call onPlayerAction with undefined
-		fireEvent.click(screen.getByText(/Next Season/i))
+		// Next Round should call onPlayerAction with undefined
+		fireEvent.click(screen.getByText(/Next Round/i))
 		expect(mockOnPlayer).toHaveBeenCalledWith(undefined)
 	})
 
@@ -69,7 +69,7 @@ describe('Game integration and components', () => {
 			/>
 		)
 
-		fireEvent.click(screen.getByText(/Next Season/i))
+		fireEvent.click(screen.getByText(/Next Round/i))
 		expect(mockOnPlayer).toHaveBeenCalledWith('Rabbit')
 	})
 
@@ -88,10 +88,10 @@ describe('Game integration and components', () => {
 		expect(screen.getByText('Hawk')).toBeInTheDocument()
 	})
 
-	test('GameBlank Next Season logs messages with and without selection', () => {
+	test('GameBlank Next Round logs messages with and without selection', () => {
 		render(<GameBlank />)
 
-		const nextBtn = screen.getByText(/Next Season/i)
+		const nextBtn = screen.getByText(/Next Round/i)
 
 		// no selection -> life goes on message
 		fireEvent.click(nextBtn)
