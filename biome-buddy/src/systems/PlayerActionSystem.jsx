@@ -1,3 +1,4 @@
+import System from "./System"
 const GROWTH_RATE_MULTIPLIER = 2 
 
 class PlayerActionSystem extends System {

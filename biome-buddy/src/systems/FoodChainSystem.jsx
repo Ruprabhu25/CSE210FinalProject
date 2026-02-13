@@ -1,3 +1,5 @@
+import System from "./System"
+
 class FoodChainSystem extends System {
     constructor() {
         super("FoodChainSystem")
