@@ -7,8 +7,11 @@ import Notifications from './Notifications.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
+import DisasterPopup from '../components/disasterpopup/DisasterPopup.jsx'
 import GameContext from '../GameContext.jsx'
 import { ProducerTrophic, PrimaryConsumerTrophic, SecondaryConsumerTrophic, TertiaryConsumerTrophic } from '../Trophic.jsx'
+import { disasters } from '../data/disasters.js'
+import { applyDisasterActionToSpecies } from '../systems/DisasterSystem.jsx'
 
 export default function GameBlank() {
   // --- State ---
@@ -29,6 +32,7 @@ export default function GameBlank() {
   const [growthInput, setGrowthInput] = useState(Number(speciesArr[0]?.growthRate ?? 0).toFixed(2))
   const [currentSeason, setCurrentSeason] = useState(1) // Tracks the seasons
   const [notifications, setNotifications] = useState([]) // Simple notifications
+  const [currentDisaster, setCurrentDisaster] = useState(null) // Current disaster shown in popup
 
   const icons = {
     'Producers': '🌿',
@@ -123,7 +127,39 @@ export default function GameBlank() {
 
   // --- Advance season for testing  ---
   function nextSeason() {
-    setCurrentSeason(prev => prev + 1)
+    const newSeason = currentSeason + 1
+    setCurrentSeason(newSeason)
+
+    // Keep existing season-advance event behavior.
+    gameLogSystem.addEntry({
+      season: `Season ${newSeason}`,
+      message: 'Advanced to next season',
+    })
+
+    // 40% chance to generate a random disaster.
+    if (Math.random() < 0.4) {
+      const disasterKeys = Object.keys(disasters)
+      const randomKey = disasterKeys[Math.floor(Math.random() * disasterKeys.length)]
+      const disaster = disasters[randomKey]
+      setCurrentDisaster(disaster)
+
+      gameLogSystem.addEntry({
+        season: `Season ${newSeason}`,
+        name: disaster.title,
+        message: `${disaster.title}: ${disaster.description}`,
+      })
+    }
+  }
+
+  function handleDisasterAction(action) {
+    if (!action) {
+      setCurrentDisaster(null)
+      return
+    }
+
+    const updated = applyDisasterActionToSpecies(speciesArr, action, populationsRef)
+    if (updated) setSpeciesArr([...speciesArr])
+    setCurrentDisaster(null)
   }
 
   return (
@@ -143,6 +179,7 @@ export default function GameBlank() {
         nextSeason={nextSeason}
       />
       <GameLog />
+      <DisasterPopup disaster={currentDisaster} onAction={handleDisasterAction} />
     </div>
   )
 }

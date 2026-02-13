@@ -13,7 +13,18 @@ export const disasters = {
       "Extreme heat and prolonged drought ignited a wildfire.",
     impact:
       "Forest loss, wildlife displacement, and reduced air quality.",
-    actions: ["Replant Trees", "Restrict Logging"],
+    actions: [
+      {
+        label: "Replant Trees",
+        target: "Grass",
+        deltaPopulation: 200
+      },
+      {
+        label: "Protect Nesting Zones",
+        target: "Hawk",
+        deltaPopulation: 2
+      }
+    ],
     icon: wildfireIcon
   },
 
@@ -23,7 +34,18 @@ export const disasters = {
       "Heavy rainfall destabilized hillside terrain.",
     impact:
       "Severe soil erosion and blocked waterways.",
-    actions: ["Stabilize Slopes", "Restore Vegetation"],
+    actions: [
+      {
+        label: "Stabilize Slopes",
+        target: "Rabbit",
+        deltaPopulation: 30
+      },
+      {
+        label: "Save Cliff Fox Nests",
+        target: "Fox",
+        deltaPopulation: 5
+      }
+    ],
     icon: landslideIcon
   },
 
@@ -33,7 +55,18 @@ export const disasters = {
       "Overflowing rivers flooded the ecosystem.",
     impact:
       "Plant loss and water contamination.",
-    actions: ["Drain Excess Water", "Rebuild Wetlands"],
+    actions: [
+      {
+        label: "Build Safe Burrows",
+        target: "Rabbit",
+        deltaPopulation: 45
+      },
+      {
+        label: "Divert Flooding",
+        target: "Grass",
+        deltaPopulation: -180
+      }
+    ],
     icon: floodIcon
   },
 
@@ -43,7 +76,18 @@ export const disasters = {
       "Extended lack of rainfall stressed the biome.",
     impact:
       "Crop failure and wildlife decline.",
-    actions: ["Conserve Water", "Introduce Hardy Plants"],
+    actions: [
+      {
+        label: "Conserve Water",
+        target: "Fox",
+        deltaPopulation: 4
+      },
+      {
+        label: "Protect Watering Holes",
+        target: "Rabbit",
+        deltaPopulation: 25
+      }
+    ],
     icon: droughtIcon
   },
 
@@ -53,7 +97,18 @@ export const disasters = {
       "A non-native species spread rapidly.",
     impact:
       "Native species populations declined.",
-    actions: ["Remove Invasive Species", "Restore Native Species"],
+    actions: [
+      {
+        label: "Remove Invaders",
+        target: "Grass",
+        deltaPopulation: -40
+      },
+      {
+        label: "Allow Spread",
+        target: "Hawk",
+        deltaPopulation: 1
+      }
+    ],
     icon: invasiveIcon
   }
 };

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DisasterPopup from "./DisasterPopup";
 import { disasters } from "../../data/disasters";
-import gameLogSystem from "../../systems/GameLogSystem";
+import gameLogSystem from "../GameLog/GameLogSystem";
 
 export default function DisasterDemo() {
   const [active, setActive] = useState(null);
@@ -28,7 +28,7 @@ export default function DisasterDemo() {
 
       <DisasterPopup
         disaster={active}
-        onClose={() => setActive(null)}
+        onAction={() => setActive(null)}
       />
     </>
   );
