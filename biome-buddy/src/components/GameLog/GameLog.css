@@ -1,0 +1,98 @@
+/* Game log styles */
+.game-log {
+    width: 16.25rem; /* 260px → 16.25rem */
+    position: relative;
+    background: #F5F5DC;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem; /* 8px → 0.5rem */
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15); /* 0 4px 12px → 0 0.25rem 0.75rem */
+    height: 85vh;
+    z-index: 40;
+}
+
+/* collapsed state: slide mostly off screen to the right leaving a small tab */
+.game-log.collapsed {
+    transform: translateX(calc(100% - 0.625rem)); /* 10px → 0.625rem */
+    transition: transform 250ms ease-in-out;
+}
+
+.game-log {
+    transition: transform 250ms ease-in-out;
+}
+
+.game-log-header {
+    font-family: 'Irish Grover', cursive;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.game-log-tab {
+    position: absolute;
+    left: -2.5rem; /* 40px → 2.5rem */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.25rem; /* 36px → 2.25rem */
+    height: 4.5rem; /* 72px → 4.5rem */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F5F5DC;
+    border: none;
+    border-radius: 0.375rem 0 0 0.375rem; /* 6px → 0.375rem */
+    cursor: pointer;
+    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.08); /* 0 4px 10px → 0 0.25rem 0.625rem */
+}
+
+.game-log-tab .tab-arrow {
+    font-size: 1.125rem; /* 18px → 1.125rem */
+    color: #000;
+
+    /* remove default focus outline/ring for the tab (keeps behavior accessible via other cues if needed) */
+    .game-log-tab:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .game-log-tab::-moz-focus-inner {
+        border: 0;
+    }
+}
+
+.game-log-list {
+    overflow: auto;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+    flex: 1 1 auto;
+}
+
+.game-log-entry {
+    background: rgba(0, 0, 0, 0.04);
+    padding: 0.5rem;
+    border-radius: 0.25rem; /* 4px → 0.25rem */
+    font-size: 0.9rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.game-log-entry-season {
+    min-width: 5.375rem; /* 86px → 5.375rem */
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.game-log-entry-message {
+    flex: 1 1 auto;
+}
+
+.game-log-empty {
+    color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    padding: 1rem 0;
+}

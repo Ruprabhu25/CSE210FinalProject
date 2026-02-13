@@ -23,7 +23,7 @@ class GameContext {
     }
     
     determineSeason() {
-        const seasons = ["Spring", "Summer", "Fall", "Winter"] 
+        const seasons = ["Spring", "Summer", "Fall", "Winter"]
         // season should last for a certain number of rounds
         const currentSeasonIndex = Math.floor((this.roundNumber - 1) / this.numRoundsInSeason) % seasons.length
         return seasons[currentSeasonIndex]
