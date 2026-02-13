@@ -24,5 +24,3 @@ export class Population {
         }
     }
 }
-
-export default Population

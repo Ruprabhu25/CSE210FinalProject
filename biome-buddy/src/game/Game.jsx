@@ -56,6 +56,10 @@ export default function GameBlank() {
     'Primary Consumers': '🐇',
     'Secondary Consumers': '🦊',
     'Tertiary Consumers': '🦅',
+    'Producers': '🌿',
+    'Primary Consumers': '🐇',
+    'Secondary Consumers': '🦊',
+    'Tertiary Consumers': '🦅',
   }
 
   // --- Log initial game start ---
@@ -100,6 +104,11 @@ export default function GameBlank() {
     playerSystem.chosenSpeciesName = speciesName
     engine.runRound()
     setGameContextState({ ...engine.context })
+
+    gameLogSystem.addEntry({
+      season: `Season ${currentSeason}`,
+      message: `New species introduced: ${species.name}!`
+    })
   }
 
   // --- Example: Introduce species as seasons progress ---
@@ -133,6 +142,14 @@ export default function GameBlank() {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   }
+
+    // --- Log season changes ---
+  useEffect(() => {
+    if (currentSeason > 1 && lastLoggedSeason.current < currentSeason) {
+      lastLoggedSeason.current = currentSeason
+      
+    }
+  }, [currentSeason])
 
   return (
     <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
