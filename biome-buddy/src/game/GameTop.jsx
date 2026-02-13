@@ -8,7 +8,7 @@ export default function GameTop({ currentSeason }) {
         <div className="healthFill" />
         <div className="healthText">EcoSystem Health: 70%</div>
       </div>
-      <div className="seasonBadge">Season {currentSeason}</div>
+      <div className="seasonBadge"> {currentSeason}</div>
     </div>
   )
 }

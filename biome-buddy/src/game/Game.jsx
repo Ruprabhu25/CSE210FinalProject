@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Species } from '../Species.jsx'
 import Population from '../Population.jsx'
+import GameEngine from '../GameEngine.jsx'
 import './Game.css'
 import GameTop from './GameTop.jsx'
 import Notifications from './Notifications.jsx'
@@ -8,48 +9,74 @@ import SpeciesPanel from './SpeciesPanel.jsx'
 
 export default function GameBlank() {
   // --- State ---
-  // Map of speciesId -> Population instance (kept in a ref so updates don't force rerenders)
-  const populationsRef = useRef(new Map())
+  // GameEngine instance (kept in a ref so it persists across rerenders)
+  const gameEngineRef = useRef(null)
+  // Species metadata (UI display purposes)
+  const [speciesMetadata, setSpeciesMetadata] = useState([])
+  const [selected, setSelected] = useState(0)
+  const [growthInput, setGrowthInput] = useState('0.00')
+  const [notifications, setNotifications] = useState([]) // Simple notifications
+  const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
 
-  // create species instances and register populations in the map
-  const initialSpecies = (() => {
+  // Initialize GameEngine with species
+  useEffect(() => {
+    if (gameEngineRef.current) return // Already initialized
+
+    const engine = new GameEngine()
+
+    // Create species metadata
     const grass = new Species('Grass', 1, 0.05)
     grass.growthRate = 0.2
     grass.trophic = 'producer'
 
-    const grassPop = new Population(grass.speciesid, 1000, grass.growthRate, 0.02)
-    populationsRef.current.set(grass.speciesid, grassPop)
-    Object.defineProperty(grass, 'population', { get: () => populationsRef.current.get(grass.speciesid).getCurrentSize() })
-
     const rabbit = new Species('Rabbit', 4, 0.5)
     rabbit.growthRate = 0.12
     rabbit.trophic = 'primary-consumer'
-    const rabbitPop = new Population(rabbit.speciesid, 250, rabbit.growthRate, 0.05)
-    populationsRef.current.set(rabbit.speciesid, rabbitPop)
-    Object.defineProperty(rabbit, 'population', { get: () => populationsRef.current.get(rabbit.speciesid).getCurrentSize() })
 
     const fox = new Species('Fox', 20, 5)
     fox.growthRate = 0.06
     fox.trophic = 'secondary-consumer'
-    const foxPop = new Population(fox.speciesid, 40, fox.growthRate, 0.07)
-    populationsRef.current.set(fox.speciesid, foxPop)
-    Object.defineProperty(fox, 'population', { get: () => populationsRef.current.get(fox.speciesid).getCurrentSize() })
 
     const hawk = new Species('Hawk', 45, 6)
     hawk.growthRate = 0.03
     hawk.trophic = 'tertiary-consumer'
-    const hawkPop = new Population(hawk.speciesid, 12, hawk.growthRate, 0.08)
-    populationsRef.current.set(hawk.speciesid, hawkPop)
-    Object.defineProperty(hawk, 'population', { get: () => populationsRef.current.get(hawk.speciesid).getCurrentSize() })
 
-    return [grass, rabbit, fox, hawk]
-  })()
+    const speciesArray = [grass, rabbit, fox, hawk]
+    setSpeciesMetadata(speciesArray)
 
-  const [speciesArr, setSpeciesArr] = useState(initialSpecies)
-  const [selected, setSelected] = useState(0)
-  const [growthInput, setGrowthInput] = useState(Number(speciesArr[0]?.growthRate ?? 0).toFixed(2))
-  const [currentSeason, setCurrentSeason] = useState(1) // Tracks the seasons
-  const [notifications, setNotifications] = useState([]) // Simple notifications
+    // Initialize GameContext with species and populations
+    engine.context.populations.clear()
+    speciesArray.forEach(species => {
+      let initialSize = 50
+      let initialGrowthRate = species.growthRate || 0.1
+      let initialMortalityRate = 0.05
+
+      if (species.name === 'Grass') {
+        initialSize = 1000
+        initialMortalityRate = 0.02
+      } else if (species.name === 'Rabbit') {
+        initialSize = 250
+        initialMortalityRate = 0.05
+      } else if (species.name === 'Fox') {
+        initialSize = 40
+        initialMortalityRate = 0.07
+      } else if (species.name === 'Hawk') {
+        initialSize = 12
+        initialMortalityRate = 0.08
+      }
+
+      const pop = new Population(species.speciesid, initialSize, initialGrowthRate, initialMortalityRate)
+      engine.context.populations.set(species.speciesid, pop)
+    })
+
+    gameEngineRef.current = engine
+    setGameContextState({ ...engine.context })
+    setGrowthInput(Number(speciesArray[0].growthRate).toFixed(2))
+  }, [])
+
+  const engine = gameEngineRef.current
+  const context = engine?.context
+  const sel = speciesMetadata[selected]
 
   const icons = {
     'producer': '🌿',
@@ -58,23 +85,19 @@ export default function GameBlank() {
     'tertiary-consumer': '🦅',
   }
 
-  const sel = speciesArr[selected]
-
   // --- Sync growth input when selection changes ---
   useEffect(() => {
     if (sel) setGrowthInput(Number(sel.growthRate ?? 0).toFixed(2))
-  }, [selected, speciesArr])
+  }, [selected, speciesMetadata])
 
   // --- Update growth rate for selected species ---
   function updateGrowthForSelected(newRate) {
-    if (!sel) return
+    if (!sel || !context) return
     const r = Math.round((Number(newRate) || 0) * 100) / 100
-    // Species no longer exposes setGrowthRate — keep growthRate on the instance
     sel.growthRate = r
-    // also update the registered Population's baseGrowthRate so population updates follow the new rate
-    const pop = populationsRef.current.get(sel.speciesid)
+    // Update the Population's baseGrowthRate in GameContext
+    const pop = context.populations.get(sel.speciesid)
     if (pop) pop.baseGrowthRate = r
-    setSpeciesArr((prev) => [...prev])
     setGrowthInput(Number(r).toFixed(2))
   }
 
@@ -86,44 +109,61 @@ export default function GameBlank() {
 
   // --- Add new species dynamically ---
   function addSpecies(species) {
+    if (!context) return
     // ensure minimal properties exist on the added species
     if (species && typeof species === 'object') {
       if (typeof species.growthRate === 'undefined') species.growthRate = 0.1
       if (typeof species.trophic === 'undefined') species.trophic = 'producer'
-      // attach a Population instance for the new species in the populations map
-      if (!populationsRef.current.has(species.speciesid)) {
+      // attach a Population instance in GameContext
+      if (!context.populations.has(species.speciesid)) {
         const pop = new Population(species.speciesid ?? Math.floor(Math.random() * 100000), 50, species.growthRate, 0.05)
-        populationsRef.current.set(species.speciesid, pop)
-        Object.defineProperty(species, 'population', { get: () => populationsRef.current.get(species.speciesid).getCurrentSize() })
+        context.populations.set(species.speciesid, pop)
       }
     }
-    setSpeciesArr(prev => [...prev, species])
+    setSpeciesMetadata(prev => [...prev, species])
     setNotifications(prev => [...prev, `New species introduced: ${species.name}!`])
   }
 
+  // --- Advance round (triggers game simulation) ---
+function advanceRound() {
+  if (!engine) return
+  console.log('Before round:', {
+    round: engine.context.roundNumber,
+    grassPop: getPopulationSize(speciesMetadata[0]?.speciesid),
+  })
+  engine.runRound()
+  console.log('After round:', {
+    round: engine.context.roundNumber,
+    grassPop: getPopulationSize(speciesMetadata[0]?.speciesid),
+  })
+  setGameContextState({ ...engine.context })
+  // Clear notifications after round completes
+  setNotifications([])
+}
+
   // --- Example: Introduce species as seasons progress ---
   useEffect(() => {
-    if (currentSeason === 3) {
-      const newPlant = new Species('Berry Bush', 2, 0.08)
-      addSpecies(newPlant)
-    }
-    if (currentSeason === 5) {
-      const newHerbivore = new Species('Deer', 10, 0.3)
-      addSpecies(newHerbivore)
-    }
-  }, [currentSeason])
+    if (!context) return
+    const currentSeason = context.determineSeason()
+    // Add logic here if needed based on season changes
+  }, [gameContextState])
 
-  // --- Advance season for testing  ---
-  function nextSeason() {
-    setCurrentSeason(prev => prev + 1)
+  if (!engine || !context) {
+    return <div>Loading game...</div>
+  }
+
+  // Helper to get current population size
+  const getPopulationSize = (speciesId) => {
+    const pop = context.populations.get(speciesId)
+    return pop ? pop.getCurrentSize() : 0
   }
 
   return (
     <div className='rootStyle' onClick={() => setSelected(null)}>
-      <GameTop currentSeason={currentSeason} />
+      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} />
       <Notifications notifications={notifications} />
       <SpeciesPanel
-        speciesArr={speciesArr}
+        speciesArr={speciesMetadata}
         selected={selected}
         setSelected={setSelected}
         icons={icons}
@@ -131,7 +171,8 @@ export default function GameBlank() {
         changeGrowth={changeGrowth}
         updateGrowthForSelected={updateGrowthForSelected}
         setGrowthInput={setGrowthInput}
-        nextSeason={nextSeason}
+        nextSeason={advanceRound}
+        getPopulationSize={getPopulationSize}
       />
     </div>
   )
