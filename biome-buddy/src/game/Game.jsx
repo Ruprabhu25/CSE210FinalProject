@@ -5,11 +5,16 @@ import './Game.css'
 import GameTop from './GameTop.jsx'
 import Notifications from './Notifications.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
+import GameLog from '../components/GameLog/GameLog.jsx'
+import gameLogSystem from '../systems/GameLogSystem.jsx'
 
 export default function GameBlank() {
   // --- State ---
   // Map of speciesId -> Population instance (kept in a ref so updates don't force rerenders)
   const populationsRef = useRef(new Map())
+  const hasLoggedInitial = useRef(false)
+  const processedSeasons = useRef(new Set())
+  const lastLoggedSeason = useRef(1)
 
   // create species instances and register populations in the map
   const initialSpecies = (() => {
@@ -60,6 +65,17 @@ export default function GameBlank() {
 
   const sel = speciesArr[selected]
 
+  // --- Log initial game start ---
+  useEffect(() => {
+    if (!hasLoggedInitial.current) {
+      hasLoggedInitial.current = true
+      gameLogSystem.addEntry({
+        season: 'Season 1',
+        message: 'Game started - Welcome to Biome Buddy!'
+      })
+    }
+  }, [])
+
   // --- Sync growth input when selection changes ---
   useEffect(() => {
     if (sel) setGrowthInput(Number(sel.growthRate ?? 0).toFixed(2))
@@ -99,17 +115,35 @@ export default function GameBlank() {
     }
     setSpeciesArr(prev => [...prev, species])
     setNotifications(prev => [...prev, `New species introduced: ${species.name}!`])
+    // Log the event
+    gameLogSystem.addEntry({
+      season: `Season ${currentSeason}`,
+      message: `New species introduced: ${species.name}!`
+    })
   }
 
   // --- Example: Introduce species as seasons progress ---
   useEffect(() => {
-    if (currentSeason === 3) {
+    if (currentSeason === 3 && !processedSeasons.current.has(3)) {
+      processedSeasons.current.add(3)
       const newPlant = new Species('Berry Bush', 2, 0.08)
       addSpecies(newPlant)
     }
-    if (currentSeason === 5) {
+    if (currentSeason === 5 && !processedSeasons.current.has(5)) {
+      processedSeasons.current.add(5)
       const newHerbivore = new Species('Deer', 10, 0.3)
       addSpecies(newHerbivore)
+    }
+  }, [currentSeason])
+
+  // --- Log season changes ---
+  useEffect(() => {
+    if (currentSeason > 1 && lastLoggedSeason.current < currentSeason) {
+      lastLoggedSeason.current = currentSeason
+      gameLogSystem.addEntry({
+        season: `Season ${currentSeason}`,
+        message: `Season ${currentSeason} begins`
+      })
     }
   }, [currentSeason])
 
@@ -133,6 +167,7 @@ export default function GameBlank() {
         setGrowthInput={setGrowthInput}
         nextSeason={nextSeason}
       />
+      <GameLog />
     </div>
   )
 }

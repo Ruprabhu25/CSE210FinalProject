@@ -9,6 +9,13 @@
   font-family: "Georgia", serif;
 }
 
+.rootStyle > aside {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 /* table helpers (keep in global file) */
 .tableStyle {
   width: 100%;

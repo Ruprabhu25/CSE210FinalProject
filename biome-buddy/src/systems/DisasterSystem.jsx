@@ -64,8 +64,7 @@ class DisasterSystem extends System {
                 }
 
                 try {
-                    const health = calculateEcosystemBalance(speciesByTrophicLevel)
-                    context.ecosystemHealth = health
+                    health = calculateEcosystemHealth()
                 } catch (e) {
                     console.error('Failed to calculate ecosystem balance', e)
                 }
