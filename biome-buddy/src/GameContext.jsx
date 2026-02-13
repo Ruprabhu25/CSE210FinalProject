@@ -1,4 +1,4 @@
-import Population from "./Population"
+import {Population} from "./Population"
 import { ProducerTrophic, PrimaryConsumerTrophic, SecondaryConsumerTrophic, TertiaryConsumerTrophic } from "./Trophic"
 import { EcosystemHealth } from "./EcosystemHealth"
 
@@ -6,16 +6,28 @@ import { EcosystemHealth } from "./EcosystemHealth"
 class GameContext {
     constructor() {
         this.roundNumber = 1 //int - the current round number
-        this.populations = new Map() // speciesID -> Population instance
+        this.populations = new Map() // Species Name -> Population instance
+        this.species = new Map() // Species Name -> Species Instance
         this.trophicLevels = [
           new ProducerTrophic(),
           new PrimaryConsumerTrophic(),
           new SecondaryConsumerTrophic(),
           new TertiaryConsumerTrophic()
         ];
-        for (const speciesId of [1, 2, 3]) { // TODO: replace with actual values
-            this.populations.set(speciesId, new Population(speciesId))
+
+        for (const tl of this.trophicLevels) {
+            for (const [speciesName, species] of Object.entries(tl.speciesMap)) {
+                this.species.set(speciesName, species)
+            }
+            for (const [speciesName, population] of Object.entries(tl.populationMap)) {
+                this.populations.set(speciesName, population)
+            }
         }
+
+        if(this.species.size != this.populations.size) {
+            console.error("WARNING: Mismatch between species and populations");
+        }
+
         this.numRoundsInSeason = 3 //int - the number of rounds in each season, which determines how long each season lasts. 
     }
     calculateEcosystemHealth() {
@@ -23,7 +35,7 @@ class GameContext {
     }
     
     determineSeason() {
-        const seasons = ["Spring", "Summer", "Fall", "Winter"] 
+        const seasons = ["Spring", "Summer", "Fall", "Winter"]
         // season should last for a certain number of rounds
         const currentSeasonIndex = Math.floor((this.roundNumber - 1) / this.numRoundsInSeason) % seasons.length
         return seasons[currentSeasonIndex]

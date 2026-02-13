@@ -1,6 +1,6 @@
+import React from 'react'
 import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen, fireEvent } from "@testing-library/react";
 import App from '../src/home/home.jsx'
 
 describe('Home page — modal and navigation behaviors', () => {
@@ -13,61 +13,56 @@ describe('Home page — modal and navigation behaviors', () => {
     vi.restoreAllMocks()
   })
 
-  test('Forest button is accessible and opens the confirm modal', async () => {
+  test('Forest button is accessible and opens the confirm modal', () => {
     render(<App />)
-    const user = userEvent.setup()
 
     const forestButton = screen.getByLabelText(/Choose Forest Biome/i)
     expect(forestButton).toBeInTheDocument()
 
-    await user.click(forestButton)
+    fireEvent.click(forestButton)
     expect(screen.getByText(/You chose the Forest Biome/i)).toBeInTheDocument()
   })
 
-  test('Clicking backdrop closes the modal', async () => {
+  test('Clicking backdrop closes the modal', () => {
     render(<App />)
-    const user = userEvent.setup()
-    await user.click(screen.getByLabelText(/Choose Forest Biome/i))
+    fireEvent.click(screen.getByLabelText(/Choose Forest Biome/i))
 
     // dialog role is on the backdrop (modal-backdrop)
     const backdrop = screen.getByRole('dialog')
-    await user.click(backdrop) // clicking backdrop should close
+    fireEvent.click(backdrop) // clicking backdrop should close
 
     // modal content should no longer be in the document
     expect(screen.queryByText(/You chose the Forest Biome/i)).toBeNull()
   })
 
-  test('Pressing Escape closes the modal', async () => {
+  test('Pressing Escape closes the modal', () => {
     render(<App />)
-    const user = userEvent.setup()
-    await user.click(screen.getByLabelText(/Choose Forest Biome/i))
+    fireEvent.click(screen.getByLabelText(/Choose Forest Biome/i))
 
     // fire Escape keyboard event
-    await user.keyboard('{Escape}')
+    fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' })
 
     expect(screen.queryByText(/You chose the Forest Biome/i)).toBeNull()
   })
 
-  test('Close button (✕) closes the modal', async () => {
+  test('Close button (✕) closes the modal', () => {
     render(<App />)
-    const user = userEvent.setup()
-    await user.click(screen.getByLabelText(/Choose Forest Biome/i))
+    fireEvent.click(screen.getByLabelText(/Choose Forest Biome/i))
 
     const closeButton = screen.getByLabelText(/Close/i) || screen.getByText('✕')
-    await user.click(closeButton)
+    fireEvent.click(closeButton)
 
     expect(screen.queryByText(/You chose the Forest Biome/i)).toBeNull()
   })
 
-  test('"Get started" pushes /game and hides modal', async () => {
+  test('"Get started" pushes /game and hides modal', () => {
     render(<App />)
-    const user = userEvent.setup()
 
     const pushSpy = vi.spyOn(window.history, 'pushState')
-    await user.click(screen.getByLabelText(/Choose Forest Biome/i))
+    fireEvent.click(screen.getByLabelText(/Choose Forest Biome/i))
 
     const getStarted = screen.getByRole('button', { name: /Get started/i }) || screen.getByText(/Get started/i)
-    await user.click(getStarted)
+    fireEvent.click(getStarted)
 
     expect(pushSpy).toHaveBeenCalled()
     // modal should hide

@@ -1,9 +1,7 @@
 /**
  * Species base class and consumer/producer subclasses.
- * Simple model for population, biomass and energy bookkeeping.
+ * Simple model for biomass and energy bookkeeping.
  */
-
-let _nextSpeciesId = 1
 
 export class Species {
   /**
@@ -15,8 +13,6 @@ export class Species {
     this.name = String(name)
     this.energy = Number(energy) || 0
     this.biomass = Number(biomass) || 0
-    // assign a unique numeric id to each species instance
-    this.speciesid = _nextSpeciesId++
   }
 }
 

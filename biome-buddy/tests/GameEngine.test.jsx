@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import React, { describe, it, expect, vi, beforeEach } from 'vitest'
 import GameEngine from '../src/GameEngine'
 
 // Mock the system classes and GameContext

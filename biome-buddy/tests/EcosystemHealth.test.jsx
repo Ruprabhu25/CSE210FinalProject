@@ -1,7 +1,7 @@
 import {EcosystemHealth} from "../src/EcosystemHealth";
 import { test, expect } from "vitest";
 import { ProducerTrophic, PrimaryConsumerTrophic, SecondaryConsumerTrophic, TertiaryConsumerTrophic } from "../src/Trophic";
-import Population from "../src/Population";
+import {Population} from "../src/Population";
 
 function MockTestData(speciesByLevel) {
   const trophicLevels = [

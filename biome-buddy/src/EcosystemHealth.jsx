@@ -2,7 +2,7 @@
  * Calculates ecosystem health based on species scores and trophic level ratios
  * Health is returned in the range [0, 1], makes it easier to treat health as normalized value
  */
-import { getTotalPopulation, calculateRatioDeviation, deviationToScore } from './helperFunctions/healthCalculateHelperFunctions';
+import {calculateRatioDeviation, deviationToScore } from './helperFunctions/healthCalculateHelperFunctions';
 
 /**
  * Calculate species score based on biomass and energy
