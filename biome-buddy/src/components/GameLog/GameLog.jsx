@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import logStore from '../../systems/GameLogSystem'
+import logStore from '../../components/GameLog/GameLogSystem'
 import './GameLog.css'
 
 export default function GameLog({ onCollapsedChange }) {

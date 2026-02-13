@@ -1,4 +1,4 @@
-import System from "./System"
+import System from "../../systems/System"
 
 class GameLogSystem extends System {
     constructor() {

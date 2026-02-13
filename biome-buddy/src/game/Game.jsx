@@ -6,7 +6,7 @@ import GameTop from './GameTop.jsx'
 import Notifications from './Notifications.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
-import gameLogSystem from '../systems/GameLogSystem.jsx'
+import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
 
 export default function GameBlank() {
   // --- State ---
