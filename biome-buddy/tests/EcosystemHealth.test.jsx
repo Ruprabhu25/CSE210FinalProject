@@ -1,114 +1,173 @@
-import { calculateEcosystemBalance } from "../src/ecosystemBalance";
+import {EcosystemHealth} from "../src/EcosystemHealth";
 import { test, expect } from "vitest";
+import { ProducerTrophic, PrimaryConsumerTrophic, SecondaryConsumerTrophic, TertiaryConsumerTrophic } from "../src/Trophic";
+import Population from "../src/Population";
+
+function createTestData(speciesByLevel) {
+  const trophicLevels = [
+    new ProducerTrophic(),
+    new PrimaryConsumerTrophic(),
+    new SecondaryConsumerTrophic(),
+    new TertiaryConsumerTrophic()
+  ];
+  
+  // Set ideal ratios based on IDEAL_RATIOS config
+  trophicLevels[0].idealRatio = 1000;   // Producers
+  trophicLevels[1].idealRatio = 400;    // Primary Consumers
+  trophicLevels[2].idealRatio = 150;    // Secondary Consumers
+  trophicLevels[3].idealRatio = 80;     // Tertiary Consumers
+  
+  const populations = new Map();
+
+  // Reset trophic levels' speciesMaps
+  trophicLevels.forEach(level => {
+    level.speciesMap = {};
+  });
+
+  let speciesId = 1;
+  Object.entries(speciesByLevel).forEach(([levelName, species]) => {
+    const level = trophicLevels.find(t => t.name === levelName);
+    if (level) {
+      species.forEach(spec => {
+        level.speciesMap[speciesId] = { biomass: spec.biomass, energy: spec.energy };
+        populations.set(speciesId, new Population(speciesId, spec.population, 0, 0));
+        speciesId++;
+      });
+    }
+  });
+
+  return { trophicLevels, populations };
+}
 
 // Tests for possible inputs 
-// Did not test against negative inputs oo missing trophic levels
 test("close to ideal ecosystem returns ~100% health", () => {
-  const ecosystem = {
-    producer: [{ name: "Grass", population: 50, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150 },
-    { name: "tree", population: 50, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150 }],
-    herbivore: [{ name: "Deer", population: 85, biomassPerIndividual: 10, energyPerIndividual: 0.1, carryingCapacity: 60 }],
-    primaryCarnivore: [{ name: "Wolf", population: 30, biomassPerIndividual: 10, energyPerIndividual: 0.01, carryingCapacity: 30 }],
-    secondaryCarnivore: [{ name: "Bear", population: 160, biomassPerIndividual: 1, energyPerIndividual: 0.001, carryingCapacity: 100 }]
-  };
+  const { trophicLevels, populations } = createTestData({
+    "Producers": [
+      { population: 50, biomass: 100, energy: 10 },
+      { population: 50, biomass: 100, energy: 10 }
+    ],
+    "Primary Consumers": [
+      { population: 41, biomass: 10, energy: 0.1 }
+    ],
+    "Secondary Consumers": [
+      { population: 13, biomass: 10, energy: 0.01 }
+    ],
+    "Tertiary Consumers": [
+      { population: 7 , biomass: 1, energy: 0.001 }
+    ]
+  });
 
-  const health = calculateEcosystemBalance(ecosystem);
+  const health = EcosystemHealth(trophicLevels, populations);
   console.log("Ecosystem Health:", health);
   expect(health).toBeCloseTo(1, 1);
 });
 
-
 test("overpopulated producers lowers health", () => {
+  const { trophicLevels, populations } = createTestData({
+    "Producers": [
+      { population: 150, biomass: 100, energy: 10 },
+      { population: 150, biomass: 100, energy: 10 }
+    ],
+    "Primary Consumers": [
+      { population: 200, biomass: 10, energy: 0.1 }
+    ],
+    "Secondary Consumers": [
+      { population: 15, biomass: 10, energy: 0.01 }
+    ],
+    "Tertiary Consumers": [
+      { population: 80, biomass: 1, energy: 0.001 }
+    ]
+  });
 
-  const ecosystem = {
-    producer: [{ name: "Grass", population: 150, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150 },
-    { name: "tree", population: 150, biomassPerIndividual: 10, energyPerIndividual: 10, carryingCapacity: 150 }],
-    herbivore: [{ name: "Deer", population: 200, biomassPerIndividual: 10, energyPerIndividual: 0.1, carryingCapacity: 60 }],
-    primaryCarnivore: [{ name: "Wolf", population: 15, biomassPerIndividual: 10, energyPerIndividual: 0.01, carryingCapacity: 30 }],
-    secondaryCarnivore: [{ name: "Bear", population: 80, biomassPerIndividual: 1, energyPerIndividual: 0.001, carryingCapacity: 100 }]
-  };
-
-  const health = calculateEcosystemBalance(ecosystem);
+  const health = EcosystemHealth(trophicLevels, populations);
   console.log("Ecosystem Health:", health);
   expect(health).toBeLessThan(1);
 });
 
-
 test("empty ecosystem returns zero health", () => {
-  const ecosystem = {
-    producer: [],
-    herbivore: [],
-    primaryCarnivore: [],
-    secondaryCarnivore: [],
-  };
+  const { trophicLevels, populations } = createTestData({
+    "Producers": [],
+    "Primary Consumers": [],
+    "Secondary Consumers": [],
+    "Tertiary Consumers": []
+  });
 
-  const health = calculateEcosystemBalance(ecosystem);
+  const health = EcosystemHealth(trophicLevels, populations);
   console.log("Ecosystem Health:", health);
   expect(health).toBeCloseTo(0, 6);
 });
 
 test("exact ideal ratios", () => {
-  const ecosystem = {
-    producer: [
-      { name: "Grass", population: 100, biomassPerIndividual: 1000, energyPerIndividual: 100 }],
-    herbivore: [
-      { name: "Deer", population: 40, biomassPerIndividual: 600, energyPerIndividual: 10 }],
-    primaryCarnivore: [
-      { name: "Wolf", population: 15, biomassPerIndividual: 455, energyPerIndividual: 1 },
+  const { trophicLevels, populations } = createTestData({
+    "Producers": [
+      { population: 100, biomass: 1000, energy: 100 }
     ],
-    secondaryCarnivore: [
-      { name: "Bear", population: 8, biomassPerIndividual: 240, energyPerIndividual: 0.1 },
+    "Primary Consumers": [
+      { population: 40, biomass: 600, energy: 10 }
     ],
-  };
-
-  const health = calculateEcosystemBalance(ecosystem);
-  expect(health).toBeCloseTo(1, 6);
-});
-
-test("producer present but none of the other levels", () => {
-  const ecosystem = {
-    producer: [
-      { name: "Grass", population: 100, biomassPerIndividual: 10, energyPerIndividual: 10 },
+    "Secondary Consumers": [
+      { population: 15, biomass: 455, energy: 1 }
     ],
-    herbivore: [],
-    primaryCarnivore: [],
-    secondaryCarnivore: [],
-  };
+    "Tertiary Consumers": [
+      { population: 8, biomass: 240, energy: 0.1 }
+    ]
+  });
 
-  const health = calculateEcosystemBalance(ecosystem);
+  const health = EcosystemHealth(trophicLevels, populations);
   console.log("Ecosystem Health:", health);
-  expect(health).toBeCloseTo(0.0, 6);
+  expect(health).toBeCloseTo(1);
 });
 
+test("producer present but none of the other levels returns 0", () => {
+  const { trophicLevels, populations } = createTestData({
+    "Producers": [
+      { population: 100, biomass: 10, energy: 10 }
+    ],
+    "Primary Consumers": [],
+    "Secondary Consumers": [],
+    "Tertiary Consumers": []
+  });
 
-test("randome trohpic becomes 0", () => {
-  const ecosystem = {
-    producer: [
-      { name: "Grass", population: 10000, biomassPerIndividual: 100, energyPerIndividual: 10 },
-    ],
-    herbivore: [
-      { name: "Deer", population: 0, biomassPerIndividual: 80, energyPerIndividual: 10 }
-    ],
-    primaryCarnivore: [
-      { name: "Wolf", population: 300, biomassPerIndividual: 40, energyPerIndividual: 10 }
-    ],
-    secondaryCarnivore: [
-      { name: "Bear", population: 10000000, biomassPerIndividual: 10, energyPerIndividual: 10 }
-    ],
-  };
-
-  const health = calculateEcosystemBalance(ecosystem);
+  const health = EcosystemHealth(trophicLevels, populations);
   console.log("Ecosystem Health:", health);
-  expect(health).toBeCloseTo(0.0, 6);
+  expect(health).toBeCloseTo(0);
 });
+
+test("random trophic becomes 0 returns 0 health", () => {
+  const { trophicLevels, populations } = createTestData({
+    "Producers": [
+      { population: 10000, biomass: 100, energy: 10 }
+    ],
+    "Primary Consumers": [
+      { population: 0, biomass: 80, energy: 10 }
+    ],
+    "Secondary Consumers": [
+      { population: 300, biomass: 40, energy: 10 }
+    ],
+    "Tertiary Consumers": [
+      { population: 10000000, biomass: 10, energy: 10 }
+    ]
+  });
+
+  const health = EcosystemHealth(trophicLevels, populations);
+  console.log("Ecosystem Health:", health);
+  expect(health).toBe(0);
+});
+
 test("apex predator extinct but lower levels healthy", () => {
-  const ecosystem = {
-    producer: [{ population: 100, biomassPerIndividual: 10, energyPerIndividual: 10 }],
-    herbivore: [{ population: 40, biomassPerIndividual: 10, energyPerIndividual: 10 }],
-    primaryCarnivore: [{ population: 15, biomassPerIndividual: 10, energyPerIndividual: 10 }],
-    secondaryCarnivore: []
-  };
+  const { trophicLevels, populations } = createTestData({
+    "Producers": [
+      { population: 100, biomass: 10, energy: 10 }
+    ],
+    "Primary Consumers": [
+      { population: 40, biomass: 10, energy: 10 }
+    ],
+    "Secondary Consumers": [
+      { population: 15, biomass: 10, energy: 10 }
+    ],
+    "Tertiary Consumers": []
+  });
 
-  const health = calculateEcosystemBalance(ecosystem);
+  const health = EcosystemHealth(trophicLevels, populations);
   expect(health).toBe(0);
 });

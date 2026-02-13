@@ -10,16 +10,18 @@ class Population {
         return this.size
     }
 
-     // This function applies the growth and mortality rates to the population size
-     updatePopulationByGrowthRate(growthRateMultiplier = 1) {
+    // This function applies the growth and mortality rates to the population size
+    updatePopulationByGrowthRate(growthRateMultiplier = 1) {
         const growth = Math.round(this.size * this.baseGrowthRate * growthRateMultiplier)
         this.size += growth
-     }
+    }
 
-     updatePopulationByMortalityRate(mortalityRateMultiplier = 1) {
+    updatePopulationByMortalityRate(mortalityRateMultiplier = 1) {
         const mortality = Math.round(this.size * this.baseMortalityRate * mortalityRateMultiplier)
-        this.size -= mortality
-     }  
+        this.size -= mortality;
+        if (this.size < 0){
+            this.size = 0
+        }
+    }
 }
-
 export default Population

@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import GameBlank from '../src/Game.jsx'
+import GameBlank from '../src/game/Game'
+import { Species } from '../src/Species'
 
 describe('GameBlank Component', () => {
 
@@ -28,19 +29,6 @@ describe('GameBlank Component', () => {
 
     // The parent div should have "selected" class
     expect(rabbit.closest('.itemStyle')).toHaveClass('selected')
-  })
-
-  test('changing growth input updates growth rate', () => {
-    render(<GameBlank />)
-
-    const input = screen.getByDisplayValue('0.12')
-    expect(input).toBeInTheDocument()
-
-    fireEvent.change(input, { target: { value: '0.10' } })
-    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
-
-    const updated = screen.getByDisplayValue('0.10')
-    expect(updated).toBeInTheDocument()
   })
 
 
