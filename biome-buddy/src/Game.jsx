@@ -3,6 +3,7 @@ import { Producer, PrimaryConsumer, SecondaryConsumer, TertiaryConsumer } from '
 import GameLog from './components/GameLog/GameLog'
 import DisasterPopup from './components/disasterpopup/DisasterPopup'
 import gameLogSystem from './systems/GameLogSystem'
+import { applyDisasterActionToSpecies } from './systems/DisasterSystem'
 import { disasters } from './data/disasters'
 import { calculateEcosystemBalance } from './ecosystemBalance'
 import './Game.css'
@@ -164,14 +165,9 @@ export default function GameBlank() {
       return
     }
 
-    // Find the species targeted by the selected disaster action.
-    const targetSpecies = speciesArr.find((s) => s.name === action.target)
-    if (targetSpecies?._population) {
-      // Read current population, apply the disaster action's population delta, and clamp at 0.
-      const currentPop = targetSpecies._population.getCurrentSize()
-      const nextPop = Math.max(0, Math.round(currentPop + (action.deltaPopulation || 0)))
-      // Persist the updated population so this disaster action immediately affects species count.
-      targetSpecies._population.size = nextPop
+    // Apply population-effect logic via DisasterSystem instead of hardcoding it in the UI layer.
+    const updated = applyDisasterActionToSpecies(speciesArr, action)
+    if (updated) {
       // Trigger re-render so the UI reflects the new population level.
       setSpeciesArr([...speciesArr])
     }

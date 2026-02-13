@@ -3,6 +3,22 @@ import { disasters } from "../data/disasters"
 import { calculateEcosystemBalance } from "../ecosystemBalance"
 import gameLogSystem from "./GameLogSystem"
 
+// Applies a chosen disaster action to the targeted species population.
+// Returns true when a population value was updated.
+export function applyDisasterActionToSpecies(speciesArr, action) {
+    if (!action || !Array.isArray(speciesArr)) return false
+
+    const targetSpecies = speciesArr.find((s) => s.name === action.target)
+    if (!targetSpecies?._population || typeof targetSpecies._population.getCurrentSize !== "function") {
+        return false
+    }
+
+    const currentPop = targetSpecies._population.getCurrentSize()
+    const nextPop = Math.max(0, Math.round(currentPop + (action.deltaPopulation || 0)))
+    targetSpecies._population.size = nextPop
+    return true
+}
+
 class DisasterSystem extends System {
     constructor() {
         super("DisasterSystem")
