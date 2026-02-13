@@ -11,6 +11,9 @@ import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
 import bgFall from '../assets/forest-fa.png'
 
+//TODO: CHANGE GROWTH RATE SO ONLY CAN INCREASE POPULATION (i.e. click a species that you want to increase for that round)
+//TODO: Connect growth rate to PlayerActionSystem once that is merged into master branch
+
 export default function GameBlank() {
   // --- State ---
   // GameEngine instance (kept in a ref so it persists across rerenders)
