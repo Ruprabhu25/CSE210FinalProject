@@ -6,6 +6,10 @@ import './Game.css'
 import GameTop from './GameTop.jsx'
 import Notifications from './Notifications.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
+import bgSummer from '../assets/forest-su.png'
+import bgSpring from '../assets/forest-sp.png'
+import bgWinter from '../assets/forest-wi.png'
+import bgFall from '../assets/forest-fa.png'
 
 export default function GameBlank() {
   // --- State ---
@@ -156,6 +160,21 @@ function advanceRound() {
   const getPopulationSize = (speciesId) => {
     const pop = context.populations.get(speciesId)
     return pop ? pop.getCurrentSize() : 0
+  }
+
+  // Choose background image based on current season
+  const currentSeasonName = context.determineSeason()
+  const seasonBackgroundMap = {
+    'Summer': bgSummer,
+    'Spring': bgSpring,
+    'Winter': bgWinter,
+    'Fall': bgFall,
+  }
+  const backgroundImage = seasonBackgroundMap[currentSeasonName] || bgSummer
+  const rootStyleInline = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
   }
 
   return (
