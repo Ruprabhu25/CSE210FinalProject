@@ -41,12 +41,10 @@ class FoodChainSystem extends System {
             if (deviation < 0.2) continue
 
             // If prey are scarce relative to predators, predators decline and prey recover
-            if (actualRatio < idealRatio) {
+            if (actualRatio > idealRatio) {
                 for (const id of predatorSpeciesIds) {
                     const pop = this.populations.get(Number(id))
-                    if (pop) {
                         pop.updatePopulationByMortalityRate(1 + deviation)
-                    }
                 }
                 for (const id of preySpeciesIds) {
                     const pop = this.populations.get(Number(id))
@@ -54,7 +52,8 @@ class FoodChainSystem extends System {
                         pop.updatePopulationByGrowthRate(1 + deviation / 2)
                     }
                 }
-            } else {
+            } 
+            else {
                 // If prey are abundant, predators grow and prey face slightly higher mortality
                 for (const id of predatorSpeciesIds) {
                     const pop = this.populations.get(Number(id))
