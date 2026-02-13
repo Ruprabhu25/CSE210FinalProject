@@ -1,7 +1,6 @@
-import React from 'react'
 import './SpeciesPanel.css'
 
-export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, growthInput, changeGrowth, updateGrowthForSelected, setGrowthInput, nextSeason, getPopulationSize, onPlayerAction }) {
+export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize, onPlayerAction }) {
   return (
     <div className='outerPanelStyle'>
       <div className='innerPanelStyle' aria-label="Species panel">
@@ -36,7 +35,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
             }} className='growthButtons'>Next Season</button>
             <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>
             {speciesArr?.[selected]
-              ? `You have selected ${speciesArr[selected].name}, their populationgrowth rate will increase.`
+              ? `You have selected ${speciesArr[selected].name}, their population growth rate will increase.`
               : 'You have not selected a species, the population growth rate will stay as is.'}
           </div>
           </div>

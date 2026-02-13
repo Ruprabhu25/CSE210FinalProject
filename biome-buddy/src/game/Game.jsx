@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import GameEngine from '../GameEngine.jsx'
 import './Game.css'
 import GameTop from './GameTop.jsx'
-import Notifications from './Notifications.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
@@ -11,8 +10,7 @@ import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
 import bgFall from '../assets/forest-fa.png'
 
-//TODO: CHANGE GROWTH RATE SO ONLY CAN INCREASE POPULATION (i.e. click a species that you want to increase for that round)
-//TODO: Connect growth rate to PlayerActionSystem once that is merged into master branch
+//TODO: Connect next season button to PlayerActionSystem once that is merged into master branch
 
 export default function GameBlank() {
   // --- State ---
@@ -23,7 +21,6 @@ export default function GameBlank() {
   // Species metadata (UI display purposes)
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(0)
-  const [growthInput, setGrowthInput] = useState('0.00')
   const [notifications, setNotifications] = useState([]) // Simple notifications
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
 
@@ -49,7 +46,6 @@ export default function GameBlank() {
 
     gameEngineRef.current = engine
     setGameContextState({ ...engine.context })
-    setGrowthInput(Number(speciesArray[0]?.growthRate ?? 0).toFixed(2))
   }, [])
 
   const engine = gameEngineRef.current
@@ -74,27 +70,6 @@ export default function GameBlank() {
     }
   }, [])
 
-  // --- Sync growth input when selection changes ---
-  useEffect(() => {
-    if (sel) setGrowthInput(Number(sel.growthRate ?? 0).toFixed(2))
-  }, [selected, speciesMetadata])
-
-  // --- Update growth rate for selected species ---
-  function updateGrowthForSelected(newRate) {
-    if (!sel || !context) return
-    const r = Math.round((Number(newRate) || 0) * 100) / 100
-    sel.growthRate = r
-    // Update the Population's baseGrowthRate in GameContext
-    const pop = context.populations.get(sel.speciesid)
-    if (pop) pop.baseGrowthRate = r
-    setGrowthInput(Number(r).toFixed(2))
-  }
-
-  function changeGrowth(delta) {
-    const current = Number(growthInput) || 0
-    const next = Math.round((current + delta) * 100) / 100
-    setGrowthInput(Number(next).toFixed(2))
-  }
 
 
   // --- Advance round (triggers game simulation) ---
@@ -164,16 +139,11 @@ export default function GameBlank() {
   return (
     <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
       <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} />
-      <Notifications notifications={notifications} />
       <SpeciesPanel
         speciesArr={speciesMetadata}
         selected={selected}
         setSelected={setSelected}
         icons={icons}
-        growthInput={growthInput}
-        changeGrowth={changeGrowth}
-        updateGrowthForSelected={updateGrowthForSelected}
-        setGrowthInput={setGrowthInput}
         nextSeason={advanceRound}
         onPlayerAction={handlePlayerAction}
         getPopulationSize={getPopulationSize}
