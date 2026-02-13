@@ -1,15 +1,15 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import Population from '../src/Population'
+import {Population} from '../src/Population'
 
 describe('Population', () => {
   let pop
 
   beforeEach(() => {
-    pop = new Population(1, 100, 0.1, 0.05) // reinitialize before each test to ensure tests are independent
+    pop = new Population("test", 100, 0.1, 0.05) // reinitialize before each test to ensure tests are independent
   })
 
   it('should initialize with correct values', () => {
-    expect(pop.speciesId).toBe(1)
+    expect(pop.speciesName).toBe("test")
     expect(pop.size).toBe(100)
     expect(pop.baseGrowthRate).toBe(0.1)
     expect(pop.baseMortalityRate).toBe(0.05)

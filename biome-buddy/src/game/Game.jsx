@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Species } from '../Species.jsx'
-import Population from '../Population.jsx'
+import {Population} from '../Population.jsx'
 import './Game.css'
 import GameTop from './GameTop.jsx'
 import Notifications from './Notifications.jsx'
