@@ -1,6 +1,6 @@
 import React from 'react'
 import { describe, test, expect, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 // jest-dom matchers are loaded via vitest setup file
 
 import DisasterPopup from '../src/components/DisasterPopup/DisasterPopup'
@@ -8,8 +8,8 @@ import { disasters } from '../src/data/disasters'
 
 describe('DisasterPopup', () => {
     test('shows message when disaster prop is provided', () => {
-        const onClose = vi.fn()
-        render(<DisasterPopup disaster={disasters.wildfire} onClose={onClose} />)
+        const onAction = vi.fn()
+        render(<DisasterPopup disaster={disasters.wildfire} onAction={onAction} />)
 
         const title = screen.getByRole('heading', { name: /Wildfire/i })
         expect(title).toBeInTheDocument()
@@ -18,15 +18,15 @@ describe('DisasterPopup', () => {
         expect(body).toBeInTheDocument()
     })
 
-    test('closes when close button is clicked', () => {
-        const onClose = vi.fn()
-        render(<DisasterPopup disaster={disasters.flood} onClose={onClose} />)
+    test('calls onAction when an action button is clicked', () => {
+        const onAction = vi.fn()
+        render(<DisasterPopup disaster={disasters.flood} onAction={onAction} />)
 
-        const close = screen.getByText('\u2715')
-        expect(close).toBeInTheDocument()
+        const action = screen.getByRole('button', { name: /Build Safe Burrows/i })
+        expect(action).toBeInTheDocument()
 
-        close.click()
+        action.click()
 
-        expect(onClose).toHaveBeenCalled()
+        expect(onAction).toHaveBeenCalledWith(disasters.flood.actions[0])
     })
 })
