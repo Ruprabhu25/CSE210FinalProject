@@ -46,7 +46,7 @@ class FoodChainSystem extends System {
                 continue
             }; 
 
-            // If prey are scarce relative to predators, predators decline and prey recover
+            // If prey are scarce relative to predators, predators decline and prey decline slightly due to overconsumption
             if (actualRatio < idealRatio) {
                 for (const id of predatorSpeciesIds) {
                     const pop = this.populations.get(Number(id))
