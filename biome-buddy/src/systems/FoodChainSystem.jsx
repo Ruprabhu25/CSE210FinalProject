@@ -1,5 +1,7 @@
 import System from "./System"
+import {calculateRatioDeviation, deviationToScore } from '../helperFunctions/healthCalculateHelperFunctions';
 
+MULTIPLIER_DIVISION_FACTOR = 2
 class FoodChainSystem extends System {
     constructor() {
         super("FoodChainSystem")
@@ -32,24 +34,23 @@ class FoodChainSystem extends System {
             const totalPredator = this.getTotalPopulation(predatorSpeciesIds)
 
             if (totalPrey === 0 || totalPredator === 0) continue
-
             const actualRatio = totalPrey / totalPredator
-            const idealRatio = (preyLevel.idealRatio || 1) / (predatorLevel.idealRatio || 1)
-            const deviation = Math.abs(actualRatio - idealRatio) / idealRatio
+            const idealRatio = preyLevel.idealRatio / predatorLevel.idealRatio
+            const deviation = calculateRatioDeviation(totalPrey, totalPredator, preyLevel.idealRatio, predatorLevel.idealRatio,)
 
             // Allow 20% tolerance
-            if (deviation < 0.2) continue
+            const multiplier = deviationToScore(deviation, 0.2)
 
             // If prey are scarce relative to predators, predators decline and prey recover
-            if (actualRatio > idealRatio) {
+            if (actualRatio < idealRatio) {
                 for (const id of predatorSpeciesIds) {
                     const pop = this.populations.get(Number(id))
-                        pop.updatePopulationByMortalityRate(1 + deviation)
+                        pop.updatePopulationByMortalityRate(1 + multiplier*MULTIPLIER_DIVISION_FACTOR)
                 }
                 for (const id of preySpeciesIds) {
                     const pop = this.populations.get(Number(id))
                     if (pop) {
-                        pop.updatePopulationByGrowthRate(1 + deviation / 2)
+                        pop.updatePopulationByGrowthRate(1 + deviation)
                     }
                 }
             } 
@@ -64,7 +65,7 @@ class FoodChainSystem extends System {
                 for (const id of preySpeciesIds) {
                     const pop = this.populations.get(Number(id))
                     if (pop) {
-                        pop.updatePopulationByMortalityRate(1 + deviation / 4)
+                        pop.updatePopulationByMortalityRate(1+multiplier/MULTIPLIER_DIVISION_FACTOR)
                     }
                 }
             }
