@@ -1,4 +1,4 @@
-import Population from "./Population"
+import {Population} from "./Population"
 import { ProducerTrophic, PrimaryConsumerTrophic, SecondaryConsumerTrophic, TertiaryConsumerTrophic } from "./Trophic"
 import { EcosystemHealth } from "./EcosystemHealth"
 
