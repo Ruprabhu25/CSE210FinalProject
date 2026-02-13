@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
-import { Species } from '../Species.jsx'
-import Population from '../Population.jsx'
 import GameEngine from '../GameEngine.jsx'
 import './Game.css'
 import GameTop from './GameTop.jsx'
 import Notifications from './Notifications.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
+import GameLog from '../components/GameLog/GameLog.jsx'
+import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
 import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
@@ -18,6 +18,8 @@ export default function GameBlank() {
   // --- State ---
   // GameEngine instance (kept in a ref so it persists across rerenders)
   const gameEngineRef = useRef(null)
+  const hasLoggedInitial = useRef(false)
+  const populationsRef = useRef(new Map())
   // Species metadata (UI display purposes)
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(0)
@@ -31,54 +33,23 @@ export default function GameBlank() {
 
     const engine = new GameEngine()
 
-    // Create species metadata
-    const grass = new Species('Grass', 1, 0.05)
-    grass.growthRate = 0.2
-    grass.trophic = 'producer'
-
-    const rabbit = new Species('Rabbit', 4, 0.5)
-    rabbit.growthRate = 0.12
-    rabbit.trophic = 'primary-consumer'
-
-    const fox = new Species('Fox', 20, 5)
-    fox.growthRate = 0.06
-    fox.trophic = 'secondary-consumer'
-
-    const hawk = new Species('Hawk', 45, 6)
-    hawk.growthRate = 0.03
-    hawk.trophic = 'tertiary-consumer'
-
-    const speciesArray = [grass, rabbit, fox, hawk]
+    // Get species from GameContext (already created in Trophic.jsx)
+    const speciesArray = Array.from(engine.context.species.values())
     setSpeciesMetadata(speciesArray)
 
-    // Initialize GameContext with species and populations
-    engine.context.populations.clear()
-    speciesArray.forEach(species => {
-      let initialSize = 50
-      let initialGrowthRate = species.growthRate || 0.1
-      let initialMortalityRate = 0.05
-
-      if (species.name === 'Grass') {
-        initialSize = 1000
-        initialMortalityRate = 0.02
-      } else if (species.name === 'Rabbit') {
-        initialSize = 250
-        initialMortalityRate = 0.05
-      } else if (species.name === 'Fox') {
-        initialSize = 40
-        initialMortalityRate = 0.07
-      } else if (species.name === 'Hawk') {
-        initialSize = 12
-        initialMortalityRate = 0.08
+    // Re-key populations by speciesid for consistency with Game.jsx
+    const populationsBySpeciesId = new Map()
+    for (const species of speciesArray) {
+      const pop = engine.context.populations.get(species.name)
+      if (pop) {
+        populationsBySpeciesId.set(species.speciesid, pop)
       }
-
-      const pop = new Population(species.speciesid, initialSize, initialGrowthRate, initialMortalityRate)
-      engine.context.populations.set(species.speciesid, pop)
-    })
+    }
+    engine.context.populations = populationsBySpeciesId
 
     gameEngineRef.current = engine
     setGameContextState({ ...engine.context })
-    setGrowthInput(Number(speciesArray[0].growthRate).toFixed(2))
+    setGrowthInput(Number(speciesArray[0]?.growthRate ?? 0).toFixed(2))
   }, [])
 
   const engine = gameEngineRef.current
@@ -86,11 +57,22 @@ export default function GameBlank() {
   const sel = speciesMetadata[selected]
 
   const icons = {
-    'producer': '🌿',
-    'primary-consumer': '🐇',
-    'secondary-consumer': '🦊',
-    'tertiary-consumer': '🦅',
+    'Producers': '🌿',
+    'Primary Consumers': '🐇',
+    'Secondary Consumers': '🦊',
+    'Tertiary Consumers': '🦅',
   }
+
+  // --- Log initial game start ---
+  useEffect(() => {
+    if (!hasLoggedInitial.current) {
+      hasLoggedInitial.current = true
+      gameLogSystem.addEntry({
+        season: 'Season 1',
+        message: 'Game started - Welcome to Biome Buddy!'
+      })
+    }
+  }, [])
 
   // --- Sync growth input when selection changes ---
   useEffect(() => {
@@ -114,39 +96,38 @@ export default function GameBlank() {
     setGrowthInput(Number(next).toFixed(2))
   }
 
-  // --- Add new species dynamically ---
-  function addSpecies(species) {
-    if (!context) return
-    // ensure minimal properties exist on the added species
-    if (species && typeof species === 'object') {
-      if (typeof species.growthRate === 'undefined') species.growthRate = 0.1
-      if (typeof species.trophic === 'undefined') species.trophic = 'producer'
-      // attach a Population instance in GameContext
-      if (!context.populations.has(species.speciesid)) {
-        const pop = new Population(species.speciesid ?? Math.floor(Math.random() * 100000), 50, species.growthRate, 0.05)
-        context.populations.set(species.speciesid, pop)
-      }
-    }
-    setSpeciesMetadata(prev => [...prev, species])
-    setNotifications(prev => [...prev, `New species introduced: ${species.name}!`])
-  }
 
   // --- Advance round (triggers game simulation) ---
-function advanceRound() {
-  if (!engine) return
-  console.log('Before round:', {
-    round: engine.context.roundNumber,
-    grassPop: getPopulationSize(speciesMetadata[0]?.speciesid),
-  })
-  engine.runRound()
-  console.log('After round:', {
-    round: engine.context.roundNumber,
-    grassPop: getPopulationSize(speciesMetadata[0]?.speciesid),
-  })
-  setGameContextState({ ...engine.context })
-  // Clear notifications after round completes
-  setNotifications([])
-}
+  function advanceRound() {
+    if (!engine) return
+    console.log('Before round:', {
+      round: engine.context.roundNumber,
+      grassPop: getPopulationSize(speciesMetadata[0]?.speciesid),
+    })
+    engine.runRound()
+    console.log('After round:', {
+      round: engine.context.roundNumber,
+      grassPop: getPopulationSize(speciesMetadata[0]?.speciesid),
+    })
+    setGameContextState({ ...engine.context })
+    // Clear notifications after round completes
+    setNotifications([])
+  }
+
+  // --- Player action: set chosen species and run a round ---
+  function handlePlayerAction(speciesName) {
+    if (!engine) return
+    const playerSystem = engine.systems.find(s => s.name === 'PlayerActionSystem')
+    if (!playerSystem) {
+      console.warn('PlayerActionSystem not found')
+      return
+    }
+    // Directly set the chosenSpeciesName property
+    playerSystem.chosenSpeciesName = speciesName
+    engine.runRound()
+    setGameContextState({ ...engine.context })
+    setNotifications([])
+  }
 
   // --- Example: Introduce species as seasons progress ---
   useEffect(() => {
@@ -194,8 +175,10 @@ function advanceRound() {
         updateGrowthForSelected={updateGrowthForSelected}
         setGrowthInput={setGrowthInput}
         nextSeason={advanceRound}
+        onPlayerAction={handlePlayerAction}
         getPopulationSize={getPopulationSize}
       />
+      <GameLog />
     </div>
   )
 }

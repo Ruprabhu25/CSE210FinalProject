@@ -1,17 +1,24 @@
+import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import GameBlank from '../src/game/Game'
-import { Species } from '../src/Species'
+import gameLogSystem from '../src/components/GameLog/GameLogSystem'
 
 describe('GameBlank Component', () => {
 
+  beforeEach(() => {
+    // Clear the game log before each test to prevent duplicates
+    gameLogSystem.clear()
+  })
+
   test('renders top HUD and initial species', () => {
     render(<GameBlank />)
-    
+
     // Check ecosystem health
     expect(screen.getByText(/EcoSystem Health/i)).toBeInTheDocument()
-    
-    // Check initial season
-    expect(screen.getByText(/Season 1/i)).toBeInTheDocument()
+
+    // Check initial season - now appears in both badge and game log
+    const seasonElements = screen.getAllByText(/Season 1/i)
+    expect(seasonElements.length).toBeGreaterThanOrEqual(1)
 
     // Check species names
     expect(screen.getByText('Grass')).toBeInTheDocument()
@@ -25,7 +32,7 @@ describe('GameBlank Component', () => {
 
     const rabbit = screen.getByText('Rabbit')
     fireEvent.click(rabbit)
-    
+
     // The parent div should have "selected" class
     expect(rabbit.closest('.itemStyle')).toHaveClass('selected')
   })
@@ -42,8 +49,9 @@ describe('GameBlank Component', () => {
     // New species should appear
     expect(screen.getByText('Berry Bush')).toBeInTheDocument()
 
-    // Notification should appear
-    expect(screen.getByText(/New species introduced: Berry Bush!/i)).toBeInTheDocument()
+    // Notification should appear in both notification area and game log
+    const messages = screen.getAllByText(/New species introduced: Berry Bush!/i)
+    expect(messages.length).toBeGreaterThanOrEqual(1)
   })
 
   test('multiple season changes introduce multiple species', () => {
@@ -56,9 +64,13 @@ describe('GameBlank Component', () => {
 
     expect(screen.getByText('Berry Bush')).toBeInTheDocument()
     expect(screen.getByText('Deer')).toBeInTheDocument()
-    
-    expect(screen.getByText(/New species introduced: Berry Bush!/i)).toBeInTheDocument()
-    expect(screen.getByText(/New species introduced: Deer!/i)).toBeInTheDocument()
+
+    // Messages appear in both notification area and game log
+    const berryMessages = screen.getAllByText(/New species introduced: Berry Bush!/i)
+    expect(berryMessages.length).toBeGreaterThanOrEqual(1)
+
+    const deerMessages = screen.getAllByText(/New species introduced: Deer!/i)
+    expect(deerMessages.length).toBeGreaterThanOrEqual(1)
   })
 
 })
