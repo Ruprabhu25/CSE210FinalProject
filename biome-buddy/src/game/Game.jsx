@@ -158,7 +158,7 @@ export default function GameBlank() {
 
   return (
     <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
-      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} />
+      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()}/>
       <SpeciesPanel
         speciesArr={speciesMetadata}
         selected={selected}
