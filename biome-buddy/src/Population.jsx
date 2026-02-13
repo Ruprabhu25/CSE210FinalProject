@@ -1,6 +1,6 @@
-class Population {
-    constructor(speciesId, size = 0, baseGrowthRate = 0, baseMortalityRate = 0) {
-        this.speciesId = speciesId
+export class Population {
+    constructor(speciesName, size = 0, baseGrowthRate = 0, baseMortalityRate = 0) {
+        this.speciesName = speciesName
         this.size = size
         this.baseGrowthRate = baseGrowthRate
         this.baseMortalityRate = baseMortalityRate
@@ -24,4 +24,3 @@ class Population {
         }
     }
 }
-export default Population
