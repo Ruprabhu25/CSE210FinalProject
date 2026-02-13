@@ -1,8 +1,7 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import GameBlank from '../src/game/Game'
-import { Species } from '../src/Species'
-import gameLogSystem from '../src/systems/GameLogSystem'
+import gameLogSystem from '../src/components/GameLog/GameLogSystem'
 
 describe('GameBlank Component', () => {
 

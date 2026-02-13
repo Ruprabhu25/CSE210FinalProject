@@ -1,6 +1,6 @@
 import System from "./System"
 import { disasters } from "../data/disasters"
-import gameLogSystem from "./GameLogSystem"
+import gameLogSystem from "../components/GameLog/GameLogSystem"
 
 class DisasterSystem extends System {
     constructor() {

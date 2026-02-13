@@ -1,7 +1,7 @@
 import React from 'react'
 import './SpeciesPanel.css'
 
-export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, growthInput, changeGrowth, updateGrowthForSelected, setGrowthInput, nextSeason }) {
+export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, growthInput, changeGrowth, updateGrowthForSelected, setGrowthInput, nextSeason, populations }) {
   return (
     <div className='outerPanelStyle'>
       <div className='innerPanelStyle' aria-label="Species panel">
@@ -16,7 +16,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
               <div className="iconStyle">{icons[s.trophic] || '🐾'}</div>
               <div>
                 <div className="speciesName">{s.name}</div>
-                <div className="speciesPop">{Math.round(s.population ?? 0)}</div>
+                <div className="speciesPop">{Math.round(populations?.get(s.name)?.getCurrentSize() ?? s.population ?? 0)}</div>
               </div>
             </div>
           ))}
