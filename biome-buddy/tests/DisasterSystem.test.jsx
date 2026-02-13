@@ -19,7 +19,8 @@ function makeMockContext() {
         populations,
         trophicLevel,
         ecosystemHealth: 1,
-        determineSeason: () => 'Summer'
+        determineSeason: () => 'Summer',
+        calculateEcosystemHealth: () => 0.75
     }
 }
 

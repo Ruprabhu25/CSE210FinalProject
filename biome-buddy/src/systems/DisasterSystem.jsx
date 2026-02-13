@@ -1,6 +1,5 @@
 import System from "./System"
 import { disasters } from "../data/disasters"
-import { calculateEcosystemHealth } from "../GameContext"
 import gameLogSystem from "./GameLogSystem"
 
 class DisasterSystem extends System {
@@ -49,22 +48,11 @@ class DisasterSystem extends System {
                     }
                 }
 
-                // recompute ecosystem health using available population state
-                const speciesByTrophicLevel = {}
-                for (const [level, speciesIds] of context.trophicLevel) {
-                    speciesByTrophicLevel[level] = (speciesIds || []).map((id) => {
-                        const p = context.populations.get(id)
-                        return {
-                            name: `species-${id}`,
-                            population: p ? p.size : 0,
-                            biomassPerIndividual: 1,
-                            energyPerIndividual: 1
-                        }
-                    })
-                }
-
+                // recompute ecosystem health using context
+                let health = 0
                 try {
-                    health = calculateEcosystemHealth()
+                    health = context.calculateEcosystemHealth()
+                    context.ecosystemHealth = health
                 } catch (e) {
                     console.error('Failed to calculate ecosystem balance', e)
                 }
@@ -73,7 +61,7 @@ class DisasterSystem extends System {
                 gameLogSystem.addEntry({
                     season: context.determineSeason(),
                     name: disaster.title,
-                    message: `${disaster.title}: ${disaster.description} — ecosystem health ${Math.round((context.ecosystemHealth ?? 0) * 100)}%`
+                    message: `${disaster.title}: ${disaster.description} — ecosystem health ${Math.round(health * 100)}%`
                 })
 
                 this.lastDisasterRound = context.roundNumber
