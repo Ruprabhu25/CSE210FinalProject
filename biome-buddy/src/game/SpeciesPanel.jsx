@@ -12,7 +12,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
             <div
               key={s.name}
               className={`itemStyle ${selected === i ? 'selected' : ''}`}
-              onClick={(e) => { e.stopPropagation(); setSelected(i) }}
+              onClick={(e) => {e.stopPropagation();setSelected(i);onPlayerAction(s.name)}}
             >
               <div className="iconStyle">{icons[s.trophic] || '🐾'}</div>
               <div>

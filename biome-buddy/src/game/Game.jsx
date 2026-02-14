@@ -78,54 +78,48 @@ export default function GameBlank() {
 
   // --- Advance round (triggers game simulation) ---
   function advanceRound() {
-    if (!engine) return
-    console.log('Before round:', {
-      round: engine.context.roundNumber,
-      grassPop: getPopulationSize(speciesMetadata[0]?.name),
-    })
-    engine.runRound()
-    console.log('After round:', {
-      round: engine.context.roundNumber,
-      grassPop: getPopulationSize(speciesMetadata[0]?.name),
-    })
-    setGameContextState({ ...engine.context })
+    handlePlayerAction(null) // just run round without any selected species
   }
 
   // --- Player action: set chosen species and run a round ---
-  function handlePlayerAction(speciesName) {
+  function handlePlayerAction(selectedSpeciesName = null) {
     if (!engine) return
     const playerSystem = engine.systems.find(s => s.name === 'PlayerActionSystem')
     if (!playerSystem) {
       console.warn('PlayerActionSystem not found')
       return
     }
-    // Directly set the chosenSpeciesName property
-    playerSystem.chosenSpeciesName = speciesName
+    if (selectedSpeciesName) {
+      playerSystem.chosenSpeciesName = selectedSpeciesName
+    } 
+    else { 
+      playerSystem.chosenSpeciesName = ""
+    }
+    const seasonBeforeRound = engine.context.determineSeason()
     engine.runRound()
     setGameContextState({ ...engine.context })
-    const currentSeason = context?.determineSeason()
-    gameLogSystem.addEntry({
-      season: currentSeason,
-      message: speciesName
-        ? `${speciesName} population is growing faster than usual`
-        : 'Life goes on as usual in the forest'
-    })
-  }
-
-  // --- Log season changes ---
-  const currentSeason = context?.determineSeason()
-  useEffect(() => {
-    if (!currentSeason) return
-    // If we have a previous value and it differs, log the change
-    if (lastLoggedSeason.current && lastLoggedSeason.current !== currentSeason) {
+    const seasonAfterRound = engine.context.determineSeason()
+    if (selectedSpeciesName) {
       gameLogSystem.addEntry({
-        season: currentSeason,
-        message: `Season changed to ${currentSeason}`
+        season: seasonBeforeRound,
+        message: `${selectedSpeciesName} population is growing faster than usual`
+      })
+    } 
+    else {
+      gameLogSystem.addEntry({
+        season: seasonBeforeRound,
+        message: 'Life goes on as usual in the forest'
       })
     }
-    // Update the ref for future comparisons
-    lastLoggedSeason.current = currentSeason
-  }, [currentSeason])
+    if (seasonBeforeRound !== seasonAfterRound) {
+      gameLogSystem.addEntry({
+        season: seasonAfterRound,
+        message: `Season changed to ${seasonAfterRound}`
+      })
+    }
+    lastLoggedSeason.current = seasonAfterRound
+  }
+
 
   if (!engine || !context) {
     return <div>Loading game...</div>

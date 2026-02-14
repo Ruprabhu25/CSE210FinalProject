@@ -69,7 +69,6 @@ class FoodChainSystem extends System {
                     }
                 }
             }
-            console.log(`populations after FoodChainSystem between ${preyLevel.name} and ${predatorLevel.name}: ${Array.from(this.populations.values()).map(p => p.getCurrentSize())}`)
         }
     }
 }
