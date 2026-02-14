@@ -102,8 +102,8 @@ describe('Game integration and components', () => {
 		// select Rabbit and advance -> should log Rabbit growth
 		const rabbit = screen.getByText('Rabbit')
 		fireEvent.click(rabbit)
-		fireEvent.click(nextBtn)
 		const entriesB = gameLogSystem.getEntries()
+		console.log(entriesB)
 		expect(entriesB[0].message).toMatch(/Rabbit population is growing faster than usual/i)
 	})
 

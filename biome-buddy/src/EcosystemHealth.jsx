@@ -26,6 +26,7 @@ function calculateSpeciesScore(population, biomassPerIndividual, energyPerIndivi
  * @returns {number} Ecosystem health
  */
 export function EcosystemHealth(trophicLevels, populations) {
+  
   let hasExtinction = false;
   const levelScores = trophicLevels.map((trophicLevel) => {
     let totalPop = 0;
@@ -38,9 +39,8 @@ export function EcosystemHealth(trophicLevels, populations) {
       hasExtinction = true;
       return;
     }
-
     speciesEntries.forEach(([speciesId, speciesData]) => {
-      const pop = populations.get(Number(speciesId));
+      const pop = populations.get(speciesId);
       let size = 0;
       if (pop) {
         size = pop.getCurrentSize();
