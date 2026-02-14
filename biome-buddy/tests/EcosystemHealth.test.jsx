@@ -22,14 +22,16 @@ function MockTestData(speciesByLevel) {
     level.speciesMap = {};
   });
 
-  let speciesId = 1;
+  let speciesId = "a";
   Object.entries(speciesByLevel).forEach(([levelName, species]) => {
     const level = trophicLevels.find(t => t.name === levelName);
     if (level) {
       species.forEach(spec => {
         level.speciesMap[speciesId] = { biomass: spec.biomass, energy: spec.energy };
         populations.set(speciesId, new Population(speciesId, spec.population, 0, 0));
-        speciesId++;
+        console.log(speciesId);
+        speciesId = String.fromCharCode(speciesId.charCodeAt(0) + 1);
+        console.log(speciesId);
       });
     }
   });

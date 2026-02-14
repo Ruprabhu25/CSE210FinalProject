@@ -10,7 +10,7 @@ class FoodChainSystem extends System {
     getTotalPopulation(speciesIds) {
         let total = 0
         for (const id of speciesIds) {
-            const pop = this.populations.get(Number(id))
+            const pop = this.populations.get(id)
             if (pop) {
                 total += pop.getCurrentSize()
             }
@@ -49,13 +49,13 @@ class FoodChainSystem extends System {
             // If prey are scarce relative to predators, predators decline and prey decline slightly due to overconsumption
             if (actualRatio < idealRatio) {
                 for (const id of predatorSpeciesIds) {
-                    const pop = this.populations.get(Number(id))
+                    const pop = this.populations.get(id)
                     if (pop) {
                         pop.updatePopulationByMortalityRate(1 + (1-multiplier)*MULTIPLIER_DIVISION_FACTOR)
                     }
                 }
                 for (const id of preySpeciesIds) {
-                    const pop = this.populations.get(Number(id))
+                    const pop = this.populations.get(id)
                     if (pop) {
                         pop.updatePopulationByMortalityRate(1 + (1-multiplier)*MULTIPLIER_DIVISION_FACTOR)
                     }
@@ -64,13 +64,13 @@ class FoodChainSystem extends System {
             else {
                 // If prey are abundant, predators grow and prey decrease slightly
                 for (const id of predatorSpeciesIds) {
-                    const pop = this.populations.get(Number(id))
+                    const pop = this.populations.get(id)
                     if (pop) {
                         pop.updatePopulationByGrowthRate(1 + deviation*MULTIPLIER_DIVISION_FACTOR)
                     }
                 }
                 for (const id of preySpeciesIds) {
-                    const pop = this.populations.get(Number(id))
+                    const pop = this.populations.get(id)
                     if (pop) {
                         pop.updatePopulationByMortalityRate(1 - Math.max(0, multiplier/MULTIPLIER_DIVISION_FACTOR))
                     }
