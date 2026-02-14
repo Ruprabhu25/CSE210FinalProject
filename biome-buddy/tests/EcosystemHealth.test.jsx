@@ -29,9 +29,7 @@ function MockTestData(speciesByLevel) {
       species.forEach(spec => {
         level.speciesMap[speciesId] = { biomass: spec.biomass, energy: spec.energy };
         populations.set(speciesId, new Population(speciesId, spec.population, 0, 0));
-        console.log(speciesId);
         speciesId = String.fromCharCode(speciesId.charCodeAt(0) + 1);
-        console.log(speciesId);
       });
     }
   });
