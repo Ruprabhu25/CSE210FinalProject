@@ -39,8 +39,6 @@ export default function GameBlank() {
     for (const species of speciesArray) {
       const pop = engine.context.populations.get(species.name)
       if (pop) {
-        // keep lookup by numeric speciesid for UI helpers
-        populationsBySpeciesId.set(species.speciesid, pop)
         // also keep lookup by species name so systems that expect name-keyed maps still work
         populationsBySpeciesId.set(species.name, pop)
       }
@@ -83,12 +81,12 @@ export default function GameBlank() {
     if (!engine) return
     console.log('Before round:', {
       round: engine.context.roundNumber,
-      grassPop: getPopulationSize(speciesMetadata[0]?.speciesid),
+      grassPop: getPopulationSize(speciesMetadata[0]?.name),
     })
     engine.runRound()
     console.log('After round:', {
       round: engine.context.roundNumber,
-      grassPop: getPopulationSize(speciesMetadata[0]?.speciesid),
+      grassPop: getPopulationSize(speciesMetadata[0]?.name),
     })
     setGameContextState({ ...engine.context })
   }
@@ -158,7 +156,7 @@ export default function GameBlank() {
 
   return (
     <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
-      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()}/>
+      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()*100}/>
       <SpeciesPanel
         speciesArr={speciesMetadata}
         selected={selected}

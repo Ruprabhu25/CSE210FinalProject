@@ -17,7 +17,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
               <div className="iconStyle">{icons[s.trophic] || '🐾'}</div>
               <div>
                 <div className="speciesName">{s.name}</div>
-                <div className="speciesPop">{Math.round(getPopulationSize?.(s.speciesid) ?? 0)}</div>
+                <div className="speciesPop">{Math.round(getPopulationSize?.(s.name) ?? 0)}</div>
               </div>
             </div>
           ))}
