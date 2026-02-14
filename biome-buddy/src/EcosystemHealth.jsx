@@ -39,7 +39,6 @@ export function EcosystemHealth(trophicLevels, populations) {
       hasExtinction = true;
       return;
     }
-    // console.log("populations:", populations);
     speciesEntries.forEach(([speciesId, speciesData]) => {
       const pop = populations.get(speciesId);
       let size = 0;
@@ -78,6 +77,5 @@ export function EcosystemHealth(trophicLevels, populations) {
    * Returned in range [0, 1]
    */
   const ecosystemHealth = normalizedScores.reduce((a, b) => a + b, 0) / normalizedScores.length;
-  // console.log("Ecosystem Health Calculation:", {levelScores, normalizedScores, ecosystemHealth});
   return ecosystemHealth;
 }
