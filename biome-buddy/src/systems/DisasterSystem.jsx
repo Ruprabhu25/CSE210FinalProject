@@ -2,6 +2,34 @@ import System from "./System"
 import { disasters } from "../data/disasters"
 import gameLogSystem from "../components/GameLog/GameLogSystem"
 
+// Applies a chosen disaster action to the targeted species population.
+// Returns true when a population value was updated.
+export function applyDisasterActionToSpecies(speciesArr, action, populations) {
+    if (!action || !Array.isArray(speciesArr)) return false
+
+    const targetSpecies = speciesArr.find((s) => s.name === action.target)
+    if (!targetSpecies) return false
+
+    // Legacy shape used in older game flow.
+    if (targetSpecies._population && typeof targetSpecies._population.getCurrentSize === "function") {
+        const currentPop = targetSpecies._population.getCurrentSize()
+        const nextPop = Math.max(0, Math.round(currentPop + (action.deltaPopulation || 0)))
+        targetSpecies._population.size = nextPop
+        return true
+    }
+
+    // Current master shape uses a populations map keyed by species name.
+    const pop = populations?.get?.(targetSpecies.name)
+    if (pop && typeof pop.getCurrentSize === "function") {
+        const currentPop = pop.getCurrentSize()
+        const nextPop = Math.max(0, Math.round(currentPop + (action.deltaPopulation || 0)))
+        pop.size = nextPop
+        return true
+    }
+
+    return false
+}
+
 class DisasterSystem extends System {
     constructor() {
         super("DisasterSystem")
