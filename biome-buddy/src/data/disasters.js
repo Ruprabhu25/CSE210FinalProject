@@ -22,7 +22,7 @@ export const disasters = {
       {
         label: "Protect Nesting Zones",
         target: "Hawk",
-        deltaPopulation: 2
+        deltaPopulation: 10
       }
     ],
     icon: wildfireIcon
@@ -43,7 +43,7 @@ export const disasters = {
       {
         label: "Save Cliff Fox Nests",
         target: "Fox",
-        deltaPopulation: 5
+        deltaPopulation: 25
       }
     ],
     icon: landslideIcon
@@ -80,7 +80,7 @@ export const disasters = {
       {
         label: "Conserve Water",
         target: "Fox",
-        deltaPopulation: 4
+        deltaPopulation: 20
       },
       {
         label: "Protect Watering Holes",
@@ -106,7 +106,7 @@ export const disasters = {
       {
         label: "Allow Spread",
         target: "Hawk",
-        deltaPopulation: 1
+        deltaPopulation: 5
       }
     ],
     icon: invasiveIcon
