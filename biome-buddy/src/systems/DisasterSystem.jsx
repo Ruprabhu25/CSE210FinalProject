@@ -46,21 +46,29 @@ class DisasterSystem extends System {
         this.roundsPerYear = 0
     }
 
-    // Public method for UI/engine callers to apply selected disaster actions
-    // while keeping population-mutation helper logic private to this module.
+    // compatibility with current tests (change in future PR)
     applyPlayerDisasterAction(speciesArr, action, populations) {
         return applyDisasterActionToSpecies(speciesArr, action, populations)
-    }
-
-    // Public method to clear active popup disaster from context.
-    clearCurrentDisaster(context) {
-        if (context) context.currentDisaster = null
     }
 
     apply(context) {
         // UI popup disasters are selected here so Game.jsx only reads from engine context.
         // When popup mode is enabled, skip legacy yearly disaster logic to avoid duplicate logs/effects.
         if (context.enablePopupDisasters) {
+            if (context.currentDisaster) {
+                const selectedAction = context.pendingDisasterAction
+                if (selectedAction) {
+                    applyDisasterActionToSpecies(
+                        Array.from(context.species.values()),
+                        selectedAction,
+                        context.populations
+                    )
+                }
+                context.pendingDisasterAction = null
+                context.currentDisaster = null
+                return
+            }
+
             if (!context.currentDisaster && Math.random() < 0.4) {
                 const keys = Object.keys(disasters)
                 const key = keys[Math.floor(Math.random() * keys.length)]

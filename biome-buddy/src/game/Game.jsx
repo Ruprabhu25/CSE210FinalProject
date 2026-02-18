@@ -118,12 +118,12 @@ export default function GameBlank() {
 
     if (selectedSpeciesName) {
       gameLogSystem.addEntry({
-        season: seasonBeforeRound,
+        season: seasonAfterRound,
         message: `${selectedSpeciesName} population is growing faster than usual`
       })
     } else {
       gameLogSystem.addEntry({
-        season: seasonBeforeRound,
+        season: seasonAfterRound,
         message: 'Life goes on as usual in the forest'
       })
     }
@@ -132,25 +132,29 @@ export default function GameBlank() {
   }
 
   function handleDisasterAction(action) {
-    const disasterSystem = engine?.systems?.find((s) => s.name === 'DisasterSystem')
+    if (!engine) return
 
-    if (!action) {
-      disasterSystem?.clearCurrentDisaster(context)
-      setGameContextState({ ...engine.context })
-      return
+    const seasonBeforeRound = engine.context.determineSeason()
+    engine.context.pendingDisasterAction = action || null
+    engine.runRound()
+    setGameContextState({ ...engine.context })
+    const seasonAfterRound = engine.context.determineSeason()
+
+    if (seasonBeforeRound !== seasonAfterRound) {
+      gameLogSystem.addEntry({
+        season: seasonAfterRound,
+        message: `Season changed to ${seasonAfterRound}`
+      })
     }
 
-    // Apply the selected disaster action effect to the targeted species population.
-    const updated = disasterSystem?.applyPlayerDisasterAction(speciesMetadata, action, context?.populations)
-    if (updated) {
-      // Record the player's disaster response and its population delta in the event log.
+    if (action) {
       gameLogSystem.addEntry({
-        season: context?.determineSeason?.() ?? 'Unknown',
+        season: seasonAfterRound,
         message: `Action chosen: ${action.label} (${action.deltaPopulation >= 0 ? '+' : ''}${action.deltaPopulation || 0} ${action.target})`,
       })
     }
-    disasterSystem?.clearCurrentDisaster(context)
-    setGameContextState({ ...engine.context })
+
+    lastLoggedSeason.current = seasonAfterRound
   }
 
 
