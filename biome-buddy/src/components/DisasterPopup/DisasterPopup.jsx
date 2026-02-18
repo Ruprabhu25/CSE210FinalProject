@@ -2,15 +2,18 @@
 import "./DisasterPopup.css";
 import React from "react";
 
-export default function DisasterPopup({ disaster, onClose }) {
+export default function DisasterPopup({ disaster, onAction }) {
   if (!disaster) return null;
+
+  const handleAction = (action) => {
+    if (onAction) onAction(action);
+  };
+  const formatEffect = (delta, target) => `${delta > 0 ? "+" : ""}${delta} ${target}`;
 
   return (
     <div className="overlay">
       <div className="popup-frame">
         <div className="popup-content">
-          <button className="close" onClick={onClose}>✕</button>
-
           <div className="popup-header">
             <h2>{disaster.title}</h2>
             {disaster.icon && (
@@ -29,13 +32,19 @@ export default function DisasterPopup({ disaster, onClose }) {
 
           <div className="actions">
             {disaster.actions.map((action, i) => (
-              <button key={i} className="primary">
-                {action}
+              <button
+                key={i}
+                className="primary"
+                onClick={() => handleAction(action)}
+              >
+                {typeof action === "string"
+                  ? action
+                  : `${action.label} (${formatEffect(
+                      action.deltaPopulation || 0,
+                      action.target
+                    )})`}
               </button>
             ))}
-            <button className="secondary" onClick={onClose}>
-              Go back
-            </button>
           </div>
         </div>
       </div>

@@ -2,6 +2,34 @@ import System from "./System"
 import { disasters } from "../data/disasters"
 import gameLogSystem from "../components/GameLog/GameLogSystem"
 
+// Applies a chosen disaster action to the targeted species population.
+// Returns true when a population value was updated.
+function applyDisasterActionToSpecies(speciesArr, action, populations) {
+    if (!action || !Array.isArray(speciesArr)) return false
+
+    const targetSpecies = speciesArr.find((s) => s.name === action.target)
+    if (!targetSpecies) return false
+
+    // Legacy shape used in older game flow.
+    if (targetSpecies._population && typeof targetSpecies._population.getCurrentSize === "function") {
+        const currentPop = targetSpecies._population.getCurrentSize()
+        const nextPop = Math.max(0, Math.round(currentPop + (action.deltaPopulation || 0)))
+        targetSpecies._population.size = nextPop
+        return true
+    }
+
+    // Current master shape uses a populations map keyed by species name.
+    const pop = populations?.get?.(targetSpecies.name)
+    if (pop && typeof pop.getCurrentSize === "function") {
+        const currentPop = pop.getCurrentSize()
+        const nextPop = Math.max(0, Math.round(currentPop + (action.deltaPopulation || 0)))
+        pop.size = nextPop
+        return true
+    }
+
+    return false
+}
+
 class DisasterSystem extends System {
     constructor() {
         super("DisasterSystem")
@@ -18,7 +46,38 @@ class DisasterSystem extends System {
         this.roundsPerYear = 0
     }
 
+    // compatibility with current tests (change in future PR)
+    applyPlayerDisasterAction(speciesArr, action, populations) {
+        return applyDisasterActionToSpecies(speciesArr, action, populations)
+    }
+
     apply(context) {
+        // UI popup disasters are selected here so Game.jsx only reads from engine context.
+        // When popup mode is enabled, skip legacy yearly disaster logic to avoid duplicate logs/effects.
+        if (context.enablePopupDisasters) {
+            if (context.currentDisaster) {
+                const selectedAction = context.pendingDisasterAction
+                if (selectedAction) {
+                    applyDisasterActionToSpecies(
+                        Array.from(context.species.values()),
+                        selectedAction,
+                        context.populations
+                    )
+                }
+                context.pendingDisasterAction = null
+                context.currentDisaster = null
+                return
+            }
+
+            if (!context.currentDisaster && Math.random() < 0.4) {
+                const keys = Object.keys(disasters)
+                const key = keys[Math.floor(Math.random() * keys.length)]
+                const disaster = disasters[key]
+                context.currentDisaster = disaster
+            }
+            return
+        }
+
         // initialize roundsPerYear on first run
         if (!this.roundsPerYear) {
             this.roundsPerYear = context.numRoundsInSeason * 4
@@ -64,9 +123,6 @@ class DisasterSystem extends System {
                     message: `${disaster.title}: ${disaster.description} — ecosystem health ${Math.round(health * 100)}%`
                 })
 
-                this.lastDisasterRound = context.roundNumber
-            } else {
-                // no disaster this year but still advance lastDisasterRound so we check again next year
                 this.lastDisasterRound = context.roundNumber
             }
         }

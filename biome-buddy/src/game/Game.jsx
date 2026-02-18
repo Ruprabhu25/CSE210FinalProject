@@ -6,6 +6,7 @@ import GameTop from './GameTop.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
+import DisasterPopup from '../components/DisasterPopup/DisasterPopup.jsx'
 import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
@@ -95,28 +96,64 @@ export default function GameBlank() {
     else { 
       playerSystem.chosenSpeciesName = ""
     }
+    const hadDisasterBeforeRound = !!engine.context.currentDisaster
     const seasonBeforeRound = engine.context.determineSeason()
     engine.runRound()
     setGameContextState({ ...engine.context })
     const seasonAfterRound = engine.context.determineSeason()
-    if (selectedSpeciesName) {
-      gameLogSystem.addEntry({
-        season: seasonBeforeRound,
-        message: `${selectedSpeciesName} population is growing faster than usual`
-      })
-    } 
-    else {
-      gameLogSystem.addEntry({
-        season: seasonBeforeRound,
-        message: 'Life goes on as usual in the forest'
-      })
-    }
+
     if (seasonBeforeRound !== seasonAfterRound) {
       gameLogSystem.addEntry({
         season: seasonAfterRound,
         message: `Season changed to ${seasonAfterRound}`
       })
     }
+    if (!hadDisasterBeforeRound && engine.context.currentDisaster) {
+      gameLogSystem.addEntry({
+        season: seasonAfterRound,
+        name: engine.context.currentDisaster.title,
+        message: `${engine.context.currentDisaster.title}: ${engine.context.currentDisaster.description}`,
+      })
+    }
+
+    if (selectedSpeciesName) {
+      gameLogSystem.addEntry({
+        season: seasonAfterRound,
+        message: `${selectedSpeciesName} population is growing faster than usual`
+      })
+    } else {
+      gameLogSystem.addEntry({
+        season: seasonAfterRound,
+        message: 'Life goes on as usual in the forest'
+      })
+    }
+
+    lastLoggedSeason.current = seasonAfterRound
+  }
+
+  function handleDisasterAction(action) {
+    if (!engine) return
+
+    const seasonBeforeRound = engine.context.determineSeason()
+    engine.context.pendingDisasterAction = action || null
+    engine.runRound()
+    setGameContextState({ ...engine.context })
+    const seasonAfterRound = engine.context.determineSeason()
+
+    if (seasonBeforeRound !== seasonAfterRound) {
+      gameLogSystem.addEntry({
+        season: seasonAfterRound,
+        message: `Season changed to ${seasonAfterRound}`
+      })
+    }
+
+    if (action) {
+      gameLogSystem.addEntry({
+        season: seasonAfterRound,
+        message: `Action chosen: ${action.label} (${action.deltaPopulation >= 0 ? '+' : ''}${action.deltaPopulation || 0} ${action.target})`,
+      })
+    }
+
     lastLoggedSeason.current = seasonAfterRound
   }
 
@@ -161,6 +198,7 @@ export default function GameBlank() {
         getPopulationSize={getPopulationSize}
       />
       <GameLog />
+      <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} />
     </div>
   )
 }
