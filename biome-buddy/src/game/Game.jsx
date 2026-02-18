@@ -101,18 +101,7 @@ export default function GameBlank() {
     engine.runRound()
     setGameContextState({ ...engine.context })
     const seasonAfterRound = engine.context.determineSeason()
-    if (selectedSpeciesName) {
-      gameLogSystem.addEntry({
-        season: seasonBeforeRound,
-        message: `${selectedSpeciesName} population is growing faster than usual`
-      })
-    } 
-    else if (!engine.context.currentDisaster) {
-      gameLogSystem.addEntry({
-        season: seasonBeforeRound,
-        message: 'Life goes on as usual in the forest'
-      })
-    }
+
     if (seasonBeforeRound !== seasonAfterRound) {
       gameLogSystem.addEntry({
         season: seasonAfterRound,
@@ -124,6 +113,18 @@ export default function GameBlank() {
         season: seasonAfterRound,
         name: engine.context.currentDisaster.title,
         message: `${engine.context.currentDisaster.title}: ${engine.context.currentDisaster.description}`,
+      })
+    }
+
+    if (selectedSpeciesName) {
+      gameLogSystem.addEntry({
+        season: seasonBeforeRound,
+        message: `${selectedSpeciesName} population is growing faster than usual`
+      })
+    } else {
+      gameLogSystem.addEntry({
+        season: seasonBeforeRound,
+        message: 'Life goes on as usual in the forest'
       })
     }
 
