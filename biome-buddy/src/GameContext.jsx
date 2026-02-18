@@ -29,6 +29,8 @@ class GameContext {
         }
 
         this.numRoundsInSeason = 3 //int - the number of rounds in each season, which determines how long each season lasts. 
+        this.currentDisaster = null // active disaster selected by systems for UI popup
+        this.enablePopupDisasters = true // allow DisasterSystem to drive popup disasters
     }
     calculateEcosystemHealth() {
         return EcosystemHealth(this.trophicLevels, this.populations)

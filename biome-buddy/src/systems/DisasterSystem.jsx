@@ -4,7 +4,7 @@ import gameLogSystem from "../components/GameLog/GameLogSystem"
 
 // Applies a chosen disaster action to the targeted species population.
 // Returns true when a population value was updated.
-export function applyDisasterActionToSpecies(speciesArr, action, populations) {
+function applyDisasterActionToSpecies(speciesArr, action, populations) {
     if (!action || !Array.isArray(speciesArr)) return false
 
     const targetSpecies = speciesArr.find((s) => s.name === action.target)
@@ -46,7 +46,30 @@ class DisasterSystem extends System {
         this.roundsPerYear = 0
     }
 
+    // Public method for UI/engine callers to apply selected disaster actions
+    // while keeping population-mutation helper logic private to this module.
+    applyPlayerDisasterAction(speciesArr, action, populations) {
+        return applyDisasterActionToSpecies(speciesArr, action, populations)
+    }
+
+    // Public method to clear active popup disaster from context.
+    clearCurrentDisaster(context) {
+        if (context) context.currentDisaster = null
+    }
+
     apply(context) {
+        // UI popup disasters are selected here so Game.jsx only reads from engine context.
+        // When popup mode is enabled, skip legacy yearly disaster logic to avoid duplicate logs/effects.
+        if (context.enablePopupDisasters) {
+            if (!context.currentDisaster && Math.random() < 0.4) {
+                const keys = Object.keys(disasters)
+                const key = keys[Math.floor(Math.random() * keys.length)]
+                const disaster = disasters[key]
+                context.currentDisaster = disaster
+            }
+            return
+        }
+
         // initialize roundsPerYear on first run
         if (!this.roundsPerYear) {
             this.roundsPerYear = context.numRoundsInSeason * 4
@@ -92,9 +115,6 @@ class DisasterSystem extends System {
                     message: `${disaster.title}: ${disaster.description} — ecosystem health ${Math.round(health * 100)}%`
                 })
 
-                this.lastDisasterRound = context.roundNumber
-            } else {
-                // no disaster this year but still advance lastDisasterRound so we check again next year
                 this.lastDisasterRound = context.roundNumber
             }
         }

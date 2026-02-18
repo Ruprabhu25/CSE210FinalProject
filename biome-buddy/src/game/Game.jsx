@@ -11,8 +11,6 @@ import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
 import bgFall from '../assets/forest-fa.png'
-import { disasters } from '../data/disasters.js'
-import { applyDisasterActionToSpecies } from '../systems/DisasterSystem.jsx'
 
 
 export default function GameBlank() {
@@ -26,7 +24,6 @@ export default function GameBlank() {
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(null)
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
-  const [currentDisaster, setCurrentDisaster] = useState(null)
 
   // Initialize GameEngine with species
   useEffect(() => {
@@ -99,6 +96,7 @@ export default function GameBlank() {
     else { 
       playerSystem.chosenSpeciesName = ""
     }
+    const hadDisasterBeforeRound = !!engine.context.currentDisaster
     const seasonBeforeRound = engine.context.determineSeason()
     engine.runRound()
     setGameContextState({ ...engine.context })
@@ -109,7 +107,7 @@ export default function GameBlank() {
         message: `${selectedSpeciesName} population is growing faster than usual`
       })
     } 
-    else {
+    else if (!engine.context.currentDisaster) {
       gameLogSystem.addEntry({
         season: seasonBeforeRound,
         message: 'Life goes on as usual in the forest'
@@ -121,17 +119,11 @@ export default function GameBlank() {
         message: `Season changed to ${seasonAfterRound}`
       })
     }
-
-    // 40% chance to generate a random disaster popup event.
-    if (Math.random() < 0.4) {
-      const disasterKeys = Object.keys(disasters)
-      const randomKey = disasterKeys[Math.floor(Math.random() * disasterKeys.length)]
-      const disaster = disasters[randomKey]
-      setCurrentDisaster(disaster)
+    if (!hadDisasterBeforeRound && engine.context.currentDisaster) {
       gameLogSystem.addEntry({
         season: seasonAfterRound,
-        name: disaster.title,
-        message: `${disaster.title}: ${disaster.description}`,
+        name: engine.context.currentDisaster.title,
+        message: `${engine.context.currentDisaster.title}: ${engine.context.currentDisaster.description}`,
       })
     }
 
@@ -139,22 +131,25 @@ export default function GameBlank() {
   }
 
   function handleDisasterAction(action) {
+    const disasterSystem = engine?.systems?.find((s) => s.name === 'DisasterSystem')
+
     if (!action) {
-      setCurrentDisaster(null)
+      disasterSystem?.clearCurrentDisaster(context)
+      setGameContextState({ ...engine.context })
       return
     }
 
     // Apply the selected disaster action effect to the targeted species population.
-    const updated = applyDisasterActionToSpecies(speciesMetadata, action, context?.populations)
+    const updated = disasterSystem?.applyPlayerDisasterAction(speciesMetadata, action, context?.populations)
     if (updated) {
       // Record the player's disaster response and its population delta in the event log.
       gameLogSystem.addEntry({
         season: context?.determineSeason?.() ?? 'Unknown',
         message: `Action chosen: ${action.label} (${action.deltaPopulation >= 0 ? '+' : ''}${action.deltaPopulation || 0} ${action.target})`,
       })
-      setGameContextState({ ...engine.context })
     }
-    setCurrentDisaster(null)
+    disasterSystem?.clearCurrentDisaster(context)
+    setGameContextState({ ...engine.context })
   }
 
 
@@ -198,7 +193,7 @@ export default function GameBlank() {
         getPopulationSize={getPopulationSize}
       />
       <GameLog />
-      <DisasterPopup disaster={currentDisaster} onAction={handleDisasterAction} />
+      <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} />
     </div>
   )
 }

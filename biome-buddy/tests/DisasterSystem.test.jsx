@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import DisasterSystem, { applyDisasterActionToSpecies } from '../src/systems/DisasterSystem'
+import DisasterSystem from '../src/systems/DisasterSystem'
 import gameLogSystem from '../src/components/GameLog/GameLogSystem'
 
 function makeMockContext() {
@@ -85,7 +85,7 @@ describe('DisasterSystem', () => {
     })
 })
 
-describe('applyDisasterActionToSpecies', () => {
+describe('DisasterSystem.applyPlayerDisasterAction', () => {
     function makePopulation(size) {
         return {
             size,
@@ -96,54 +96,59 @@ describe('applyDisasterActionToSpecies', () => {
     }
 
     it('applies deltaPopulation to a valid target in name-keyed populations map', () => {
+        const ds = new DisasterSystem()
         const speciesArr = [{ name: 'Rabbit' }]
         const populations = new Map([['Rabbit', makePopulation(200)]])
         const action = { label: 'Build Safe Burrows', target: 'Rabbit', deltaPopulation: 45 }
 
-        const updated = applyDisasterActionToSpecies(speciesArr, action, populations)
+        const updated = ds.applyPlayerDisasterAction(speciesArr, action, populations)
 
         expect(updated).toBe(true)
         expect(populations.get('Rabbit').getCurrentSize()).toBe(245)
     })
 
     it('clamps population at 0 when delta would make it negative', () => {
+        const ds = new DisasterSystem()
         const speciesArr = [{ name: 'Grass' }]
         const populations = new Map([['Grass', makePopulation(50)]])
         const action = { label: 'Divert Flooding', target: 'Grass', deltaPopulation: -1000 }
 
-        const updated = applyDisasterActionToSpecies(speciesArr, action, populations)
+        const updated = ds.applyPlayerDisasterAction(speciesArr, action, populations)
 
         expect(updated).toBe(true)
         expect(populations.get('Grass').getCurrentSize()).toBe(0)
     })
 
     it('returns false when target species does not exist', () => {
+        const ds = new DisasterSystem()
         const speciesArr = [{ name: 'Rabbit' }]
         const populations = new Map([['Rabbit', makePopulation(200)]])
         const action = { label: 'Remove Invaders', target: 'Grass', deltaPopulation: -40 }
 
-        const updated = applyDisasterActionToSpecies(speciesArr, action, populations)
+        const updated = ds.applyPlayerDisasterAction(speciesArr, action, populations)
 
         expect(updated).toBe(false)
         expect(populations.get('Rabbit').getCurrentSize()).toBe(200)
     })
 
     it('returns false for invalid action input', () => {
+        const ds = new DisasterSystem()
         const speciesArr = [{ name: 'Rabbit' }]
         const populations = new Map([['Rabbit', makePopulation(200)]])
 
-        const updated = applyDisasterActionToSpecies(speciesArr, null, populations)
+        const updated = ds.applyPlayerDisasterAction(speciesArr, null, populations)
 
         expect(updated).toBe(false)
         expect(populations.get('Rabbit').getCurrentSize()).toBe(200)
     })
 
     it('supports legacy _population shape when present on species object', () => {
+        const ds = new DisasterSystem()
         const legacyPopulation = makePopulation(20)
         const speciesArr = [{ name: 'Fox', _population: legacyPopulation }]
         const action = { label: 'Save Cliff Fox Nests', target: 'Fox', deltaPopulation: 5 }
 
-        const updated = applyDisasterActionToSpecies(speciesArr, action, new Map())
+        const updated = ds.applyPlayerDisasterAction(speciesArr, action, new Map())
 
         expect(updated).toBe(true)
         expect(legacyPopulation.getCurrentSize()).toBe(25)
