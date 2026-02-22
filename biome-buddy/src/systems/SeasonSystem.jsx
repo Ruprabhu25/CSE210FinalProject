@@ -4,21 +4,21 @@ class SeasonSystem extends System {
     constructor() {
         super("SeasonSystem")
         this.producerGrowthModifiers = {
-            "Spring": 1.5,
-            "Summer": 1.0,
-            "Fall": 0.7,
-            "Winter": 0.3
+            "spring": 1.5,
+            "summer": 1.0,
+            "fall": 0.7,
+            "winter": 0.3
         }
         this.producerMortalityModifiers = {
-            "Spring": 0.5,
-            "Summer": 1.0,
-            "Fall": 1.3,
-            "Winter": 5.0
+            "spring": 0.5,
+            "summer": 1.0,
+            "fall": 1.3,
+            "winter": 5.0
         }
     }
 
     apply(context) {
-        const currentSeason = context.determineSeason();
+        const currentSeason = context.determineSeason().toLowerCase();
         if (!(currentSeason in this.producerGrowthModifiers) || !(currentSeason in this.producerMortalityModifiers)) {
             console.error(`SeasonSystem has no growth or mortality modifier for season ${currentSeason}. Defaulting to 1.0.`);
         }

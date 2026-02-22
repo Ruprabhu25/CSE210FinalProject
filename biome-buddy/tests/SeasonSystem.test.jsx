@@ -19,10 +19,10 @@ describe('SeasonSystem', () => {
   beforeEach(() => {
     system = new SeasonSystem()
     population = new MockPopulation()
-    system.producerGrowthModifiers = {"Spring": springGrowthModifier}
-    system.producerMortalityModifiers = {"Spring": springMortalityModifier}
+    system.producerGrowthModifiers = {"spring": springGrowthModifier}
+    system.producerMortalityModifiers = {"spring": springMortalityModifier}
     context = {
-      determineSeason: vi.fn(() => 'Spring'),
+      determineSeason: vi.fn(() => 'spring'),
       trophicLevels: [ { populationMap: { 'Grass': {} } } ],
       populations: new Map([['Grass', population]])
     }
