@@ -17,7 +17,7 @@ class TrophicLevel {
 }
 
 const grass = new Species('Grass', 1, 0.05, 0)
-const grassPop = new Population(grass.name, 1000, 0.2, 0.02)
+const grassPop = new Population(grass.name, 1000, 0.2, 0.05)
 class ProducerTrophic extends TrophicLevel {
     constructor() {
         super("Producers", { [grass.name]: grass }, { [grass.name]: grassPop }, 1);
@@ -33,7 +33,7 @@ class PrimaryConsumerTrophic extends TrophicLevel {
 }
 
 const fox = new Species('Fox', 20, 5)
-const foxPop = new Population(fox.name, 40, 0.06, 0.07)
+const foxPop = new Population(fox.name, 40, 0.10, 0.08)
 class SecondaryConsumerTrophic extends TrophicLevel {
     constructor() {
         super("Secondary Consumers", { [fox.name]: fox }, { [fox.name]: foxPop }, 1);
@@ -41,7 +41,7 @@ class SecondaryConsumerTrophic extends TrophicLevel {
 }
 
 const hawk = new Species('Hawk', 45, 6)
-const hawkPop = new Population(hawk.name, 12, 0.03, 0.08)
+const hawkPop = new Population(hawk.name, 12, 0.08, 0.07)
 class TertiaryConsumerTrophic extends TrophicLevel {
     constructor() {
         super("Tertiary Consumers", { [hawk.name]: hawk }, { [hawk.name]: hawkPop }, 1);
