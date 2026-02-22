@@ -42,7 +42,22 @@
   left: -20px;
   width: 120px; /* adjust as needed to match artwork */
   height: 120px;
-  background-image: url('./assets/border-popup.png');
+  background-image: url('../assets/border-popup-left.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* decorative image at the bottom-right corner of the modal */
+.confirm-modal::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; /* nudge so image sits over the modal corner */
+  right: -20px;
+  width: 120px; /* adjust as needed to match artwork */
+  height: 120px;
+  background-image: url('../assets/border-popup-right.png');
   background-repeat: no-repeat;
   background-size: contain;
   pointer-events: none;

@@ -13,6 +13,9 @@ export default function GameTop({ currentSeason, roundNumber, health }) {
         <div className="healthText">Ecosystem Health: {Math.round(health)}%</div>
       </div>
       <div className="seasonBadge"> {currentSeason}</div>
+      <button className="game-settings-button" aria-label="Settings">
+        <img src="src/assets/setting-button.png" alt="Settings" />
+      </button>
     </div>
   )
 }
