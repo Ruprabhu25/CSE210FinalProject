@@ -3,9 +3,9 @@ import './LeftPane.css'
 import californiaImg from '../assets/california.png'
 import forestIcon from '../assets/forest-icon.png'
 
-export default function LeftPane({ onForestClick }) {
+export default function LeftPane({ onForestClick, darkMode }) {
   return (
-    <div className="left-pane">
+    <div className={`left-pane ${darkMode ? 'dark-mode' : ''}`}>
       <div className="left-inner">
         <div className="left-image-wrap">
           <img src={californiaImg} alt="California" className="left-image" />

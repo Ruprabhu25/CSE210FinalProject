@@ -13,31 +13,6 @@
 
 .right-inner { background: #F9F7E6; z-index: 2; }
 
-.settings-button {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  z-index: 3;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
-}
-
-.settings-button:hover {
-  transform: scale(1.1);
-}
-
-.settings-button img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
-
 .welcome-text {
   width: 333px;
   height: 77px;
@@ -95,4 +70,28 @@
 
 @media (max-width: 700px) {
   .right-pane::before { left: 0; width: 100%; }
+}
+
+.right-pane.dark-mode {
+  background: #2a2a2a;
+  color: #ffffff;
+}
+
+.right-pane.dark-mode .right-inner {
+  background: #2a2a2a;
+}
+
+.right-pane.dark-mode .welcome-text {
+  color: #ffffff;
+}
+
+.right-pane.dark-mode .title {
+  background: linear-gradient(0deg, #90EE90 9.71%, #ffffff 83.01%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.right-pane.dark-mode .right-description {
+  color: #e0e0e0;
 }

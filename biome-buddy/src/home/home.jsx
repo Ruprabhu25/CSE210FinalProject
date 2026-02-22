@@ -9,6 +9,7 @@ function App() {
   const [started, setStarted] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [confirmedBiome, setConfirmedBiome] = useState(null)
+  const [darkMode, setDarkMode] = useState(false)
 
   // Keep started state in sync with browser history so back/forward work as expected.
   useEffect(() => {
@@ -51,8 +52,8 @@ function App() {
   return (
     <>
       <div className="home-container">
-        <LeftPane onForestClick={handleForestClick} />
-        <RightPane />
+        <LeftPane onForestClick={handleForestClick} darkMode={darkMode} />
+        <RightPane darkMode={darkMode} setDarkMode={setDarkMode} />
       </div>
 
       {showConfirm ? (
