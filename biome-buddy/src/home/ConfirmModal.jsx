@@ -16,7 +16,7 @@ export default function ConfirmModal({ onClose, onConfirm }) {
     if (audioEnabled === 'false') return
     
     const audio = new Audio(letsGoAudio)
-    audio.play().catch(error => console.log('Audio play failed:', error))
+    audio.play()?.catch(error => console.log('Audio play failed:', error))
   }
 
   const handleNewGame = () => {
