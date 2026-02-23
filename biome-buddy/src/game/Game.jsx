@@ -4,6 +4,7 @@ import GameEngine from '../GameEngine.jsx'
 import './Game.css'
 import GameTop from './GameTop.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
+import HomeButton from './HomeButton.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
 import DisasterPopup from '../components/DisasterPopup/DisasterPopup.jsx'
@@ -11,6 +12,7 @@ import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
 import bgFall from '../assets/forest-fa.png'
+import okeyDokeySound from '../assets/okey-dokey.wav'
 
 
 export default function GameBlank() {
@@ -30,6 +32,30 @@ export default function GameBlank() {
     if (gameEngineRef.current) return // Already initialized
 
     const engine = new GameEngine()
+
+    // Check for saved game state
+    const savedState = localStorage.getItem('biomeBuddySaveData')
+    if (savedState) {
+      const parsedState = JSON.parse(savedState)
+      // Restore game state
+      engine.context.roundNumber = parsedState.roundNumber || 0
+      engine.context.year = parsedState.year || 1
+      
+      // Restore populations
+      if (parsedState.populations) {
+        for (const [name, popData] of Object.entries(parsedState.populations)) {
+          const pop = engine.context.populations.get(name)
+          if (pop && popData.size !== undefined) {
+            pop.size = popData.size
+          }
+        }
+      }
+
+      // Restore game log if saved
+      if (parsedState.gameLog && Array.isArray(parsedState.gameLog)) {
+        parsedState.gameLog.forEach(entry => gameLogSystem.addEntry(entry))
+      }
+    }
 
     // Get species from GameContext (already created in Trophic.jsx)
     const speciesArray = Array.from(engine.context.species.values())
@@ -183,10 +209,66 @@ export default function GameBlank() {
     backgroundPosition: 'center',
   }
 
+  const handleHomeClick = () => {
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', '/')
+      window.location.reload()
+    }
+  }
+
+  const playOkeyDokeySound = () => {
+    const audioEnabled = localStorage.getItem('biomeBuddyAudioEnabled')
+    if (audioEnabled === 'false') return
+  
+    const audio = new Audio(okeyDokeySound)
+    audio.play()
+
+  }
+
+  const handleSaveAndExit = () => {
+    playOkeyDokeySound()
+    // Serialize game state
+    const gameState = {
+      roundNumber: context.roundNumber,
+      year: context.year,
+      populations: {},
+      gameLog: gameLogSystem.getEntries(),
+      savedAt: new Date().toISOString()
+    }
+
+    // Save population data
+    context.populations.forEach((pop, name) => {
+      gameState.populations[name] = {
+        size: pop.getCurrentSize(),
+        name: name
+      }
+    })
+
+    // Save to localStorage
+    localStorage.setItem('biomeBuddySaveData', JSON.stringify(gameState))
+    console.log('Game progress saved successfully!')
+    
+    // Delay navigation to allow sound to play
+    setTimeout(() => {
+      handleHomeClick()
+    }, 900)
+  }
+
+  const handleJustExit = () => {
+    playOkeyDokeySound()
+    // Clear saved game when just exiting
+    localStorage.removeItem('biomeBuddySaveData')
+    // Delay navigation to allow sound to play
+    setTimeout(() => {
+      handleHomeClick()
+    }, 900)
+  }
+
   
 
   return (
     <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
+      <HomeButton onSaveAndExit={handleSaveAndExit} onJustExit={handleJustExit} />
       <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()*100}/>
       <SpeciesPanel
         speciesArr={speciesMetadata}
