@@ -2,7 +2,7 @@ import React from 'react'
 import './GameTop.css'
 import GameTopSettingsButton from './GameTopSettingsButton'
 
-export default function GameTop({ currentSeason, roundNumber, health }) {
+export default function GameTop({ currentSeason, roundNumber, health, darkMode, onDarkModeToggle }) {
 
   const healthFill = {
     width: `${health}%`
@@ -14,7 +14,7 @@ export default function GameTop({ currentSeason, roundNumber, health }) {
         <div className="healthText">Ecosystem Health: {Math.round(health)}%</div>
       </div>
       <div className="seasonBadge"> {currentSeason}</div>
-      <GameTopSettingsButton />
+      <GameTopSettingsButton darkMode={darkMode} onDarkModeToggle={onDarkModeToggle} />
     </div>
   )
 }

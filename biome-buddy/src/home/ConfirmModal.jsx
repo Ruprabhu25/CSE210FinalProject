@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './ConfirmModal.css'
 import letsGoAudio from '../assets/lets_go.wav'
 
-export default function ConfirmModal({ onClose, onConfirm }) {
+export default function ConfirmModal({ onClose, onConfirm, darkMode }) {
   const [hasSavedGame, setHasSavedGame] = useState(false)
 
   useEffect(() => {
@@ -37,8 +37,8 @@ export default function ConfirmModal({ onClose, onConfirm }) {
   }
 
   return (
-    <div className="confirm-backdrop" role="dialog" aria-modal="true" aria-label="Confirm biome choice" onClick={onClose}>
-      <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
+    <div className={`confirm-backdrop ${darkMode ? 'dark-mode' : ''}`} role="dialog" aria-modal="true" aria-label="Confirm biome choice" onClick={onClose}>
+      <div className={`confirm-modal ${darkMode ? 'dark-mode' : ''}`} onClick={(e) => e.stopPropagation()}>
         <button className="confirm-close" aria-label="Close" onClick={onClose}>✕</button>
         
         {hasSavedGame ? (

@@ -57,7 +57,7 @@ function App() {
       </div>
 
       {showConfirm ? (
-        <ConfirmModal onClose={() => setShowConfirm(false)} onConfirm={handleConfirm} />
+        <ConfirmModal onClose={() => setShowConfirm(false)} onConfirm={handleConfirm} darkMode={darkMode} />
       ) : null}
     </>
   )

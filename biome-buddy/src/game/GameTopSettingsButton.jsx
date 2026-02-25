@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './GameTopSettingsButton.css'
+import settingIcon from '../assets/setting-button.png'
 
-export default function GameTopSettingsButton() {
+export default function GameTopSettingsButton({ darkMode, onDarkModeToggle }) {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [audioEnabled, setAudioEnabled] = useState(() => {
     const saved = localStorage.getItem('biomeBuddyAudioEnabled')
@@ -48,11 +49,20 @@ export default function GameTopSettingsButton() {
         onClick={handleSettingsClick}
         aria-label="Settings"
       >
-        <img src="src/assets/setting-button.png" alt="Settings" />
+        <img src={settingIcon} alt="Settings" />
       </button>
       {settingsOpen && (
-        <div className="game-settings-menu" ref={settingsMenuRef}>
+        <div className={`game-settings-menu ${darkMode ? 'dark-mode' : ''}`} ref={settingsMenuRef}>
           <ul>
+            <li>
+              <div className="game-audio-toggle">
+                <span>Dark Mode</span>
+                <label className="game-toggle-switch">
+                  <input type="checkbox" checked={darkMode} onChange={onDarkModeToggle} />
+                  <span className="game-slider"></span>
+                </label>
+              </div>
+            </li>
             <li>
               <div className="game-audio-toggle">
                 <span>Audio</span>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './HomeButton.css'
 import homeIcon from '../assets/home.png'
 
-export default function HomeButton({ onSaveAndExit, onJustExit }) {
+export default function HomeButton({ onSaveAndExit, onJustExit, darkMode }) {
   const [showModal, setShowModal] = useState(false)
 
   const handleSaveAndExit = () => {
@@ -22,8 +22,8 @@ export default function HomeButton({ onSaveAndExit, onJustExit }) {
       </button>
 
       {showModal && (
-        <div className="home-modal-backdrop" onClick={() => setShowModal(false)}>
-          <div className="home-modal" onClick={(e) => e.stopPropagation()}>
+        <div className={`home-modal-backdrop ${darkMode ? 'dark-mode' : ''}`} onClick={() => setShowModal(false)}>
+          <div className={`home-modal ${darkMode ? 'dark-mode' : ''}`} onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
               className="home-modal-close"

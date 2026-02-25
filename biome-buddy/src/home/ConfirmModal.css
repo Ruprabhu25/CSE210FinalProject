@@ -124,3 +124,48 @@
 .confirm-close:focus-visible {
   box-shadow: 0 0 0 3px rgba(47,138,74,0.18);
 }
+
+/* Dark mode styles */
+.confirm-backdrop.dark-mode {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.confirm-modal.dark-mode {
+  background: #2a2a2a;
+  border-color: #4a4a4a;
+  color: #ffffff;
+}
+
+.confirm-modal.dark-mode h2 {
+  color: #ffffff;
+}
+
+.confirm-modal.dark-mode p {
+  color: #e0e0e0;
+}
+
+.confirm-modal.dark-mode .btn-primary {
+  background: #2E8B34;
+}
+
+.confirm-modal.dark-mode .btn-primary:hover {
+  background: #3FA045;
+}
+
+.confirm-modal.dark-mode .btn-ghost {
+  background: #4a4a4a;
+  color: #ffffff;
+}
+
+.confirm-modal.dark-mode .btn-ghost:hover {
+  background: #5a5a5a;
+}
+
+.confirm-modal.dark-mode .confirm-close {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.confirm-modal.dark-mode .confirm-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+}

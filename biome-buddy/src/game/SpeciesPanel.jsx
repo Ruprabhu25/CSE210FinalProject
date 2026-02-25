@@ -2,10 +2,10 @@ import './SpeciesPanel.css'
 import React from 'react'
 
 
-export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize,  onPlayerAction = () => {} }) {
+export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize,  onPlayerAction = () => {}, darkMode }) {
   return (
-    <div className='outerPanelStyle'>
-      <div className='innerPanelStyle' aria-label="Species panel">
+    <div className={`outerPanelStyle ${darkMode ? 'dark-mode' : ''}`}>
+      <div className={`innerPanelStyle ${darkMode ? 'dark-mode' : ''}`} aria-label="Species panel">
         <div className="speciesTitle">Active Species</div>
         <div className='selectorStyle' role="listbox" aria-label="Species selector">
           {speciesArr.map((s, i) => (

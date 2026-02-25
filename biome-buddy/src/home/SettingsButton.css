@@ -106,3 +106,25 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(26px);
 }
+
+/* Dark mode styles */
+.settings-menu.dark-mode {
+  background: #2a2a2a;
+  border-color: #4a4a4a;
+}
+
+.settings-menu.dark-mode .dark-mode-toggle {
+  color: #e0e0e0;
+}
+
+.settings-menu.dark-mode .dark-mode-toggle:hover {
+  background: #3a3a3a;
+}
+
+.settings-menu.dark-mode .slider {
+  background-color: #5a5a5a;
+}
+
+.settings-menu.dark-mode input:checked + .slider {
+  background-color: #2E8B34;
+}

@@ -106,3 +106,25 @@ input:checked + .game-slider {
 input:checked + .game-slider:before {
   transform: translateX(26px);
 }
+
+/* Dark mode styles */
+.game-settings-menu.dark-mode {
+  background: #2a2a2a;
+  border-color: #4a4a4a;
+}
+
+.game-settings-menu.dark-mode .game-audio-toggle {
+  color: #e0e0e0;
+}
+
+.game-settings-menu.dark-mode .game-audio-toggle:hover {
+  background: #3a3a3a;
+}
+
+.game-settings-menu.dark-mode .game-slider {
+  background-color: #5a5a5a;
+}
+
+.game-settings-menu.dark-mode input:checked + .game-slider {
+  background-color: #2E8B34;
+}

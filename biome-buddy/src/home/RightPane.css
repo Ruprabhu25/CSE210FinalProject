@@ -13,6 +13,60 @@
 
 .right-inner { background: #F9F7E6; z-index: 2; }
 
+.description-with-speaker {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 1.1rem;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.speaker-button {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #4A90E2;
+  border: 2px solid #3A7BC8;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 4px;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.speaker-button:hover {
+  background: #3A7BC8;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.5);
+}
+
+.speaker-button:active {
+  transform: scale(0.95);
+}
+
+.speaker-button.speaking {
+  background: #E24A4A;
+  border-color: #C83A3A;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(226, 74, 74, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(226, 74, 74, 0.6);
+  }
+}
+
 .welcome-text {
   width: 333px;
   height: 77px;
@@ -41,16 +95,13 @@
 }
 
 .right-description {
-  margin-top: 1.1rem;
-  max-width: 520px;
-  margin-left: auto;
-  margin-right: auto;
   color: #213547;
   font-size: 1.6rem;
   line-height: 1.5;
   opacity: 0.95;
   text-align: left;
   font-family: 'Irish Grover', cursive;
+  flex: 1;
 }
 
 .right-pane::before {
@@ -94,4 +145,13 @@
 
 .right-pane.dark-mode .right-description {
   color: #e0e0e0;
+}
+
+.right-pane.dark-mode .speaker-button {
+  background: #5A9FE8;
+  border-color: #4A8FD8;
+}
+
+.right-pane.dark-mode .speaker-button:hover {
+  background: #4A8FD8;
 }

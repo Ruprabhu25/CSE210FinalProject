@@ -26,6 +26,7 @@ export default function GameBlank() {
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(null)
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
+  const [darkMode, setDarkMode] = useState(false)
 
   // Initialize GameEngine with species
   useEffect(() => {
@@ -268,8 +269,8 @@ export default function GameBlank() {
 
   return (
     <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
-      <HomeButton onSaveAndExit={handleSaveAndExit} onJustExit={handleJustExit} />
-      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()*100}/>
+      <HomeButton onSaveAndExit={handleSaveAndExit} onJustExit={handleJustExit} darkMode={darkMode} />
+      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()*100} darkMode={darkMode} onDarkModeToggle={() => setDarkMode(!darkMode)} />
       <SpeciesPanel
         speciesArr={speciesMetadata}
         selected={selected}
@@ -278,9 +279,10 @@ export default function GameBlank() {
         nextSeason={advanceRound}
         onPlayerAction={handlePlayerAction}
         getPopulationSize={getPopulationSize}
+        darkMode={darkMode}
       />
-      <GameLog />
-      <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} />
+      <GameLog darkMode={darkMode} />
+      <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} darkMode={darkMode} />
     </div>
   )
 }
