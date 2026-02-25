@@ -8,7 +8,7 @@ export default function GameTop({ currentSeason, roundNumber, health, darkMode, 
     width: `${health}%`
   }
   return (
-    <div className="topBar">
+    <div className={`topBar ${darkMode ? 'dark-mode' : ''}`}>
       <div className="healthContainer">
         <div className="healthFill" style={healthFill}/>
         <div className="healthText">Ecosystem Health: {Math.round(health)}%</div>
