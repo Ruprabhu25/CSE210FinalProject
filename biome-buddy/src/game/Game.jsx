@@ -12,7 +12,6 @@ import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
 import bgFall from '../assets/forest-fa.png'
-import okeyDokeySound from '../assets/okey-dokey.wav'
 
 
 export default function GameBlank() {
@@ -217,17 +216,7 @@ export default function GameBlank() {
     }
   }
 
-  const playOkeyDokeySound = () => {
-    const audioEnabled = localStorage.getItem('biomeBuddyAudioEnabled')
-    if (audioEnabled === 'false') return
-  
-    const audio = new Audio(okeyDokeySound)
-    audio.play()
-
-  }
-
   const handleSaveAndExit = () => {
-    playOkeyDokeySound()
     // Serialize game state
     const gameState = {
       roundNumber: context.roundNumber,
@@ -249,20 +238,13 @@ export default function GameBlank() {
     localStorage.setItem('biomeBuddySaveData', JSON.stringify(gameState))
     console.log('Game progress saved successfully!')
     
-    // Delay navigation to allow sound to play
-    setTimeout(() => {
-      handleHomeClick()
-    }, 900)
+    handleHomeClick()
   }
 
   const handleJustExit = () => {
-    playOkeyDokeySound()
     // Clear saved game when just exiting
     localStorage.removeItem('biomeBuddySaveData')
-    // Delay navigation to allow sound to play
-    setTimeout(() => {
-      handleHomeClick()
-    }, 900)
+    handleHomeClick()
   }
 
   

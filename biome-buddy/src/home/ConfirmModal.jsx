@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import './ConfirmModal.css'
-import letsGoAudio from '../assets/lets_go.wav'
 
 export default function ConfirmModal({ onClose, onConfirm, darkMode }) {
   const [hasSavedGame, setHasSavedGame] = useState(false)
@@ -11,28 +10,17 @@ export default function ConfirmModal({ onClose, onConfirm, darkMode }) {
     setHasSavedGame(!!savedState)
   }, [])
 
-  const playLetsGoSound = () => {
-    const audioEnabled = localStorage.getItem('biomeBuddyAudioEnabled')
-    if (audioEnabled === 'false') return
-    
-    const audio = new Audio(letsGoAudio)
-    audio.play()?.catch(error => console.log('Audio play failed:', error))
-  }
-
   const handleNewGame = () => {
     // Clear saved game data
     localStorage.removeItem('biomeBuddySaveData')
-    playLetsGoSound()
     onConfirm()
   }
 
   const handleResumeGame = () => {
-    playLetsGoSound()
     onConfirm()
   }
 
   const handleGetStarted = () => {
-    playLetsGoSound()
     onConfirm()
   }
 
