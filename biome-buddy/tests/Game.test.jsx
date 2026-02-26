@@ -5,6 +5,7 @@ import GameBlank from '../src/game/Game'
 import SpeciesPanel from '../src/game/SpeciesPanel'
 import GameTop from '../src/game/GameTop'
 import gameLogSystem from '../src/components/GameLog/GameLogSystem'
+import InstructionsPopup from '../src/components/InstructionsPopup/InstructionsPopup'
 
 describe('Game integration and components', () => {
 
@@ -75,6 +76,7 @@ describe('Game integration and components', () => {
 
 	test('GameBlank renders initial UI and species list', () => {
 		render(<GameBlank />)
+		fireEvent.click(screen.getByRole('button', { name: /Start Playing/i }))
 
 		expect(screen.getByText(/EcoSystem Health/i)).toBeInTheDocument()
 		// season badge or initial game log entry should include Season or Year
@@ -88,8 +90,21 @@ describe('Game integration and components', () => {
 		expect(screen.getByText('Hawk')).toBeInTheDocument()
 	})
 
+	test('instructions popup is visible on initial render', () => {
+		render(<GameBlank />)
+		expect(screen.getByRole('heading', { name: /Welcome to Biome Buddy/i })).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: /Start Playing/i })).toBeInTheDocument()
+	})
+
+	test('instructions popup is dismissed after clicking Start Playing', () => {
+		render(<GameBlank />)
+		fireEvent.click(screen.getByRole('button', { name: /Start Playing/i }))
+		expect(screen.queryByRole('heading', { name: /Welcome to Biome Buddy/i })).not.toBeInTheDocument()
+	})
+
 	test('GameBlank Next Round logs messages with and without selection', () => {
 		render(<GameBlank />)
+		fireEvent.click(screen.getByRole('button', { name: /Start Playing/i }))
 
 		const nextBtn = screen.getByText(/Next Round/i)
 
@@ -107,4 +122,25 @@ describe('Game integration and components', () => {
 		expect(entriesB[0].message).toMatch(/Rabbit population is growing faster than usual/i)
 	})
 
+})
+
+describe('InstructionsPopup', () => {
+	test('renders heading, intro text, and start button', () => {
+		render(<InstructionsPopup onClose={() => {}} />)
+		expect(screen.getByRole('heading', { name: /Welcome to Biome Buddy/i })).toBeInTheDocument()
+		expect(screen.getByText(/steward of a Forest ecosystem/i)).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: /Start Playing/i })).toBeInTheDocument()
+	})
+
+	test('calls onClose when Start Playing is clicked', () => {
+		const onClose = vi.fn()
+		render(<InstructionsPopup onClose={onClose} />)
+		fireEvent.click(screen.getByRole('button', { name: /Start Playing/i }))
+		expect(onClose).toHaveBeenCalledTimes(1)
+	})
+
+	test('renders nothing when onClose is not provided', () => {
+		const { container } = render(<InstructionsPopup />)
+		expect(container.firstChild).toBeNull()
+	})
 })
