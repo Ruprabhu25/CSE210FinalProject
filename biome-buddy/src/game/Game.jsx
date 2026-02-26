@@ -7,6 +7,7 @@ import SpeciesPanel from './SpeciesPanel.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
 import DisasterPopup from '../components/DisasterPopup/DisasterPopup.jsx'
+import InstructionsPopup from '../components/InstructionsPopup/InstructionsPopup.jsx'
 import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
@@ -24,6 +25,7 @@ export default function GameBlank() {
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(null)
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
+  const [showInstructions, setShowInstructions] = useState(true)
 
   // Initialize GameEngine with species
   useEffect(() => {
@@ -199,6 +201,7 @@ export default function GameBlank() {
       />
       <GameLog />
       <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} />
+      {showInstructions && <InstructionsPopup onClose={() => setShowInstructions(false)} />}
     </div>
   )
 }
