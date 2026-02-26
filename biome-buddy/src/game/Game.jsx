@@ -3,6 +3,7 @@ import React from 'react'
 import GameEngine from '../GameEngine.jsx'
 import './Game.css'
 import GameTop from './GameTop.jsx'
+import GameEnd from './GameEnd.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
@@ -11,6 +12,9 @@ import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
 import bgFall from '../assets/forest-fa.png'
+
+export const MAX_YEARS = 5
+export const WIN_THRESHOLD = 0.7
 
 
 export default function GameBlank() {
@@ -24,6 +28,7 @@ export default function GameBlank() {
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(null)
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
+  const [gameResult, setGameResult] = useState(null) // "win" | "lose"
 
   // Initialize GameEngine with species
   useEffect(() => {
@@ -75,7 +80,23 @@ export default function GameBlank() {
     }
   }, [])
 
+  function checkGameEnd() {
+    if (!engine) return
+    const currentRound = engine.context.roundNumber
+    const ecosystemHealth = engine.context.calculateEcosystemHealth()
+    if (ecosystemHealth <= 0) {
+      return "lose"
+    }
+    if (currentRound < MAX_YEARS * 4 * 3) 
+      return null
 
+    if (ecosystemHealth >= WIN_THRESHOLD) {
+      return "win"
+    }
+    else {
+      return "lose"
+    }
+  }
 
   // --- Advance round (triggers game simulation) ---
   function advanceRound() {
@@ -85,6 +106,7 @@ export default function GameBlank() {
   // --- Player action: set chosen species and run a round ---
   function handlePlayerAction(selectedSpeciesName = null) {
     if (!engine) return
+    if (gameResult) return
     const playerSystem = engine.systems.find(s => s.name === 'PlayerActionSystem')
     if (!playerSystem) {
       console.warn('PlayerActionSystem not found')
@@ -100,6 +122,10 @@ export default function GameBlank() {
     const seasonBeforeRound = engine.context.determineSeason()
     engine.runRound()
     setGameContextState({ ...engine.context })
+    const result = checkGameEnd()
+    if (result) {
+      setGameResult(result)
+    }
     const seasonAfterRound = engine.context.determineSeason()
 
     if (seasonBeforeRound !== seasonAfterRound) {
@@ -133,11 +159,15 @@ export default function GameBlank() {
 
   function handleDisasterAction(action) {
     if (!engine) return
-
+    if (gameResult) return
     const seasonBeforeRound = engine.context.determineSeason()
     engine.context.pendingDisasterAction = action || null
     engine.runRound()
     setGameContextState({ ...engine.context })
+    const result = checkGameEnd()
+    if (result) {
+      setGameResult(result)
+    }
     const seasonAfterRound = engine.context.determineSeason()
 
     if (seasonBeforeRound !== seasonAfterRound) {
@@ -183,22 +213,32 @@ export default function GameBlank() {
     backgroundPosition: 'center',
   }
 
-  
+  const extinctSpecies = Array.from(context.populations.entries())
+  .filter(([_, pop]) => pop.getCurrentSize() === 0)
+  .map(([speciesName]) => speciesName)
 
   return (
-    <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
-      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()*100}/>
-      <SpeciesPanel
-        speciesArr={speciesMetadata}
-        selected={selected}
-        setSelected={setSelected}
-        icons={icons}
-        nextSeason={advanceRound}
-        onPlayerAction={handlePlayerAction}
-        getPopulationSize={getPopulationSize}
+    <>
+      <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
+        <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()*100}/>
+        <SpeciesPanel
+          speciesArr={speciesMetadata}
+          selected={selected}
+          setSelected={setSelected}
+          icons={icons}
+          nextSeason={advanceRound}
+          onPlayerAction={handlePlayerAction}
+          getPopulationSize={getPopulationSize}
+        />
+        <GameLog />
+        <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} />
+      </div>
+      <GameEnd
+        result={gameResult}
+        health={context.calculateEcosystemHealth()}
+        speciesCount={context.species.size}
+        extinctSpecies={extinctSpecies}
       />
-      <GameLog />
-      <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} />
-    </div>
+    </>
   )
 }
