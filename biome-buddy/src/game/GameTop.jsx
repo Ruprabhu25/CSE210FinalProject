@@ -21,8 +21,8 @@ export default function GameTop({ currentSeason, roundNumber, health }) {
           <div className="health-tooltip">
             <h4>Factors Affecting Ecosystem Health:</h4>
             <ul>
-              <li>No extinctions - all species stay alive</li>
-              <li>Balanced predator-prey ratios - Deviations from ideal population ratios between trophic levels hurt health</li>
+              <li>No extinctions - all species stay alive.</li>
+              <li>Keep Producers (🌿), Primary Consumers (🐇), Secondary Consumers (🦊), and Tertiary Consumers (🦅) in proportion to stay healthy.</li>
             </ul>
           </div>
         )}

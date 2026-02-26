@@ -59,8 +59,8 @@
 }
 
 .health-tooltip ul {
-  list-style: disc;
-  padding-left: 20px;
+  list-style: none;
+  padding-left: 0;
   margin: 0;
 }
 
@@ -68,6 +68,16 @@
   margin-bottom: 6px;
   color: #213547;
   line-height: 1.4;
+  padding-left: 20px;
+  position: relative;
+}
+
+.health-tooltip li::before {
+  content: "→";
+  color: #4caf50;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
 }
 
 .health-tooltip li:last-child {
