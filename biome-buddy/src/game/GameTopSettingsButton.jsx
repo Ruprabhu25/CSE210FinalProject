@@ -2,23 +2,13 @@ import React, { useState, useEffect, useRef } from 'react'
 import './GameTopSettingsButton.css'
 import settingIcon from '../assets/setting-button.png'
 
-export default function GameTopSettingsButton({ darkMode, onDarkModeToggle }) {
+export default function GameTopSettingsButton({ darkMode, onDarkModeToggle, audioEnabled, onAudioToggle }) {
   const [settingsOpen, setSettingsOpen] = useState(false)
-  const [audioEnabled, setAudioEnabled] = useState(() => {
-    const saved = localStorage.getItem('biomeBuddyAudioEnabled')
-    return saved !== null ? saved === 'true' : true
-  })
   const settingsMenuRef = useRef(null)
   const settingsButtonRef = useRef(null)
 
   const handleSettingsClick = () => {
     setSettingsOpen(!settingsOpen)
-  }
-
-  const handleAudioToggle = () => {
-    const newValue = !audioEnabled
-    setAudioEnabled(newValue)
-    localStorage.setItem('biomeBuddyAudioEnabled', String(newValue))
   }
 
   useEffect(() => {
@@ -67,7 +57,7 @@ export default function GameTopSettingsButton({ darkMode, onDarkModeToggle }) {
               <div className="game-audio-toggle">
                 <span>Audio</span>
                 <label className="game-toggle-switch">
-                  <input type="checkbox" checked={audioEnabled} onChange={handleAudioToggle} />
+                  <input type="checkbox" checked={audioEnabled} onChange={onAudioToggle} />
                   <span className="game-slider"></span>
                 </label>
               </div>

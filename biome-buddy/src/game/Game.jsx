@@ -12,6 +12,7 @@ import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
 import bgFall from '../assets/forest-fa.png'
+import backgroundMusic from '../assets/audio/spring.mp3'
 
 
 export default function GameBlank() {
@@ -20,12 +21,56 @@ export default function GameBlank() {
   const gameEngineRef = useRef(null)
   const hasLoggedInitial = useRef(false)
   const lastLoggedSeason = useRef(null)
+  const backgroundMusicRef = useRef(null)
 
   // Species metadata (UI display purposes)
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(null)
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
-  const [darkMode, setDarkMode] = useState(false)
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('biomeBuddyDarkMode')
+    return saved !== null ? saved === 'true' : false
+  })
+  const [audioEnabled, setAudioEnabled] = useState(() => {
+    const saved = localStorage.getItem('biomeBuddyAudioEnabled')
+    return saved !== null ? saved === 'true' : true
+  })
+
+  // Save dark mode to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('biomeBuddyDarkMode', String(darkMode))
+  }, [darkMode])
+
+  // Save audio setting to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('biomeBuddyAudioEnabled', String(audioEnabled))
+  }, [audioEnabled])
+
+  // Setup background music
+  useEffect(() => {
+    if (audioEnabled === false) {
+      if (backgroundMusicRef.current) {
+        backgroundMusicRef.current.pause()
+        backgroundMusicRef.current.currentTime = 0
+      }
+      return
+    }
+
+    if (!backgroundMusicRef.current) {
+      backgroundMusicRef.current = new Audio(backgroundMusic)
+      backgroundMusicRef.current.loop = true
+      backgroundMusicRef.current.volume = 0.3
+    }
+
+    backgroundMusicRef.current.play()?.catch(() => {})
+
+    return () => {
+      if (backgroundMusicRef.current) {
+        backgroundMusicRef.current.pause()
+        backgroundMusicRef.current.currentTime = 0
+      }
+    }
+  }, [audioEnabled])
 
   // Initialize GameEngine with species
   useEffect(() => {
@@ -247,12 +292,14 @@ export default function GameBlank() {
     handleHomeClick()
   }
 
-  
+  const handleAudioToggle = () => {
+    setAudioEnabled((prev) => !prev)
+  }
 
   return (
     <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
       <HomeButton onSaveAndExit={handleSaveAndExit} onJustExit={handleJustExit} darkMode={darkMode} />
-      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()*100} darkMode={darkMode} onDarkModeToggle={() => setDarkMode(!darkMode)} />
+      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health={context.calculateEcosystemHealth() * 100} darkMode={darkMode} onDarkModeToggle={() => setDarkMode(!darkMode)} audioEnabled={audioEnabled} onAudioToggle={handleAudioToggle} />
       <SpeciesPanel
         speciesArr={speciesMetadata}
         selected={selected}
