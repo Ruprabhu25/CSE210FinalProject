@@ -29,14 +29,17 @@ export default function QuestionMark() {
             >
               ✕
             </button>
-            <img src={pyramidImg} alt="Pyramid" className="question-mark-image" />
-            <ul className="question-mark-description">
-              <li>Producers create energy from the sun.</li>
-              <li>Primary Consumers eat producers.</li>
-              <li>Secondary Consumers eat primary consumers.</li>
-              <li>Tertiary Consumers eat secondary consumers.</li>
-              <li>Each species depends on others for survival and energy.</li>
-            </ul>
+            <h3 className="question-mark-title">How the species interact with one another in the ecosystem?</h3>
+            <div className="question-mark-content">
+              <img src={pyramidImg} alt="Pyramid" className="question-mark-image" />
+              <ul className="question-mark-description">
+                <li>Each species depends on others for survival and energy.</li>
+                <li>Tertiary Consumers eat secondary consumers.</li>
+                <li>Secondary Consumers eat primary consumers.</li>
+                <li>Primary Consumers eat producers.</li>
+                <li>Producers create energy from the sun.</li>
+              </ul>
+            </div>
           </div>
         </div>
       )}
