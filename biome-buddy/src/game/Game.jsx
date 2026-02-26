@@ -8,6 +8,7 @@ import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
 import DisasterPopup from '../components/DisasterPopup/DisasterPopup.jsx'
 import InstructionsPopup from '../components/InstructionsPopup/InstructionsPopup.jsx'
+import { getCategoryAndMessage } from '../data/consequenceMessages'
 import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
@@ -100,6 +101,14 @@ export default function GameBlank() {
     }
     const hadDisasterBeforeRound = !!engine.context.currentDisaster
     const seasonBeforeRound = engine.context.determineSeason()
+
+    // Snapshot state before the round so we can categorize what changed
+    const prevSizes = new Map()
+    for (const [name, pop] of engine.context.populations) {
+      prevSizes.set(name, pop.getCurrentSize())
+    }
+    const prevHealth = engine.context.calculateEcosystemHealth()
+
     engine.runRound()
     setGameContextState({ ...engine.context })
     const seasonAfterRound = engine.context.determineSeason()
@@ -118,17 +127,8 @@ export default function GameBlank() {
       })
     }
 
-    if (selectedSpeciesName) {
-      gameLogSystem.addEntry({
-        season: seasonAfterRound,
-        message: `${selectedSpeciesName} population is growing faster than usual`
-      })
-    } else {
-      gameLogSystem.addEntry({
-        season: seasonAfterRound,
-        message: 'Life goes on as usual in the forest'
-      })
-    }
+    const { message } = getCategoryAndMessage(prevSizes, prevHealth, engine.context, selectedSpeciesName)
+    gameLogSystem.addEntry({ season: seasonAfterRound, message })
 
     lastLoggedSeason.current = seasonAfterRound
   }
