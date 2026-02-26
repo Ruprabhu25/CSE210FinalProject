@@ -43,7 +43,7 @@ export const disasters = {
       {
         label: "Stabilize Slopes",
         target: "Rabbit",
-        deltaPopulation: -100
+        deltaPopulation: 100
       },
       {
         label: "Save Cliff Fox Nests",
@@ -132,7 +132,7 @@ export const disasters = {
       {
         label: "Culling Infected Groups",
         target: "Rabbit",
-        deltaPopulation: -450
+        deltaPopulation: -80
       }
     ],
     icon: diseaseIcon
@@ -148,7 +148,7 @@ export const disasters = {
       {
         label: "Emergency Feeding",
         target: "Rabbit",
-        deltaPopulation: -40
+        deltaPopulation: 40
       },
       {
         label: "Ration Resources",
