@@ -9,24 +9,69 @@
   height: 3.375rem;
   background: #d8d8d8;
   border-radius: 0.875rem;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.healthContainer:hover {
+  background-color: #c5c5c5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .healthFill {
   height: 100%;
   background: #f0ad63;
   border-radius: 0.875rem 0 0 0.875rem;
-  padding: .5rem;
 }
 
 .healthText {
   position: absolute;
   left: 1.125rem;
-  top: 0.1rem;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 2rem;
   font-weight: 700;
   color: #2a1608;
+  z-index: 2;
+}
+
+.health-tooltip {
+  position: absolute;
+  bottom: -180px;
+  left: 0;
+  background: #ffffff;
+  border: 2px solid #6D4C41;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  width: 280px;
+  font-family: 'Irish Grover', cursive;
+  font-size: 0.9rem;
+}
+
+.health-tooltip h4 {
+  margin: 0 0 8px 0;
+  color: #213547;
+  font-size: 0.95rem;
+}
+
+.health-tooltip ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.health-tooltip li {
+  margin-bottom: 6px;
+  color: #213547;
+  line-height: 1.4;
+}
+
+.health-tooltip li:last-child {
+  margin-bottom: 0;
 }
 
 .seasonBadge {
