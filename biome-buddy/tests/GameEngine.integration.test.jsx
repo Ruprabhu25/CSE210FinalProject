@@ -9,17 +9,13 @@ describe('GameEngine Integration', () => {
     engine = new GameEngine() // new engine with a new context before each test
   })
 
-  it('should increment round number and update season after a round', () => {
-    const initialRound = engine.context.roundNumber
-    const initialSeason = engine.context.determineSeason()
-    engine.runRound()
-    expect(engine.context.roundNumber).toBe(initialRound + 1)
+  it('should increment round number and update season correctly for the full year and an additional round', () => {
     const seasons = ['Spring', 'Summer', 'Fall', 'Winter']
-    const initialIdx = seasons.indexOf(initialSeason)
-    const nextIdx = (initialIdx + 1) % seasons.length
-    const newSeason = engine.context.determineSeason()
-    // After a round, season should be either the same or the next in order
-    expect([initialSeason, seasons[nextIdx]]).toContain(newSeason)
+    for (let i = 0; i < engine.context.numRoundsInSeason * 4 + 1; i++) {
+      engine.runRound()
+      expect(engine.context.roundNumber).toBe(i + 2) // Round number should increment by 1 each round, starting from 1
+      expect(engine.context.determineSeason()).toBe(seasons[Math.floor((engine.context.roundNumber - 1) / engine.context.numRoundsInSeason) % seasons.length])
+    }
   })
 
   it('should update at least one population after a round', () => {
