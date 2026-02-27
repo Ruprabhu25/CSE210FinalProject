@@ -126,13 +126,6 @@ export default function GameBlank() {
   const engine = gameEngineRef.current
   const context = engine?.context
 
-  const icons = {
-    'Producers': '🌿',
-    'Primary Consumers': '🐇',
-    'Secondary Consumers': '🦊',
-    'Tertiary Consumers': '🦅',
-  }
-
   // --- Log initial game start ---
   useEffect(() => {
     if (!hasLoggedInitial.current) {
@@ -306,7 +299,6 @@ export default function GameBlank() {
         speciesArr={speciesMetadata}
         selected={selected}
         setSelected={setSelected}
-        icons={icons}
         nextSeason={advanceRound}
         onPlayerAction={handlePlayerAction}
         getPopulationSize={getPopulationSize}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { speciesSprites } from './speciesSprites'
 
 
-export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize,  onPlayerAction, darkMode }) {
+export default function SpeciesPanel({ speciesArr, selected, setSelected, nextSeason, getPopulationSize,  onPlayerAction, darkMode }) {
   const [burstSprite, setBurstSprite] = useState(null)
   const [burstKey, setBurstKey] = useState(0)
 
@@ -43,7 +43,18 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
                 onPlayerAction?.(s.name)
               }}
             >
-              <div className="iconStyle">{icons[s.trophic] || '🐾'}</div>
+              <div className="iconStyle">
+                {speciesSprites?.[s.name] ? (
+                  <img
+                    src={speciesSprites[s.name]}
+                    alt={s.name}
+                    className="speciesIconImg"
+                    draggable={false}
+                  />
+                ) : (
+                  <span className="speciesIconFallback">🐾</span>
+                )}
+              </div>
               <div>
                 <div className="speciesName">{s.name}</div>
                 <div className="speciesPop">{Math.round(getPopulationSize?.(s.name) ?? 0)}</div>
