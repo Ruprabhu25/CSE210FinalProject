@@ -59,3 +59,9 @@
 .disaster-help:hover .disaster-help-tooltip {
   display: block;
 }
+
+.popup-frame.dark-mode .disaster-help-tooltip {
+  background: #1f1f1f;
+  color: #e0e0e0;
+  border: 1px solid #4a4a4a;
+}
