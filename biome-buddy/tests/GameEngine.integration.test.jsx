@@ -30,8 +30,14 @@ describe('GameEngine Integration', () => {
     expect(after.some((val, i) => val !== before[i])).toBe(true)
   })
 
-  it('should calculate ecosystem health without error after several rounds', () => {
-    for (let i = 0; i < 5; i++) engine.runRound()
-    expect(() => engine.context.calculateEcosystemHealth()).not.toThrow()
+  it('should calculate ecosystem health without error after a full year, populations should not become negative', () => {
+    for (let i = 0; i < engine.context.numRoundsInSeason * 4; i++) {
+      engine.runRound()
+      // Should not throw error checking ecosystem health after each round in a full year
+      expect(() => engine.context.calculateEcosystemHealth()).not.toThrow()
+      // Also check that no population has become negative
+      const negativePop = Array.from(engine.context.populations.values()).some(p => p.size < 0)
+      expect(negativePop).toBe(false)
+    }
   })
 })
