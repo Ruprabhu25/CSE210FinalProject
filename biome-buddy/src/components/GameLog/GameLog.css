@@ -1,7 +1,11 @@
 /* Game log styles */
 .game-log {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 250ms ease-in-out;
     width: 16.25rem; /* 260px → 16.25rem */
-    position: relative;
     background: linear-gradient(180deg, #7a4f26 0%, #5d3418 50%, #8b5a33 100%);
     padding: 0.375rem;
     display: flex;
@@ -24,13 +28,9 @@
 
 /* collapsed state: slide mostly off screen to the right leaving a small tab */
 .game-log.collapsed {
-    transform: translateX(calc(100% - 0.625rem)); /* 10px → 0.625rem */
-    transition: transform 250ms ease-in-out;
+    transform: translate(calc(100% - 0.625rem), -50%);
 }
 
-.game-log {
-    transition: transform 250ms ease-in-out;
-}
 
 .game-log hr {
     font-size: 20px;
@@ -67,20 +67,18 @@
 }
 
 .game-log-tab .tab-arrow {
-    font-size: 1.125rem; /* 18px → 1.125rem */
-    color: #000;
-
-    /* remove default focus outline/ring for the tab (keeps behavior accessible via other cues if needed) */
-    .game-log-tab:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-    .game-log-tab::-moz-focus-inner {
-        border: 0;
-    }
+  font-size: 1.125rem;
+  color: #000;
 }
 
+.game-log-tab:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.game-log-tab::-moz-focus-inner {
+  border: 0;
+}
 .game-log-list {
     overflow: auto;
     padding: 0.5rem;
@@ -101,7 +99,7 @@
 }
 
 .game-log-entry-season {
-    min-width: 5.375rem; /* 86px → 5.375rem */
+    min-width: 5.375rem; 
     font-weight: 700;
     color: rgba(0, 0, 0, 0.8);
 }
