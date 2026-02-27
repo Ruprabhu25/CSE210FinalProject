@@ -16,3 +16,52 @@
 .impact-label {
   font-weight: 700;
 }
+
+.disaster-help {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  z-index: 5;
+}
+
+.disaster-help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #1f7a3f;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: default;
+  user-select: none;
+}
+
+.disaster-help-tooltip {
+  position: absolute;
+  top: 28px;
+  right: 0;
+  width: 220px;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  background: #fff;
+  color: #2b2b2b;
+  border: 1px solid #cfcfcf;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: left;
+  font-size: 0.85rem;
+  line-height: 1.25;
+  display: none;
+}
+
+.disaster-help:hover .disaster-help-tooltip {
+  display: block;
+}
+
+.popup-frame.dark-mode .disaster-help-tooltip {
+  background: #1f1f1f;
+  color: #e0e0e0;
+  border: 1px solid #4a4a4a;
+}

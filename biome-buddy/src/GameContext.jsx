@@ -45,6 +45,11 @@ class GameContext {
         return this.seasons[currentSeasonIndex]
     }
 
+    determineYear() {
+        // determines the current year, which starts at 1
+        return Math.floor((this.roundNumber - 1) / this.numRoundsInSeason / 4) + 1
+    }
+
     increaseRound() {
         this.roundNumber++
     }
