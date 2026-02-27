@@ -5,7 +5,6 @@ import './Game.css'
 import GameTop from './GameTop.jsx'
 import GameEnd from './GameEnd.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
-import HomeButton from './HomeButton.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
 import DisasterPopup from '../components/DisasterPopup/DisasterPopup.jsx'
@@ -349,8 +348,18 @@ export default function GameBlank() {
   return (
   <>
   <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
-      <HomeButton onSaveAndExit={handleSaveAndExit} onJustExit={handleJustExit} darkMode={darkMode} />
-      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health={context.calculateEcosystemHealth() * 100} darkMode={darkMode} onDarkModeToggle={() => setDarkMode(!darkMode)} audioEnabled={audioEnabled} onAudioToggle={handleAudioToggle} />
+      <GameTop
+        currentSeason={context.determineSeason()}
+        roundNumber={context.roundNumber}
+        health={context.calculateEcosystemHealth() * 100}
+        darkMode={darkMode}
+        onDarkModeToggle={() => setDarkMode(!darkMode)}
+        audioEnabled={audioEnabled}
+        onAudioToggle={handleAudioToggle}
+        onSaveAndExit={handleSaveAndExit}
+        onJustExit={handleJustExit}
+        isLogCollapsed={isLogCollapsed}
+      />
       <SpeciesPanel
         speciesArr={speciesMetadata}
         selected={selected}

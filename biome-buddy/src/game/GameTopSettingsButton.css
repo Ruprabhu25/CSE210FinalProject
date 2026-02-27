@@ -1,7 +1,4 @@
 .game-settings-button {
-  position: absolute;
-  top: 12px;
-  right: 20px;
   z-index: 3;
   background: none;
   border: none;
@@ -18,8 +15,8 @@
 }
 
 .game-settings-button img {
-  width: 40px;
-  height: 40px;
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
 }
 

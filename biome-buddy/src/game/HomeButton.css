@@ -1,7 +1,4 @@
 .home-button {
-  position: absolute;
-  top: 12px;
-  right: 80px;
   z-index: 3;
   background: none;
   border: none;
@@ -18,8 +15,8 @@
 }
 
 .home-button img {
-  width: 40px;
-  height: 40px;
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
 }
 
