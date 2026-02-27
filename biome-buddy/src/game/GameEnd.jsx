@@ -10,6 +10,7 @@ export default function GameEnd({ result, health, speciesCount, extinctSpecies})
     <div className="endScreen">
       {result === "win" ? (
         <div className="winScreen">
+        <div className="notButton">
           <h1>The Forest Thrives!</h1>
           <h2>Your community helped keep the ecosystem healthy and balanced for 5 years.</h2>
             <div className="endStats">
@@ -20,6 +21,7 @@ export default function GameEnd({ result, health, speciesCount, extinctSpecies})
                 <span className="statLabel"><img src={leafIcon} alt="Health"/> Ecosystem Health: {(health * 100).toFixed(2)}%</span>
             </div>
             </div>
+        </div>
           <button onClick={() => window.location.reload()}>
             Play Again
           </button>
