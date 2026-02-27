@@ -3,7 +3,7 @@ import './QuestionMark.css'
 import questionMarkImg from '../assets/question-mark.png'
 import pyramidImg from '../assets/pyrimad.png'
 
-export default function QuestionMark() {
+export default function QuestionMark({ darkMode }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -20,7 +20,7 @@ export default function QuestionMark() {
 
       {open && (
         <div className="question-mark-backdrop" onClick={() => setOpen(false)}>
-          <div className="question-mark-modal" onClick={(event) => event.stopPropagation()}>
+          <div className={`question-mark-modal ${darkMode ? 'dark-mode' : ''}`} onClick={(event) => event.stopPropagation()}>
             <button
               type="button"
               className="question-mark-close"

@@ -7,7 +7,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
   return (
     <div className={`outerPanelStyle ${darkMode ? 'dark-mode' : ''}`}>
       <div className={`innerPanelStyle ${darkMode ? 'dark-mode' : ''}`} aria-label="Species panel">
-        <div className="speciesTitle">Active Species <QuestionMark /></div>
+        <div className="speciesTitle">Active Species <QuestionMark darkMode={darkMode} /></div>
         <div className='selectorStyle' role="listbox" aria-label="Species selector">
           {speciesArr.map((s, i) => (
             <div
