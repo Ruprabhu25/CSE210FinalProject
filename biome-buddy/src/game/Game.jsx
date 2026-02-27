@@ -146,6 +146,9 @@ export default function GameBlank() {
       if (!already) {
         gameLogSystem.addEntry({
           season: 'Year 1',
+        })
+        gameLogSystem.addEntry({
+          season: null,
           message: 'Game started - Welcome to Biome Buddy!'
         })
       }
@@ -177,6 +180,7 @@ export default function GameBlank() {
   }
 
   // --- Player action: set chosen species and run a round ---
+
   function handlePlayerAction(selectedSpeciesName = null) {
     if (!engine || gameResult) return
     const playerSystem = engine.systems.find(s => s.name === 'PlayerActionSystem')
@@ -205,6 +209,11 @@ export default function GameBlank() {
         season: seasonAfterRound,
         message: `Season changed to ${seasonAfterRound}`
       })
+      if (seasonAfterRound === 'Spring') {
+        gameLogSystem.addEntry({
+           season: `Year ${engine.context.determineYear()}`,
+        })
+      }
     }
     if (!hadDisasterBeforeRound && engine.context.currentDisaster) {
       gameLogSystem.addEntry({
