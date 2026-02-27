@@ -61,7 +61,21 @@
   left: -20px;
   width: 120px;
   height: 120px;
-  background-image: url('../assets/border-popup.png');
+  background-image: url('../assets/border-popup-left.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.question-mark-modal::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  right: -20px;
+  width: 120px;
+  height: 120px;
+  background-image: url('../assets/border-popup-right.png');
   background-repeat: no-repeat;
   background-size: contain;
   pointer-events: none;
