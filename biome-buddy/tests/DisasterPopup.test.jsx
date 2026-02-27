@@ -29,4 +29,17 @@ describe('DisasterPopup', () => {
 
         expect(onAction).toHaveBeenCalledWith(disasters.flood.actions[0])
     })
+
+    test('shows educational blurb for the selected disaster', () => {
+        render(<DisasterPopup disaster={disasters.wildfire} onAction={vi.fn()} />)
+
+        expect(screen.getByText(disasters.wildfire.educationBlurb)).toBeInTheDocument()
+    })
+
+    test('formats action button effects with signed population deltas', () => {
+        render(<DisasterPopup disaster={disasters.flood} onAction={vi.fn()} />)
+
+        expect(screen.getByRole('button', { name: /Build Safe Burrows \(\+45 Rabbit\)/i })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: /Divert Flooding \(-350 Grass\)/i })).toBeInTheDocument()
+    })
 })
