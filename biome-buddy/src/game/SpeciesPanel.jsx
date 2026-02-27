@@ -16,7 +16,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, nextSe
 
   return (
     <div className={`outerPanelStyle ${darkMode ? 'dark-mode' : ''}`}>
-            {/* Overlay animation (doesn’t block clicks) */}
+      {/* Overlay animation (doesn’t block clicks) */}
       {burstSprite && (
         <div className="burstOverlay" aria-hidden>
           <img

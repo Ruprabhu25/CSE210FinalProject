@@ -151,3 +151,70 @@ describe('InstructionsPopup', () => {
 		expect(onClose).toHaveBeenCalledTimes(1)
 	})
 })
+
+describe('Species visualization', () => {
+	test('clicking a species shows a temporary burst sprite', () => {
+		const speciesArr = [{ name: 'Rabbit', speciesid: 4, trophic: 'Primary Consumers' }]
+		const speciesSprites = { Rabbit: '/src/assets/species/rabbit.png' }
+
+		render(
+			<SpeciesPanel
+				speciesArr={speciesArr}
+				selected={null}
+				setSelected={() => {}}
+				speciesSprites={speciesSprites}
+				onPlayerAction={() => {}}
+				getPopulationSize={() => 0}
+			/>
+		)
+
+		fireEvent.click(screen.getByText('Rabbit'))
+
+		const burstImg = document.querySelector('img.burstSprite')
+		expect(burstImg).not.toBeNull()
+	})
+
+	test('burst sprite disappears after animation ends', () => {
+		const speciesArr = [{ name: 'Rabbit', speciesid: 4, trophic: 'Primary Consumers' }]
+
+		render(
+			<SpeciesPanel
+				speciesArr={speciesArr}
+				selected={null}
+				setSelected={() => {}}
+				onPlayerAction={() => {}}
+				getPopulationSize={() => 0}
+			/>
+		)
+
+		fireEvent.click(screen.getByText('Rabbit'))
+
+		const burstImg = document.querySelector('img.burstSprite')
+		expect(burstImg).not.toBeNull()
+
+		// trigger the cleanup your component actually uses
+		fireEvent.animationEnd(burstImg)
+
+		expect(document.querySelector('img.burstSprite')).toBeNull()
+	})
+
+	test('selecting species triggers onPlayerAction with species name', () => {
+		const onPlayerAction = vi.fn()
+
+		const speciesArr = [{ name: 'Bear', speciesid: 13, trophic: 'Tertiary Consumers' }]
+
+		render(
+			<SpeciesPanel
+				speciesArr={speciesArr}
+				selected={null}
+				setSelected={() => {}}
+				onPlayerAction={onPlayerAction}
+				getPopulationSize={() => 0}
+			/>
+		)
+
+		fireEvent.click(screen.getByText('Bear'))
+		expect(onPlayerAction).toHaveBeenCalledWith('Bear')
+	})
+})
+
