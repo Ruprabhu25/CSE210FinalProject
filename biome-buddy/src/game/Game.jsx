@@ -179,8 +179,7 @@ export default function GameBlank() {
 
   // --- Player action: set chosen species and run a round ---
   function handlePlayerAction(selectedSpeciesName = null) {
-    if (!engine) return
-    if (gameResult) return
+    if (!engine || gameResult) return
     const playerSystem = engine.systems.find(s => s.name === 'PlayerActionSystem')
     if (!playerSystem) {
       console.warn('PlayerActionSystem not found')
@@ -232,8 +231,7 @@ export default function GameBlank() {
   }
 
   function handleDisasterAction(action) {
-    if (!engine) return
-    if (gameResult) return
+    if (!engine || gameResult) return
     const seasonBeforeRound = engine.context.determineSeason()
     engine.context.pendingDisasterAction = action || null
     engine.runRound()
