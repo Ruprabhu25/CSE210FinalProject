@@ -1,11 +1,34 @@
 import './SpeciesPanel.css'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { speciesSprites } from './speciesSprites'
 import QuestionMark from './QuestionMark'
 
 
-export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize,  onPlayerAction = () => {}, darkMode }) {
+export default function SpeciesPanel({ speciesArr, selected, setSelected, nextSeason, getPopulationSize,  onPlayerAction, darkMode }) {
+  const [burstSprite, setBurstSprite] = useState(null)
+  const [burstKey, setBurstKey] = useState(0)
+
+  function triggerBurst(speciesName) {
+    const sprite = speciesSprites[speciesName]
+    if (!sprite) return
+    setBurstSprite(sprite)
+    setBurstKey((k) => k + 1) // re-trigger animation even if same sprite
+  }
+
   return (
     <div className={`outerPanelStyle ${darkMode ? 'dark-mode' : ''}`}>
+      {/* Overlay animation (doesn’t block clicks) */}
+      {burstSprite && (
+        <div className="burstOverlay" aria-hidden>
+          <img
+            key={burstKey}
+            className="burstSprite"
+            src={burstSprite}
+            alt=""
+            onAnimationEnd={() => setBurstSprite(null)}
+          />
+        </div>
+      )}
       <div className={`innerPanelStyle ${darkMode ? 'dark-mode' : ''}`} aria-label="Species panel">
         <div className="speciesTitle">Active Species <QuestionMark darkMode={darkMode} /></div>
         <div className='selectorStyle' role="listbox" aria-label="Species selector">
@@ -13,9 +36,25 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
             <div
               key={s.name}
               className={`itemStyle ${selected === i ? 'selected' : ''}`}
-              onClick={(e) => {e.stopPropagation();setSelected(i);onPlayerAction(s.name)}}
+              onClick={(e) => {
+                e.stopPropagation()
+                setSelected(i)
+                triggerBurst(s.name)
+                onPlayerAction?.(s.name)
+              }}
             >
-              <div className="iconStyle">{icons[s.trophic] || '🐾'}</div>
+              <div className="iconStyle">
+                {speciesSprites?.[s.name] ? (
+                  <img
+                    src={speciesSprites[s.name]}
+                    alt={s.name}
+                    className="speciesIconImg"
+                    draggable={false}
+                  />
+                ) : (
+                  <span className="speciesIconFallback">🐾</span>
+                )}
+              </div>
               <div>
                 <div className="speciesName">{s.name}</div>
                 <div className="speciesPop">{Math.round(getPopulationSize?.(s.name) ?? 0)}</div>
@@ -27,23 +66,27 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
           ))}
         </div>
 
-        {/* Controls */}
         <div style={{ height: 8 }} />
+
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <button onClick={() => {
-              const name = speciesArr?.[selected]?.name
-              onPlayerAction?.(name) // calls only if defined; passes undefined if no species selected
-            }} className='growthButtons'>Next Round</button>
+            <button
+              onClick={() => {
+                const name = speciesArr?.[selected]?.name
+                onPlayerAction?.(name) // undefined if no selection
+              }}
+              className="growthButtons"
+            >
+              Next Round
+            </button>
+
             <div style={{ fontSize: 13, color: '#444', minWidth: 90 }}>
-            {speciesArr?.[selected]
-              ? `You have selected ${speciesArr[selected].name}, their population growth rate will increase.`
-              : 'You have not selected a species, the population growth rate will stay as is.'}
-          </div>
+              {speciesArr?.[selected]
+                ? `You have selected ${speciesArr[selected].name}, their population growth rate will increase.`
+                : 'You have not selected a species, the population growth rate will stay as is.'}
+            </div>
           </div>
         </div>
-
       </div>
     </div>
   )
