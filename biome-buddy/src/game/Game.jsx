@@ -17,7 +17,7 @@ import bgFall from '../assets/forest-fa.png'
 import backgroundMusic from '../assets/audio/spring.mp3'
 
 export const MAX_YEARS = 5
-export const WIN_THRESHOLD = 0.7
+export const WIN_THRESHOLD = 0.85
 
 
 export default function GameBlank() {
