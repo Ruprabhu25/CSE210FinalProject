@@ -33,6 +33,7 @@ export default function GameBlank() {
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
   const [gameResult, setGameResult] = useState(null) // "win" | "lose"
   const [showInstructions, setShowInstructions] = useState(true)
+  const [isLogCollapsed, setIsLogCollapsed] = useState(false)
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('biomeBuddyDarkMode')
     return saved !== null ? saved === 'true' : false
@@ -41,6 +42,7 @@ export default function GameBlank() {
     const saved = localStorage.getItem('biomeBuddyAudioEnabled')
     return saved !== null ? saved === 'true' : true
   })
+
 
   // Save dark mode to localStorage whenever it changes
   useEffect(() => {
@@ -357,8 +359,9 @@ export default function GameBlank() {
         onPlayerAction={handlePlayerAction}
         getPopulationSize={getPopulationSize}
         darkMode={darkMode}
+        isLogCollapsed={isLogCollapsed}
       />
-      <GameLog darkMode={darkMode} />
+      <GameLog darkMode={darkMode} onCollapsedChange={setIsLogCollapsed}/>
       <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} darkMode={darkMode} />
       {showInstructions && <InstructionsPopup onClose={() => setShowInstructions(false)} darkMode={darkMode} />}
       

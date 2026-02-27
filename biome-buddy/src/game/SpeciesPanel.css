@@ -1,13 +1,38 @@
 .outerPanelStyle {
   position: absolute;
-  bottom: .1rem;
-  margin: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  margin: 0;
+
   width: 98%;
+
   padding: 0.375rem;
   box-sizing: border-box;
   border-radius: 12px;
+
   background: linear-gradient(180deg, #7a4f26 0%, #5d3418 50%, #8b5a33 100%);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.45) inset, 0 8px 24px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45) inset,
+              0 8px 24px rgba(0,0,0,0.3);
+
+  transition: width 300ms ease-in-out;
+}
+
+/* OPEN = reserve space for log */
+.outerPanelStyle.log-open {
+  animation: panelBounceIn 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: calc(98% - 17.5rem);
+}
+
+@keyframes panelBounceIn {
+  0% {
+    width: 98%;
+  }
+  70% {
+    width: calc(98% - 18rem); 
+  }
+  100% {
+    width: calc(98% - 17.5rem); 
+  }
 }
 
 .innerPanelStyle {
@@ -109,7 +134,14 @@
 .itemStyle.selected .iconStyle { transform: scale(1.14); box-shadow: 0 10px 24px rgba(0,0,0,0.18); border: 2px solid rgba(0,0,0,0.12); }
 .itemStyle.selected { background: rgba(255,255,255,0.08); }
 
-.growthButtons { padding: 6px 10px; border-radius: 8px; cursor: pointer; margin-left: 6px; font-size: 12px }
+.growthButtons { 
+  padding: 6px 10px; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  margin-left: 6px; 
+  font-size: 16px;
+  border: 3px solid #6D4C41;
+}
 
 /* Dark mode styles */
 .outerPanelStyle.dark-mode {
