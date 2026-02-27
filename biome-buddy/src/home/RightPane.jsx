@@ -1,10 +1,17 @@
 import React from 'react'
 import './RightPane.css'
+import SettingsButton from './SettingsButton'
 
-export default function RightPane() {
+export default function RightPane({ darkMode, setDarkMode }) {
+  const handleDarkModeToggle = () => {
+    setDarkMode(!darkMode)
+  }
+
   return (
-    <div className="right-pane">
+    <div className={`right-pane ${darkMode ? 'dark-mode' : ''}`}>
+      <SettingsButton darkMode={darkMode} onDarkModeToggle={handleDarkModeToggle} />
       <div className="right-inner">
+        <div className="welcome-text">Welcome to</div>
         <h1 className="title">Biome Buddy</h1>
         <div className="right-description">
           <p>Step into the role of a community working to restore an ecosystem.</p>

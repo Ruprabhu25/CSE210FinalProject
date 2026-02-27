@@ -3,7 +3,7 @@ import React from "react";
 import Popup from "../Popup/Popup";
 import "./DisasterPopup.css";
 
-export default function DisasterPopup({ disaster, onAction }) {
+export default function DisasterPopup({ disaster, onAction, darkMode }) {
   if (!disaster) return null;
 
   const handleAction = (action) => {
