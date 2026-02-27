@@ -144,7 +144,7 @@ export default function GameBlank() {
           season: 'Year 1',
         })
         gameLogSystem.addEntry({
-          season: '',
+          season: null,
           message: 'Game started - Welcome to Biome Buddy!'
         })
       }
