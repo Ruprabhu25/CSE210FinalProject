@@ -1,0 +1,48 @@
+/* Wider frame to accommodate the list content */
+.instructions-frame {
+  max-width: 580px;
+}
+
+.instructions-intro {
+  font-size: 1rem;
+  margin: 0 0 1rem;
+  line-height: 1.55;
+}
+
+.instructions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.instructions-list li {
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.instructions-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #1f7a3f;
+}
+
+.instr-label {
+  font-weight: 700;
+  color: #1f7a3f;
+}
+
+/* Dark mode — lighten green accents for legibility */
+.popup-frame.dark-mode .instr-label {
+  color: #6dd68a;
+}
+
+.popup-frame.dark-mode .instructions-list li::before {
+  color: #6dd68a;
+}
