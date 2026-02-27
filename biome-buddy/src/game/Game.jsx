@@ -3,6 +3,7 @@ import React from 'react'
 import GameEngine from '../GameEngine.jsx'
 import './Game.css'
 import GameTop from './GameTop.jsx'
+import GameEnd from './GameEnd.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
 import HomeButton from './HomeButton.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
@@ -15,6 +16,8 @@ import bgWinter from '../assets/forest-wi.png'
 import bgFall from '../assets/forest-fa.png'
 import backgroundMusic from '../assets/audio/spring.mp3'
 
+export const MAX_YEARS = 5
+export const WIN_THRESHOLD = 0.85
 
 export default function GameBlank() {
   // --- State ---
@@ -28,6 +31,7 @@ export default function GameBlank() {
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(null)
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
+  const [gameResult, setGameResult] = useState(null) // "win" | "lose"
   const [showInstructions, setShowInstructions] = useState(true)
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('biomeBuddyDarkMode')
@@ -148,7 +152,24 @@ export default function GameBlank() {
     }
   }, [])
 
+  function checkGameEnd() {
+    if (!engine) return
+    const currentRound = engine.context.roundNumber
+    const ecosystemHealth = engine.context.calculateEcosystemHealth()
+    if (ecosystemHealth <= 0) {
+      return "lose"
+    }
+    // each season has 3 rounds and there are 4 seasons
+    if (currentRound < MAX_YEARS * engine.context.seasons.length * engine.context.numRoundsInSeason) // 5 years x 4 seasons x 3 rounds
+      return null
 
+    if (ecosystemHealth >= WIN_THRESHOLD) {
+      return "win"
+    }
+    else {
+      return "lose"
+    }
+  }
 
   // --- Advance round (triggers game simulation) ---
   function advanceRound() {
@@ -157,7 +178,7 @@ export default function GameBlank() {
 
   // --- Player action: set chosen species and run a round ---
   function handlePlayerAction(selectedSpeciesName = null) {
-    if (!engine) return
+    if (!engine || gameResult) return
     const playerSystem = engine.systems.find(s => s.name === 'PlayerActionSystem')
     if (!playerSystem) {
       console.warn('PlayerActionSystem not found')
@@ -173,6 +194,10 @@ export default function GameBlank() {
     const seasonBeforeRound = engine.context.determineSeason()
     engine.runRound()
     setGameContextState({ ...engine.context })
+    const result = checkGameEnd()
+    if (result) {
+      setGameResult(result)
+    }
     const seasonAfterRound = engine.context.determineSeason()
 
     if (seasonBeforeRound !== seasonAfterRound) {
@@ -205,12 +230,15 @@ export default function GameBlank() {
   }
 
   function handleDisasterAction(action) {
-    if (!engine) return
-
+    if (!engine || gameResult) return
     const seasonBeforeRound = engine.context.determineSeason()
     engine.context.pendingDisasterAction = action || null
     engine.runRound()
     setGameContextState({ ...engine.context })
+    const result = checkGameEnd()
+    if (result) {
+      setGameResult(result)
+    }
     const seasonAfterRound = engine.context.determineSeason()
 
     if (seasonBeforeRound !== seasonAfterRound) {
@@ -256,6 +284,11 @@ export default function GameBlank() {
     backgroundPosition: 'center',
   }
 
+  const extinctSpecies = Array.from(context.populations.entries())
+  .filter(([_, pop]) => pop.getCurrentSize() === 0)
+  .map(([speciesName]) => speciesName)
+
+  
   const handleHomeClick = () => {
     if (typeof window !== 'undefined') {
       window.history.pushState({}, '', '/')
@@ -299,7 +332,8 @@ export default function GameBlank() {
   }
 
   return (
-    <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
+  <>
+  <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
       <HomeButton onSaveAndExit={handleSaveAndExit} onJustExit={handleJustExit} darkMode={darkMode} />
       <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health={context.calculateEcosystemHealth() * 100} darkMode={darkMode} onDarkModeToggle={() => setDarkMode(!darkMode)} audioEnabled={audioEnabled} onAudioToggle={handleAudioToggle} />
       <SpeciesPanel
@@ -315,6 +349,14 @@ export default function GameBlank() {
       <GameLog darkMode={darkMode} />
       <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} darkMode={darkMode} />
       {showInstructions && <InstructionsPopup onClose={() => setShowInstructions(false)} darkMode={darkMode} />}
-    </div>
+      
+      </div>
+      <GameEnd
+        result={gameResult}
+        health={context.calculateEcosystemHealth()}
+        speciesCount={context.species.size}
+        extinctSpecies={extinctSpecies}
+      />
+    </>
   )
 }
