@@ -116,11 +116,11 @@
 
 /* Dark mode styles */
 .game-log.dark-mode {
-    background: linear-gradient(180deg, #868585 0%, #838080 50%, #989797 100%);
+  background: linear-gradient(180deg, #67534c 0%, #63483d 50%, #6D4C41 100%);
 }
 
 .game-log.dark-mode .game-log-inner {
-    background: #1a1a1a;
+    background: #2b1a09;
     color: #e0e0e0;
 }
 
@@ -130,8 +130,8 @@
 }
 
 .game-log.dark-mode .game-log-tab {
-    background: #1a1a1a;
-    border-color: #4a4a4a;
+    background: #2b1a09;
+    border-color: #6D4C41;
 }
 
 .game-log.dark-mode .game-log-tab .tab-arrow {

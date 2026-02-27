@@ -31,8 +31,10 @@
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+
+
 .healthContainer:hover {
-  background-color: #c5c5c5;
+  background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
@@ -117,9 +119,23 @@
 
 /* Dark mode styles */
 .topBar.dark-mode .seasonBadge {
-  background: #2a2a2a;
+  background: #2b1a09;
   color: #ffffff;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  border: 5px solid #6D4C41;
+}
+
+.topBar.dark-mode .healthText{
+  color: #ffffff;
+}
+
+.topBar.dark-mode .healthContainer {
+  background: rgba(42, 42, 42, 0.7);
+  border: 5px solid #6D4C41;
+}
+
+.topBar.dark-mode .healthFill{
+    background: #053c11;
 }
 
 .top-controls {

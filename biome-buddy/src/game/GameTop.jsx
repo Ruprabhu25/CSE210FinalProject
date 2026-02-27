@@ -22,7 +22,7 @@ export default function GameTop({
 return (
   <div className={`topBar ${darkMode ? 'dark-mode' : ''} ${isLogCollapsed ? '' : 'log-open'}`}>
     <div
-      className="healthContainer"
+      className= {`healthContainer`}
       onMouseEnter={() => setShowHealthTooltip(true)}
       onMouseLeave={() => setShowHealthTooltip(false)}
       onClick={() => setShowHealthTooltip(!showHealthTooltip)}

@@ -131,8 +131,8 @@
 }
 
 .confirm-modal.dark-mode {
-  background: #2a2a2a;
-  border-color: #4a4a4a;
+  background: #2b1a09;
+  border-color: #6D4C41;
   color: #ffffff;
 }
 
@@ -153,7 +153,7 @@
 }
 
 .confirm-modal.dark-mode .btn-ghost {
-  background: #4a4a4a;
+  background: #6D4C41;
   color: #ffffff;
 }
 
