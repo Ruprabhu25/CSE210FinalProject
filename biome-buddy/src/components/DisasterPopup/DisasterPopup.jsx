@@ -2,7 +2,7 @@
 import "./DisasterPopup.css";
 import React from "react";
 
-export default function DisasterPopup({ disaster, onAction }) {
+export default function DisasterPopup({ disaster, onAction, darkMode }) {
   if (!disaster) return null;
 
   const handleAction = (action) => {
@@ -11,8 +11,8 @@ export default function DisasterPopup({ disaster, onAction }) {
   const formatEffect = (delta, target) => `${delta > 0 ? "+" : ""}${delta} ${target}`;
 
   return (
-    <div className="overlay">
-      <div className="popup-frame">
+    <div className={`overlay ${darkMode ? 'dark-mode' : ''}`}>
+      <div className={`popup-frame ${darkMode ? 'dark-mode' : ''}`}>
         <div className="popup-content">
           <div className="popup-header">
             <h2>{disaster.title}</h2>

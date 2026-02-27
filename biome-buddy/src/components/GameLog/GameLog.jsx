@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import logStore from '../../components/GameLog/GameLogSystem'
 import './GameLog.css'
 
-export default function GameLog({ onCollapsedChange }) {
+export default function GameLog({ onCollapsedChange, darkMode }) {
     const [entries, setEntries] = useState([])
     const [collapsed, setCollapsed] = useState(false)
     const listRef = useRef(null)
@@ -32,7 +32,7 @@ export default function GameLog({ onCollapsedChange }) {
     }, [collapsed, onCollapsedChange])
 
     return (
-        <aside className={"game-log" + (collapsed ? ' collapsed' : '')} aria-hidden={collapsed}>
+        <aside className={"game-log" + (collapsed ? ' collapsed' : '') + (darkMode ? ' dark-mode' : '')} aria-hidden={collapsed}>
             <button
                 className="game-log-tab"
                 aria-label={collapsed ? 'Expand event log' : 'Collapse event log'}
@@ -41,18 +41,20 @@ export default function GameLog({ onCollapsedChange }) {
                 <span className="tab-arrow">{collapsed ? '‹' : '›'}</span>
             </button>
 
-            <div className="game-log-header">Event Log</div>
-            <div className="game-log-list" role="log" aria-live="polite" ref={listRef}>
-                {entries.length === 0 ? (
-                    <div className="game-log-empty">No events yet</div>
-                ) : (
-                    entries.map((e) => (
-                        <div className="game-log-entry" key={e.id}>
-                            <div className="game-log-entry-season">{e.season}</div>
-                            <div className="game-log-entry-message">{e.message}</div>
-                        </div>
-                    ))
-                )}
+            <div className="game-log-inner">
+                <div className="game-log-header">Event Log</div>
+                <div className="game-log-list" role="log" aria-live="polite" ref={listRef}>
+                    {entries.length === 0 ? (
+                        <div className="game-log-empty">No events yet</div>
+                    ) : (
+                        entries.map((e) => (
+                            <div className="game-log-entry" key={e.id}>
+                                <div className="game-log-entry-season">{e.season}</div>
+                                <div className="game-log-entry-message">{e.message}</div>
+                            </div>
+                        ))
+                    )}
+                </div>
             </div>
         </aside>
     )

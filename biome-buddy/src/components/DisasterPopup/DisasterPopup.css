@@ -133,3 +133,54 @@ button.secondary {
   background-color: #1f7a3f;
   color: white;
 }
+
+/* Dark mode styles */
+.overlay.dark-mode {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.popup-frame.dark-mode {
+  background-color: #2a2a2a;
+  border-color: #4a4a4a;
+}
+
+.popup-frame.dark-mode .popup-content {
+  color: #e0e0e0;
+}
+
+.popup-frame.dark-mode .popup-content h2 {
+  color: #ffffff;
+}
+
+.popup-frame.dark-mode .impact-line {
+  color: #e0e0e0;
+}
+
+.popup-frame.dark-mode .impact-label {
+  color: #ffffff;
+}
+
+.popup-frame.dark-mode button.primary {
+  background-color: #2E8B34;
+}
+
+.popup-frame.dark-mode button.primary:hover {
+  background-color: #3FA045;
+}
+
+.popup-frame.dark-mode button.secondary {
+  background-color: #2E8B34;
+}
+
+.popup-frame.dark-mode button.secondary:hover {
+  background-color: #3FA045;
+}
+
+.popup-frame.dark-mode .close {
+  background: #4a4a4a;
+  color: #ffffff;
+}
+
+.popup-frame.dark-mode .close:hover {
+  background: #5a5a5a;
+}

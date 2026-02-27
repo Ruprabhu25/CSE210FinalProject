@@ -1,0 +1,130 @@
+.settings-button {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  z-index: 3;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.settings-button:hover {
+  transform: scale(1.1);
+}
+
+.settings-button img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.settings-menu {
+  position: absolute;
+  top: 90px;
+  right: 40px;
+  background: #ffffff;
+  border: 2px solid #6D4C41;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 4;
+  min-width: 180px;
+}
+
+.settings-menu ul {
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+}
+
+.settings-menu li {
+  margin: 0;
+}
+
+.dark-mode-toggle {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #213547;
+  font-family: 'Irish Grover', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.dark-mode-toggle:hover {
+  background: #F0EDD9;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #1E6722;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Dark mode styles */
+.settings-menu.dark-mode {
+  background: #2a2a2a;
+  border-color: #4a4a4a;
+}
+
+.settings-menu.dark-mode .dark-mode-toggle {
+  color: #e0e0e0;
+}
+
+.settings-menu.dark-mode .dark-mode-toggle:hover {
+  background: #3a3a3a;
+}
+
+.settings-menu.dark-mode .slider {
+  background-color: #5a5a5a;
+}
+
+.settings-menu.dark-mode input:checked + .slider {
+  background-color: #2E8B34;
+}

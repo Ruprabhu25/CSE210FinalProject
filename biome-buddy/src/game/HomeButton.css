@@ -1,5 +1,29 @@
-/* Confirmation modal for choosing a biome */
-.confirm-backdrop {
+.home-button {
+  position: absolute;
+  top: 12px;
+  right: 80px;
+  z-index: 3;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.home-button:hover {
+  transform: scale(1.1);
+}
+
+.home-button img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.home-modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(6, 12, 8, 0.5);
@@ -10,37 +34,24 @@
   font-family: 'Irish Grover', cursive;
 }
 
-.confirm-modal {
+.home-modal {
   background: #ffffff;
   border-radius: 10px;
-  padding: 20px 22px;
-  width: min(520px, 92vw);
+  padding: 24px 28px;
+  width: min(480px, 94vw);
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-  border: 3px solid #6D4C41; /* border color */
+  border: 3px solid #6D4C41;
   color: #10222a;
   text-align: center;
   position: relative;
 }
 
-.confirm-modal {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 24px 28px; 
-  width: min(640px, 94vw);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-  border: 3px solid #6D4C41; /* border color */
-  color: #10222a;
-  text-align: center;
-  position: relative;
-}
-
-/* decorative image at the upper-left corner of the modal */
-.confirm-modal::before {
+.home-modal::before {
   content: '';
   position: absolute;
-  top: -20px; /* nudge so image sits over the modal corner */
+  top: -20px;
   left: -20px;
-  width: 120px; /* adjust as needed to match artwork */
+  width: 120px;
   height: 120px;
   background-image: url('../assets/border-popup-left.png');
   background-repeat: no-repeat;
@@ -49,13 +60,12 @@
   z-index: 2;
 }
 
-/* decorative image at the bottom-right corner of the modal */
-.confirm-modal::after {
+.home-modal::after {
   content: '';
   position: absolute;
-  bottom: -30px; /* nudge so image sits over the modal corner */
+  bottom: -30px;
   right: -20px;
-  width: 120px; /* adjust as needed to match artwork */
+  width: 120px;
   height: 120px;
   background-image: url('../assets/border-popup-right.png');
   background-repeat: no-repeat;
@@ -64,26 +74,33 @@
   z-index: 2;
 }
 
-.confirm-modal h2 {
+.home-modal h2 {
   margin: 0 0 10px 0;
-  font-size: 1.6rem; /* larger heading for the modal */
+  font-size: 1.6rem;
   font-weight: 700;
   color: #10222a;
 }
 
-.confirm-modal p {
-  font-size: 1.125rem; /* increased paragraph size for readability */
+.home-modal p {
+  font-size: 1.125rem;
   line-height: 1.5;
   margin: 0 0 18px 0;
 }
 
+.home-modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
 .btn-primary {
-  background: #1E6722; 
+  background: #1E6722;
   color: #fff;
   padding: 10px 14px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
+  font-family: 'Irish Grover', cursive;
 }
 
 .btn-primary:focus-visible {
@@ -97,15 +114,14 @@
   padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
-  margin-left: 20px; /* separate from primary button */
+  font-family: 'Irish Grover', cursive;
 }
 
 .btn-ghost:focus-visible {
   box-shadow: 0 0 0 3px rgba(30,103,34,0.12);
 }
 
-/* Close button in the confirm modal */
-.confirm-close {
+.home-modal-close {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -121,51 +137,51 @@
   font-size: 16px;
 }
 
-.confirm-close:focus-visible {
+.home-modal-close:focus-visible {
   box-shadow: 0 0 0 3px rgba(47,138,74,0.18);
 }
 
 /* Dark mode styles */
-.confirm-backdrop.dark-mode {
+.home-modal-backdrop.dark-mode {
   background: rgba(0, 0, 0, 0.75);
 }
 
-.confirm-modal.dark-mode {
+.home-modal.dark-mode {
   background: #2a2a2a;
   border-color: #4a4a4a;
   color: #ffffff;
 }
 
-.confirm-modal.dark-mode h2 {
+.home-modal.dark-mode h2 {
   color: #ffffff;
 }
 
-.confirm-modal.dark-mode p {
+.home-modal.dark-mode p {
   color: #e0e0e0;
 }
 
-.confirm-modal.dark-mode .btn-primary {
+.home-modal.dark-mode .btn-primary {
   background: #2E8B34;
 }
 
-.confirm-modal.dark-mode .btn-primary:hover {
+.home-modal.dark-mode .btn-primary:hover {
   background: #3FA045;
 }
 
-.confirm-modal.dark-mode .btn-ghost {
+.home-modal.dark-mode .btn-ghost {
   background: #4a4a4a;
   color: #ffffff;
 }
 
-.confirm-modal.dark-mode .btn-ghost:hover {
+.home-modal.dark-mode .btn-ghost:hover {
   background: #5a5a5a;
 }
 
-.confirm-modal.dark-mode .confirm-close {
+.home-modal.dark-mode .home-modal-close {
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 
-.confirm-modal.dark-mode .confirm-close:hover {
+.home-modal.dark-mode .home-modal-close:hover {
   background: rgba(255, 255, 255, 0.15);
 }

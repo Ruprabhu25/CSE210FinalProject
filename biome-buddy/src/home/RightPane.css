@@ -13,12 +13,32 @@
 
 .right-inner { background: #F9F7E6; z-index: 2; }
 
+
+.welcome-text {
+  width: 333px;
+  height: 77px;
+  left: 944px;
+  top: 56px;
+  font-family: 'Irish Grover';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 77px;
+  color: #372621;
+}
+
+
 .title {
   font-size: 3.5rem;
   margin: 0 0 1.5rem 0;
   letter-spacing: -1px;
-  color: #000000;
-  font-family: 'Irish Grover', cursive;
+  font-family: 'Irish Grover';
+  line-height: 103px;
+  font-style: normal;
+  background: linear-gradient(0deg, #08340A 9.71%, #446545 83.01%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .right-description {
@@ -51,4 +71,28 @@
 
 @media (max-width: 700px) {
   .right-pane::before { left: 0; width: 100%; }
+}
+
+.right-pane.dark-mode {
+  background: #2a2a2a;
+  color: #ffffff;
+}
+
+.right-pane.dark-mode .right-inner {
+  background: #2a2a2a;
+}
+
+.right-pane.dark-mode .welcome-text {
+  color: #ffffff;
+}
+
+.right-pane.dark-mode .title {
+  background: linear-gradient(0deg, #90EE90 9.71%, #ffffff 83.01%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.right-pane.dark-mode .right-description {
+  color: #e0e0e0;
 }
