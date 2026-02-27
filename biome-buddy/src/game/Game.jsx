@@ -337,7 +337,7 @@ export default function GameBlank() {
   <>
   <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
       <HomeButton onSaveAndExit={handleSaveAndExit} onJustExit={handleJustExit} darkMode={darkMode} />
-      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health={context.calculateEcosystemHealth() * 100} darkMode={darkMode} onDarkModeToggle={() => setDarkMode(!darkMode)} audioEnabled={audioEnabled} onAudioToggle={handleAudioToggle} />
+      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health={(context.smoothedHealth ?? context.calculateEcosystemHealth()) * 100} darkMode={darkMode} onDarkModeToggle={() => setDarkMode(!darkMode)} audioEnabled={audioEnabled} onAudioToggle={handleAudioToggle} />
       <SpeciesPanel
         speciesArr={speciesMetadata}
         selected={selected}

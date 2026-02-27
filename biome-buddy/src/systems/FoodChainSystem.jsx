@@ -39,33 +39,31 @@ class FoodChainSystem extends System {
                 continue;
             }
 
-            // If prey are scarce relative to predators, predators decline and prey decline slightly due to overconsumption
+            // Cap effect strength to prevent wild overcorrection on large deviations
+            const effectStrength = Math.min(deviation, 1.5);
+
+            // If prey are scarce relative to predators, predators starve.
+            // Prey are left alone so they can recover as predator numbers fall.
             if (actualRatio < idealRatio) {
                 for (const id of predatorNames) {
                     const pop = this.populations.get(id);
                     if (pop) {
-                        pop.updatePopulationByMortalityRate(1 + deviation * MULTIPLIER_DIVISION_FACTOR);
+                        pop.updatePopulationByMortalityRate(1 + effectStrength * MULTIPLIER_DIVISION_FACTOR);
                     }
                 }
-                for (const id of preyNames) {
-                    const pop = this.populations.get(id);
-                    if (pop) {
-                        pop.updatePopulationByMortalityRate(1 + deviation * (MULTIPLIER_DIVISION_FACTOR));
-                    }
-                }
-            } 
+            }
             else {
-                // If prey are abundant, predators grow and prey decrease slightly
+                // If prey are abundant, predators thrive and consume more prey.
                 for (const id of predatorNames) {
                     const pop = this.populations.get(id);
                     if (pop) {
-                        pop.updatePopulationByGrowthRate(deviation * MULTIPLIER_DIVISION_FACTOR);
+                        pop.updatePopulationByGrowthRate(1 + effectStrength * MULTIPLIER_DIVISION_FACTOR);
                     }
                 }
                 for (const id of preyNames) {
                     const pop = this.populations.get(id);
                     if (pop) {
-                        pop.updatePopulationByMortalityRate(1 - deviation);
+                        pop.updatePopulationByMortalityRate(1 + effectStrength);
                     }
                 }
             }

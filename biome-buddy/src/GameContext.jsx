@@ -28,11 +28,14 @@ class GameContext {
             console.error("WARNING: Mismatch between species and populations");
         }
 
-        this.numRoundsInSeason = 3 //int - the number of rounds in each season, which determines how long each season lasts. 
+        this.numRoundsInSeason = 3 //int - the number of rounds in each season, which determines how long each season lasts.
         this.currentDisaster = null // active disaster selected by systems for UI popup
         this.pendingDisasterAction = null // action selected in popup; resolved by DisasterSystem during runRound()
         this.enablePopupDisasters = true // allow DisasterSystem to drive popup disasters
         this.seasons = ["Spring", "Summer", "Fall", "Winter"]
+        // Smoothed health lags behind the raw calculated value so the bar moves
+        // gradually rather than snapping to 100% after a single good round.
+        this.smoothedHealth = this.calculateEcosystemHealth()
 
     }
     calculateEcosystemHealth() {

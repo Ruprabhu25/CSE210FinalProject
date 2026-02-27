@@ -64,6 +64,13 @@ class DisasterSystem extends System {
                         context.populations
                     )
                 }
+                // Every disaster causes ecosystem-wide stress regardless of the
+                // player's chosen mitigation action (6% population loss across all species).
+                const DISASTER_GLOBAL_IMPACT = 0.06
+                for (const [, pop] of context.populations) {
+                    const loss = Math.round(pop.getCurrentSize() * DISASTER_GLOBAL_IMPACT)
+                    pop.size = Math.max(0, pop.size - loss)
+                }
                 context.pendingDisasterAction = null
                 context.currentDisaster = null
                 return

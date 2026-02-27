@@ -22,6 +22,12 @@ class GameEngine {
         }
 
         this.context.increaseRound() // Move to the next round
+
+        // Converge smoothed health 25% toward the raw value so the health bar
+        // moves gradually rather than snapping to extremes in a single round.
+        const rawHealth = this.context.calculateEcosystemHealth()
+        this.context.smoothedHealth += (rawHealth - this.context.smoothedHealth) * 0.25
+
         return this.context
     }
 }
