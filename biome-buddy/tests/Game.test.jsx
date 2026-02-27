@@ -143,4 +143,11 @@ describe('InstructionsPopup', () => {
 		const { container } = render(<InstructionsPopup />)
 		expect(container.firstChild).toBeNull()
 	})
+
+	test('calls onClose when Escape key is pressed', () => {
+		const onClose = vi.fn()
+		render(<InstructionsPopup onClose={onClose} />)
+		fireEvent.keyDown(window, { key: 'Escape' })
+		expect(onClose).toHaveBeenCalledTimes(1)
+	})
 })
