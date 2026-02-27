@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './QuestionMark.css'
 import questionMarkImg from '../assets/question-mark.png'
-import pyramidImg from '../assets/pyrimad.png'
+import pyramidImg from '../assets/pyramid.png'
 
 export default function QuestionMark({ darkMode }) {
   const [open, setOpen] = useState(false)
