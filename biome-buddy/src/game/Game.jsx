@@ -314,7 +314,7 @@ export default function GameBlank() {
       />
       <GameLog darkMode={darkMode} />
       <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} darkMode={darkMode} />
-      {showInstructions && <InstructionsPopup onClose={() => setShowInstructions(false)} />}
+      {showInstructions && <InstructionsPopup onClose={() => setShowInstructions(false)} darkMode={darkMode} />}
     </div>
   )
 }

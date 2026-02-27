@@ -2,11 +2,11 @@ import React from 'react'
 import Popup from '../Popup/Popup'
 import './InstructionsPopup.css'
 
-export default function InstructionsPopup({ onClose }) {
+export default function InstructionsPopup({ onClose, darkMode = false }) {
   if (!onClose) return null
 
   return (
-    <Popup frameClassName="instructions-frame" onClose={onClose}>
+    <Popup frameClassName="instructions-frame" onClose={onClose} darkMode={darkMode}>
       <div className="popup-header">
         <h2>Welcome to Biome Buddy! 🌿</h2>
       </div>

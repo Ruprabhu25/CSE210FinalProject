@@ -37,3 +37,12 @@
   font-weight: 700;
   color: #1f7a3f;
 }
+
+/* Dark mode — lighten green accents for legibility */
+.popup-frame.dark-mode .instr-label {
+  color: #6dd68a;
+}
+
+.popup-frame.dark-mode .instructions-list li::before {
+  color: #6dd68a;
+}
