@@ -1,6 +1,7 @@
 import './SpeciesPanel.css'
 import React, { useEffect, useState } from 'react'
 import { speciesSprites } from './speciesSprites'
+import QuestionMark from './QuestionMark'
 
 
 export default function SpeciesPanel({ speciesArr, selected, setSelected, nextSeason, getPopulationSize,  onPlayerAction, darkMode }) {
@@ -29,9 +30,8 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, nextSe
         </div>
       )}
       <div className={`innerPanelStyle ${darkMode ? 'dark-mode' : ''}`} aria-label="Species panel">
-        <div className="speciesTitle">Active Species</div>
-
-        <div className="selectorStyle" role="listbox" aria-label="Species selector">
+        <div className="speciesTitle">Active Species <QuestionMark darkMode={darkMode} /></div>
+        <div className='selectorStyle' role="listbox" aria-label="Species selector">
           {speciesArr.map((s, i) => (
             <div
               key={s.name}
@@ -58,6 +58,9 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, nextSe
               <div>
                 <div className="speciesName">{s.name}</div>
                 <div className="speciesPop">{Math.round(getPopulationSize?.(s.name) ?? 0)}</div>
+              </div>
+              <div className="species-tooltip" role="tooltip">
+                <div className="tooltip-row">Trophic level: {s.trophic ?? 'N/A'}</div>
               </div>
             </div>
           ))}
