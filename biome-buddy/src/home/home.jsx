@@ -9,6 +9,15 @@ function App() {
   const [started, setStarted] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [confirmedBiome, setConfirmedBiome] = useState(null)
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('biomeBuddyDarkMode')
+    return saved !== null ? saved === 'true' : false
+  })
+
+  // Save dark mode to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('biomeBuddyDarkMode', String(darkMode))
+  }, [darkMode])
 
   // Keep started state in sync with browser history so back/forward work as expected.
   useEffect(() => {
@@ -51,12 +60,12 @@ function App() {
   return (
     <>
       <div className="home-container">
-        <LeftPane onForestClick={handleForestClick} />
-        <RightPane />
+        <LeftPane onForestClick={handleForestClick} darkMode={darkMode} />
+        <RightPane darkMode={darkMode} setDarkMode={setDarkMode} />
       </div>
 
       {showConfirm ? (
-        <ConfirmModal onClose={() => setShowConfirm(false)} onConfirm={handleConfirm} />
+        <ConfirmModal onClose={() => setShowConfirm(false)} onConfirm={handleConfirm} darkMode={darkMode} />
       ) : null}
     </>
   )

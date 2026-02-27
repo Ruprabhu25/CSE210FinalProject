@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { speciesSprites } from './speciesSprites'
 
 
-export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize,  onPlayerAction }) {
+export default function SpeciesPanel({ speciesArr, selected, setSelected, icons, nextSeason, getPopulationSize,  onPlayerAction, darkMode }) {
   const [burstSprite, setBurstSprite] = useState(null)
   const [burstKey, setBurstKey] = useState(0)
 
@@ -15,8 +15,8 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
   }
 
   return (
-    <div className="outerPanelStyle">
-      {/* Overlay animation (doesn’t block clicks) */}
+    <div className={`outerPanelStyle ${darkMode ? 'dark-mode' : ''}`}>
+            {/* Overlay animation (doesn’t block clicks) */}
       {burstSprite && (
         <div className="burstOverlay" aria-hidden>
           <img
@@ -28,8 +28,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, icons,
           />
         </div>
       )}
-
-      <div className="innerPanelStyle" aria-label="Species panel">
+      <div className={`innerPanelStyle ${darkMode ? 'dark-mode' : ''}`} aria-label="Species panel">
         <div className="speciesTitle">Active Species</div>
 
         <div className="selectorStyle" role="listbox" aria-label="Species selector">
