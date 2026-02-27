@@ -18,7 +18,6 @@ import backgroundMusic from '../assets/audio/spring.mp3'
 
 export const MAX_YEARS = 5
 export const WIN_THRESHOLD = 0.85
-export const NUM_SEASONS = 4
 
 export default function GameBlank() {
   // --- State ---
@@ -161,7 +160,7 @@ export default function GameBlank() {
       return "lose"
     }
     // each season has 3 rounds and there are 4 seasons
-    if (currentRound < MAX_YEARS * NUM_SEASONS * engine.context.numRoundsInSeason) // 5 years x 4 seasons x 3 rounds
+    if (currentRound < MAX_YEARS * engine.context.seasons.length * engine.context.numRoundsInSeason) // 5 years x 4 seasons x 3 rounds
       return null
 
     if (ecosystemHealth >= WIN_THRESHOLD) {
