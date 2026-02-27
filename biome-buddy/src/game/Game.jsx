@@ -8,6 +8,7 @@ import HomeButton from './HomeButton.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
 import DisasterPopup from '../components/DisasterPopup/DisasterPopup.jsx'
+import InstructionsPopup from '../components/InstructionsPopup/InstructionsPopup.jsx'
 import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
 import bgWinter from '../assets/forest-wi.png'
@@ -27,6 +28,7 @@ export default function GameBlank() {
   const [speciesMetadata, setSpeciesMetadata] = useState([])
   const [selected, setSelected] = useState(null)
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
+  const [showInstructions, setShowInstructions] = useState(true)
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('biomeBuddyDarkMode')
     return saved !== null ? saved === 'true' : false
@@ -312,6 +314,7 @@ export default function GameBlank() {
       />
       <GameLog darkMode={darkMode} />
       <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} darkMode={darkMode} />
+      {showInstructions && <InstructionsPopup onClose={() => setShowInstructions(false)} darkMode={darkMode} />}
     </div>
   )
 }
