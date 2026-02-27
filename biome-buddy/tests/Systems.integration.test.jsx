@@ -44,7 +44,10 @@ describe('GameEngine System Integration', () => {
     engine.runRound()
     const afterSpring = pop.size
     // Set to Winter
-    engine.context.roundNumber = 10 // ensure it's winter
+    engine.context.roundNumber = engine.context.numRoundsInSeason * 3 + 1 // should be winter
+    if (engine.context.determineSeason() !== 'Winter') {
+      throw new Error('Season is not Winter as expected');
+    }
     pop.size = 100
     engine.runRound()
     const afterWinter = pop.size
@@ -78,7 +81,6 @@ describe('GameEngine System Integration', () => {
   it('DisasterSystem should be able to set a disaster and affect populations', () => {
     // Simulate a disaster by enabling popup disasters and running a round
     engine.context.enablePopupDisasters = true
-    // Optionally, set up a known disaster if your system allows
     const before = Array.from(engine.context.populations.values()).map(p => p.size)
     engine.runRound()
     const after = Array.from(engine.context.populations.values()).map(p => p.size)
