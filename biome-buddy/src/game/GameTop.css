@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-between;
   padding: 1.25rem 1.75rem;
+  align-items: center;
+  position: relative;
 }
 
 .healthContainer {
@@ -29,6 +31,7 @@
   color: #2a1608;
 }
 
+
 .seasonBadge {
   background: #F5F5DC;
   padding: 0.625rem 2.5rem;
@@ -37,4 +40,15 @@
   font-weight: 600;
   color: #2a1608;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Dark mode styles */
+.topBar.dark-mode .seasonBadge {
+  background: #2a2a2a;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
