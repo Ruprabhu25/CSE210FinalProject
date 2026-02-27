@@ -13,6 +13,12 @@ export default function DisasterPopup({ disaster, onAction, darkMode }) {
 
   return (
     <Popup darkMode={darkMode}>
+      <div className="disaster-help">
+        <span className="disaster-help-icon">?</span>
+        <div className="disaster-help-tooltip">
+          {disaster.educationBlurb}
+        </div>
+      </div>
       <div className="popup-header">
         <h2>{disaster.title}</h2>
         {disaster.icon && (
