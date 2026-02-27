@@ -30,10 +30,12 @@ describe('DisasterPopup', () => {
         expect(onAction).toHaveBeenCalledWith(disasters.flood.actions[0])
     })
 
-    test('shows educational blurb for the selected disaster', () => {
-        render(<DisasterPopup disaster={disasters.wildfire} onAction={vi.fn()} />)
-
-        expect(screen.getByText(disasters.wildfire.educationBlurb)).toBeInTheDocument()
+    test('shows the correct educational blurb for every disaster', () => {
+        for (const disaster of Object.values(disasters)) {
+            const view = render(<DisasterPopup disaster={disaster} onAction={vi.fn()} />)
+            expect(screen.getByText(disaster.educationBlurb)).toBeInTheDocument()
+            view.unmount()
+        }
     })
 
     test('formats action button effects with signed population deltas', () => {
