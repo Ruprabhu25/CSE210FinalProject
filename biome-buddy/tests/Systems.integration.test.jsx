@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import GameEngine from '../src/GameEngine'
 
+import { disasters } from '../src/data/disasters'
+
 // Integration tests between GameEngine, GameContext, and Systems objects as well as Populations, Species, TrophicLevels
 describe('GameEngine System Integration', () => {
   let engine
@@ -81,12 +83,27 @@ describe('GameEngine System Integration', () => {
   it('DisasterSystem should be able to set a disaster and affect populations', () => {
     // Simulate a disaster by enabling popup disasters and running a round
     engine.context.enablePopupDisasters = true
-    const before = Array.from(engine.context.populations.values()).map(p => p.size)
+    engine.context.currentDisaster = true;
+    engine.context.pendingDisasterAction = disasters['wildfire'].actions[0];
+    // Remove DisasterSystem from one engine
+    const engineNoDisaster = new GameEngine()
+    // Remove DisasterSystem from systems array
+    engineNoDisaster.systems = engineNoDisaster.systems.filter(s => s.name !== 'DisasterSystem')
+    // Sync initial state
+    engineNoDisaster.context.roundNumber = engine.context.roundNumber
+    engineNoDisaster.context.populations.forEach((pop, name) => {
+      pop.size = engine.context.populations.get(name).size
+    })
+
+    // Run a round in both engines
     engine.runRound()
-    const after = Array.from(engine.context.populations.values()).map(p => p.size)
-    // At least one population should be affected if a disaster occurs
-    expect(after.some((val, i) => val !== before[i])).toBe(true)
-    // Check that currentDisaster is either null or a string/object (depending on your implementation)
-    expect([null, 'object', 'string']).toContain(typeof engine.context.currentDisaster)
+    engineNoDisaster.runRound()
+
+    // Compare populations
+    const ids = Array.from(engine.context.populations.keys())
+    const withDisaster = ids.map(id => engine.context.populations.get(id).size)
+    const noDisaster = ids.map(id => engineNoDisaster.context.populations.get(id).size)
+    // At least one population should differ if DisasterSystem has an effect
+    expect(withDisaster.some((val, i) => val !== noDisaster[i])).toBe(true)
   })
 })
