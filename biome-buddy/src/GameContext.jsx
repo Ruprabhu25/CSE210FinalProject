@@ -32,16 +32,22 @@ class GameContext {
         this.currentDisaster = null // active disaster selected by systems for UI popup
         this.pendingDisasterAction = null // action selected in popup; resolved by DisasterSystem during runRound()
         this.enablePopupDisasters = true // allow DisasterSystem to drive popup disasters
+        this.seasons = ["Spring", "Summer", "Fall", "Winter"]
+
     }
     calculateEcosystemHealth() {
         return EcosystemHealth(this.trophicLevels, this.populations)
     }
     
     determineSeason() {
-        const seasons = ["Spring", "Summer", "Fall", "Winter"]
         // season should last for a certain number of rounds
-        const currentSeasonIndex = Math.floor((this.roundNumber - 1) / this.numRoundsInSeason) % seasons.length
-        return seasons[currentSeasonIndex]
+        const currentSeasonIndex = Math.floor((this.roundNumber - 1) / this.numRoundsInSeason) % this.seasons.length
+        return this.seasons[currentSeasonIndex]
+    }
+
+    determineYear() {
+        // determines the current year, which starts at 1
+        return Math.floor((this.roundNumber - 1) / this.numRoundsInSeason / 4) + 1
     }
 
     increaseRound() {
