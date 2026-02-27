@@ -65,3 +65,52 @@
 .itemStyle.selected { background: rgba(255,255,255,0.08); }
 
 .growthButtons { padding: 6px 10px; border-radius: 8px; cursor: pointer; margin-left: 6px; font-size: 12px }
+
+/* Dark mode styles */
+.outerPanelStyle.dark-mode {
+  background: linear-gradient(180deg, #8b8888 0%, #6b6868 50%, #4a4a4a 100%);
+}
+
+.innerPanelStyle.dark-mode {
+  background: #242222;
+  color: #e0e0e0;
+}
+
+.innerPanelStyle.dark-mode .speciesTitle {
+  color: #ffffff;
+}
+
+.innerPanelStyle.dark-mode .itemStyle {
+  color: #e0e0e0;
+}
+
+.innerPanelStyle.dark-mode .itemStyle:active {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.innerPanelStyle.dark-mode .itemStyle.selected {
+  background: rgba(255,255,255,0.15);
+}
+
+.innerPanelStyle.dark-mode .iconStyle {
+  background-color: rgba(255,255,255,0.08);
+}
+
+.innerPanelStyle.dark-mode .growthButtons {
+  background: #4a4a4a;
+  color: #ffffff;
+  border: 1px solid #5a5a5a;
+}
+
+.innerPanelStyle.dark-mode .growthButtons:hover {
+  background: #5a5a5a;
+}
+
+.innerPanelStyle.dark-mode .speciesName {
+  color: #ffffff;
+}
+
+.innerPanelStyle.dark-mode .speciesPop {
+  color: #b0b0b0;
+}
