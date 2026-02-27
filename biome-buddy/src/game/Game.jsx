@@ -290,29 +290,7 @@ export default function GameBlank() {
   .filter(([_, pop]) => pop.getCurrentSize() === 0)
   .map(([speciesName]) => speciesName)
 
-  return (
-    <>
-      <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
-        <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()*100}/>
-        <SpeciesPanel
-          speciesArr={speciesMetadata}
-          selected={selected}
-          setSelected={setSelected}
-          icons={icons}
-          nextSeason={advanceRound}
-          onPlayerAction={handlePlayerAction}
-          getPopulationSize={getPopulationSize}
-        />
-        <GameLog />
-        <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} />
-      </div>
-      <GameEnd
-        result={gameResult}
-        health={context.calculateEcosystemHealth()}
-        speciesCount={context.species.size}
-        extinctSpecies={extinctSpecies}
-      />
-    </>
+  
   const handleHomeClick = () => {
     if (typeof window !== 'undefined') {
       window.history.pushState({}, '', '/')
@@ -355,23 +333,28 @@ export default function GameBlank() {
     setAudioEnabled((prev) => !prev)
   }
 
-  return (
-    <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
-      <HomeButton onSaveAndExit={handleSaveAndExit} onJustExit={handleJustExit} darkMode={darkMode} />
-      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health={context.calculateEcosystemHealth() * 100} darkMode={darkMode} onDarkModeToggle={() => setDarkMode(!darkMode)} audioEnabled={audioEnabled} onAudioToggle={handleAudioToggle} />
-      <SpeciesPanel
-        speciesArr={speciesMetadata}
-        selected={selected}
-        setSelected={setSelected}
-        icons={icons}
-        nextSeason={advanceRound}
-        onPlayerAction={handlePlayerAction}
-        getPopulationSize={getPopulationSize}
-        darkMode={darkMode}
+return (
+    <>
+      <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
+        <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health = {context.calculateEcosystemHealth()*100}/>
+        <SpeciesPanel
+          speciesArr={speciesMetadata}
+          selected={selected}
+          setSelected={setSelected}
+          icons={icons}
+          nextSeason={advanceRound}
+          onPlayerAction={handlePlayerAction}
+          getPopulationSize={getPopulationSize}
+        />
+        <GameLog />
+        <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} />
+      </div>
+      <GameEnd
+        result={gameResult}
+        health={context.calculateEcosystemHealth()}
+        speciesCount={context.species.size}
+        extinctSpecies={extinctSpecies}
       />
-      <GameLog darkMode={darkMode} />
-      <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} darkMode={darkMode} />
-      {showInstructions && <InstructionsPopup onClose={() => setShowInstructions(false)} darkMode={darkMode} />}
-    </div>
+    </>
   )
 }
