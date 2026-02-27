@@ -32,17 +32,24 @@
     transition: transform 250ms ease-in-out;
 }
 
+.game-log hr {
+    font-size: 20px;
+    color: #6D4C41;
+}
+
 .game-log-header {
     font-family: 'Irish Grover', cursive;
-    font-size: 1.1rem;
+    font-size: 2rem;
     text-align: center;
     padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 5px solid #6D4C41;
+    border-radius: 5px;
+    color: #6D4C41;
 }
 
 .game-log-tab {
     position: absolute;
-    left: -2.5rem; /* 40px → 2.5rem */
+    left: -1.85rem; 
     top: 50%;
     transform: translateY(-50%);
     width: 2.25rem; /* 36px → 2.25rem */
@@ -51,9 +58,10 @@
     align-items: center;
     justify-content: center;
     background: #F5F5DC;
-    border: 2px solid #6D4C41;
-    border-right: none;
-    border-radius: 0.375rem 0 0 0.375rem; /* 6px → 0.375rem */
+    border: 5px solid #6D4C41;
+    border-right: transparent;
+    border-radius: 10px 0 0 10px;
+    outline: none;
     cursor: pointer;
     box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.08); /* 0 4px 10px → 0 0.25rem 0.625rem */
 }
@@ -85,7 +93,7 @@
 .game-log-entry {
     background: rgba(0, 0, 0, 0.04);
     padding: 0.5rem;
-    border-radius: 0.25rem; /* 4px → 0.25rem */
+    border-radius: 20px; 
     font-size: 0.9rem;
     display: flex;
     gap: 0.5rem;
@@ -146,4 +154,41 @@
 
 .game-log.dark-mode .game-log-empty {
     color: rgba(255, 255, 255, 0.6);
+}
+
+.game-log-year {
+    background-color: transparent !important;
+    text-align: left;
+    font-size: 1.7rem;
+}
+
+.game-log-season {
+    background-color: transparent !important;
+    font-size: 1.2rem;
+    color: #6D4C41;
+}
+
+.game-log-info {
+    color: #372621;
+    box-shadow: 0px 1px 4px rgba(55, 38, 33, 0.2);
+}
+
+.game-log-disaster {
+    background-color: #fba08bad !important;
+}
+
+.spring {
+    background-color: #F5DCE8;
+}
+
+.summer {
+    background-color: #B8D4A9;
+}
+
+.fall {
+    background-color: #FFB867AD;
+}
+
+.winter {
+    background-color: #C1E1E9;
 }
