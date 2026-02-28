@@ -233,7 +233,12 @@ export default function GameBlank() {
     if (selectedSpeciesName) {
       gameLogSystem.addEntry({
         season: seasonAfterRound,
-        message: `You supported the ${selectedSpeciesName} population this round.`
+        message: `${selectedSpeciesName} population is growing faster than usual`
+      })
+    } else {
+      gameLogSystem.addEntry({
+        season: seasonAfterRound,
+        message: 'Life goes on as usual in the forest'
       })
     }
 
@@ -391,3 +396,5 @@ export default function GameBlank() {
     </>
   )
 }
+
+
