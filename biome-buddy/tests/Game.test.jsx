@@ -108,17 +108,17 @@ describe('Game integration and components', () => {
 
 		const nextBtn = screen.getByText(/Next Round/i)
 
-		// no selection -> any valid consequence message
+		// no selection -> logs a per-season message
 		fireEvent.click(nextBtn)
 		const entriesA = gameLogSystem.getEntries()
 		expect(entriesA.length).toBeGreaterThanOrEqual(1)
-		expect(entriesA[0].message).toMatch(/seasons turn|struggles|breathes easier|vanished|plummeted|fragile|thrives in balance/i)
+		expect(entriesA[0].message).toMatch(/seasons turn|struggles|breathes easier|plummeted|fragile|thrives in balance|Life goes on|growing faster/i)
 
-		// select Rabbit and advance -> should log any valid consequence message
+		// select Rabbit and advance -> logs a per-season message
 		const rabbit = screen.getByText('Rabbit')
 		fireEvent.click(rabbit)
 		const entriesB = gameLogSystem.getEntries()
-		expect(entriesB[0].message).toMatch(/flourishing|seasons turn|struggles|breathes easier|vanished|plummeted|fragile|thrives in balance/i)
+		expect(entriesB[0].message).toMatch(/flourishing|seasons turn|struggles|breathes easier|plummeted|fragile|thrives in balance|Life goes on|growing faster/i)
 	})
 
 })

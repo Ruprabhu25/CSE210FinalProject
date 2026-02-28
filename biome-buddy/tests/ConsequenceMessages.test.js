@@ -16,14 +16,6 @@ const BASE = { Grass: 1000, Rabbit: 250, Fox: 40, Hawk: 12 }
 
 describe('getCategoryAndMessage', () => {
 
-  it('returns extinction when a species drops from > 0 to 0', () => {
-    const prev = makePrevSizes(BASE)
-    const ctx = makeContext({ ...BASE, Fox: 0 }, 0)
-    const { category, message } = getCategoryAndMessage(prev, 0.6, ctx, null)
-    expect(category).toBe('extinction')
-    expect(message).toMatch(/vanished/)
-  })
-
   it('does not return extinction when species was already 0 before the round', () => {
     const prev = makePrevSizes({ ...BASE, Hawk: 0 })
     const ctx = makeContext({ ...BASE, Hawk: 0 }, 0.6)
@@ -89,14 +81,6 @@ describe('getCategoryAndMessage', () => {
     const { category, message } = getCategoryAndMessage(prev, 0.60, ctx, null)
     expect(category).toBe('stable')
     expect(message).toMatch(/seasons turn/)
-  })
-
-  it('extinction takes priority over critical_decline', () => {
-    // Fox goes from 40 to 0: both extinction and 100% loss
-    const prev = makePrevSizes(BASE)
-    const ctx = makeContext({ ...BASE, Fox: 0 }, 0)
-    const { category } = getCategoryAndMessage(prev, 0.6, ctx, null)
-    expect(category).toBe('extinction')
   })
 
   it('critical_decline takes priority over health_declining', () => {
