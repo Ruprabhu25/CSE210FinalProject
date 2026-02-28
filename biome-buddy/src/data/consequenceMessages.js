@@ -11,18 +11,7 @@
 export function getCategoryAndMessage(prevSizes, prevHealth, context, selectedSpeciesName) {
   const currentHealth = context.calculateEcosystemHealth()
 
-  // 1. Extinction — highest priority
-  for (const [name, prevSize] of prevSizes) {
-    const curr = context.populations.get(name)?.getCurrentSize() ?? 0
-    if (prevSize > 0 && curr === 0) {
-      const msg = currentHealth < 0.3
-        ? `${name} has vanished, deepening the crisis. Boost producers to rebuild the food web from the bottom up.`
-        : `${name} has vanished from the forest. Boost a species at the same trophic level to prevent further collapse.`
-      return { category: 'extinction', message: msg }
-    }
-  }
-
-  // 2. Critical decline — any species lost more than 30% in one round
+  // 1. Critical decline — any species lost more than 30% in one round
   for (const [name, prevSize] of prevSizes) {
     const curr = context.populations.get(name)?.getCurrentSize() ?? 0
     if (prevSize > 0 && (prevSize - curr) / prevSize > 0.30) {
@@ -33,7 +22,7 @@ export function getCategoryAndMessage(prevSizes, prevHealth, context, selectedSp
     }
   }
 
-  // 3. Ecosystem health dropped significantly
+  // 2. Ecosystem health dropped significantly
   if (prevHealth - currentHealth > 0.10) {
     const msg = currentHealth < 0.25
       ? `The ecosystem is in crisis — the forest struggles to survive. Boost Grass first to stabilize the base of the food web.`
@@ -41,7 +30,7 @@ export function getCategoryAndMessage(prevSizes, prevHealth, context, selectedSp
     return { category: 'health_declining', message: msg }
   }
 
-  // 4. Ecosystem health improved significantly
+  // 3. Ecosystem health improved significantly
   if (currentHealth - prevHealth > 0.10) {
     const msg = currentHealth > 0.75
       ? `The forest breathes easier — your efforts are paying off. Stay alert; a single disaster can still disrupt this recovery.`
@@ -49,7 +38,7 @@ export function getCategoryAndMessage(prevSizes, prevHealth, context, selectedSp
     return { category: 'health_improving', message: msg }
   }
 
-  // 5. Player-boosted species is visibly thriving (grew > 15%)
+  // 4. Player-boosted species is visibly thriving (grew > 15%)
   if (selectedSpeciesName) {
     const prev = prevSizes.get(selectedSpeciesName) ?? 0
     const curr = context.populations.get(selectedSpeciesName)?.getCurrentSize() ?? 0
@@ -61,7 +50,7 @@ export function getCategoryAndMessage(prevSizes, prevHealth, context, selectedSp
     }
   }
 
-  // 6. Nothing dramatic — stable round, tone and advice vary by health level
+  // 5. Nothing dramatic — stable round, tone and advice vary by health level
   if (currentHealth > 0.75)
     return { category: 'stable', message: `The forest thrives in balance. Keep an eye on species counts — a quiet round is the ideal time to get ahead of any imbalance.` }
   if (currentHealth < 0.4)

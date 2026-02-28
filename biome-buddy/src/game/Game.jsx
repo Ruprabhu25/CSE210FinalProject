@@ -230,6 +230,13 @@ export default function GameBlank() {
       })
     }
 
+    if (selectedSpeciesName) {
+      gameLogSystem.addEntry({
+        season: seasonAfterRound,
+        message: `You supported the ${selectedSpeciesName} population this round.`
+      })
+    }
+
     const { message } = getCategoryAndMessage(prevSizes, prevHealth, engine.context, selectedSpeciesName)
     gameLogSystem.addEntry({ season: seasonAfterRound, message })
 
