@@ -6,7 +6,11 @@ class MockSystem {
   constructor() { this.apply = vi.fn() }
 }
 class MockContext {
-  constructor() { this.increaseRound = vi.fn() }
+  constructor() {
+    this.increaseRound = vi.fn()
+    this.calculateEcosystemHealth = vi.fn(() => 0.8)
+    this.smoothedHealth = 0.8
+  }
 }
 
 describe('GameEngine', () => {
