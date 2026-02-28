@@ -242,8 +242,10 @@ export default function GameBlank() {
       })
     }
 
-    const { message } = getCategoryAndMessage(prevSizes, prevHealth, engine.context, selectedSpeciesName)
-    gameLogSystem.addEntry({ season: seasonAfterRound, message })
+    if (seasonBeforeRound !== seasonAfterRound) {
+      const { message } = getCategoryAndMessage(prevSizes, prevHealth, engine.context, selectedSpeciesName)
+      gameLogSystem.addEntry({ season: seasonAfterRound, message })
+    }
 
     lastLoggedSeason.current = seasonAfterRound
   }
