@@ -134,20 +134,16 @@
     border-color: #6D4C41;
 }
 
+.game-log.dark-mode .game-log-season {
+    color: #ffffff;
+}
+
 .game-log.dark-mode .game-log-tab .tab-arrow {
     color: #ffffff;
 }
 
-.game-log.dark-mode .game-log-entry {
-    background: rgba(255, 255, 255, 0.08);
-}
-
 .game-log.dark-mode .game-log-entry-season {
     color: #ffffff;
-}
-
-.game-log.dark-mode .game-log-entry-message {
-    color: #e0e0e0;
 }
 
 .game-log.dark-mode .game-log-empty {
@@ -171,8 +167,29 @@
     box-shadow: 0px 1px 4px rgba(55, 38, 33, 0.2);
 }
 
-.game-log-disaster {
-    background-color: #fba08bad !important;
+.game-log.dark-mode .spring {
+    background-color: #9e7086;
+    color: white;
+}
+
+.game-log.dark-mode .summer {
+    background-color: #5d8c5a;
+    color: white;
+}
+
+.game-log.dark-mode .fall {
+    background-color: #a47650;
+    color: white;
+}
+
+.game-log.dark-mode .winter {
+    background-color: #4a7c8c;
+    color: white;
+}
+
+.game-log.dark-mode .game-log-disaster {
+    background-color: #fba08bad;
+    color: white;
 }
 
 .spring {
@@ -189,4 +206,8 @@
 
 .winter {
     background-color: #C1E1E9;
+}
+
+.game-log-disaster {
+    background-color: #fba08bad;
 }
