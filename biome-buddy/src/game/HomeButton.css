@@ -1,7 +1,4 @@
 .home-button {
-  position: absolute;
-  top: 12px;
-  right: 80px;
   z-index: 3;
   background: none;
   border: none;
@@ -18,8 +15,8 @@
 }
 
 .home-button img {
-  width: 40px;
-  height: 40px;
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
 }
 
@@ -147,8 +144,8 @@
 }
 
 .home-modal.dark-mode {
-  background: #2a2a2a;
-  border-color: #4a4a4a;
+  background: #2b1a09;
+  border-color: #6D4C41;
   color: #ffffff;
 }
 
@@ -169,7 +166,7 @@
 }
 
 .home-modal.dark-mode .btn-ghost {
-  background: #4a4a4a;
+  background: #6D4C41;
   color: #ffffff;
 }
 

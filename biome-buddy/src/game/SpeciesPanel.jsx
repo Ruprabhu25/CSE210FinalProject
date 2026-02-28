@@ -4,7 +4,7 @@ import { speciesSprites } from './speciesSprites'
 import QuestionMark from './QuestionMark'
 
 
-export default function SpeciesPanel({ speciesArr, selected, setSelected, nextSeason, getPopulationSize,  onPlayerAction, darkMode }) {
+export default function SpeciesPanel({ speciesArr, selected, setSelected, nextSeason, getPopulationSize,  onPlayerAction, darkMode, isLogCollapsed }) {
   const [burstSprite, setBurstSprite] = useState(null)
   const [burstKey, setBurstKey] = useState(0)
 
@@ -16,7 +16,7 @@ export default function SpeciesPanel({ speciesArr, selected, setSelected, nextSe
   }
 
   return (
-    <div className={`outerPanelStyle ${darkMode ? 'dark-mode' : ''}`}>
+    <div className={`outerPanelStyle ${darkMode ? 'dark-mode' : ''} ${isLogCollapsed ? '' : 'log-open'}`}>
       {/* Overlay animation (doesn’t block clicks) */}
       {burstSprite && (
         <div className="burstOverlay" aria-hidden>

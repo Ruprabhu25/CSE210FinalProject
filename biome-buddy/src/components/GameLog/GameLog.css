@@ -1,7 +1,11 @@
 /* Game log styles */
 .game-log {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 250ms ease-in-out;
     width: 16.25rem; /* 260px → 16.25rem */
-    position: relative;
     background: linear-gradient(180deg, #7a4f26 0%, #5d3418 50%, #8b5a33 100%);
     padding: 0.375rem;
     display: flex;
@@ -24,25 +28,28 @@
 
 /* collapsed state: slide mostly off screen to the right leaving a small tab */
 .game-log.collapsed {
-    transform: translateX(calc(100% - 0.625rem)); /* 10px → 0.625rem */
-    transition: transform 250ms ease-in-out;
+    transform: translate(calc(100% - 0.625rem), -50%);
 }
 
-.game-log {
-    transition: transform 250ms ease-in-out;
+
+.game-log hr {
+    font-size: 20px;
+    color: #6D4C41;
 }
 
 .game-log-header {
     font-family: 'Irish Grover', cursive;
-    font-size: 1.1rem;
+    font-size: 2rem;
     text-align: center;
     padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 5px solid #6D4C41;
+    border-radius: 5px;
+    color: #6D4C41;
 }
 
 .game-log-tab {
     position: absolute;
-    left: -2.5rem; /* 40px → 2.5rem */
+    left: -1.85rem; 
     top: 50%;
     transform: translateY(-50%);
     width: 2.25rem; /* 36px → 2.25rem */
@@ -51,28 +58,27 @@
     align-items: center;
     justify-content: center;
     background: #F5F5DC;
-    border: 2px solid #6D4C41;
-    border-right: none;
-    border-radius: 0.375rem 0 0 0.375rem; /* 6px → 0.375rem */
+    border: 5px solid #6D4C41;
+    border-right: transparent;
+    border-radius: 10px 0 0 10px;
+    outline: none;
     cursor: pointer;
     box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.08); /* 0 4px 10px → 0 0.25rem 0.625rem */
 }
 
 .game-log-tab .tab-arrow {
-    font-size: 1.125rem; /* 18px → 1.125rem */
-    color: #000;
-
-    /* remove default focus outline/ring for the tab (keeps behavior accessible via other cues if needed) */
-    .game-log-tab:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-    .game-log-tab::-moz-focus-inner {
-        border: 0;
-    }
+  font-size: 1.125rem;
+  color: #000;
 }
 
+.game-log-tab:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.game-log-tab::-moz-focus-inner {
+  border: 0;
+}
 .game-log-list {
     overflow: auto;
     padding: 0.5rem;
@@ -85,7 +91,7 @@
 .game-log-entry {
     background: rgba(0, 0, 0, 0.04);
     padding: 0.5rem;
-    border-radius: 0.25rem; /* 4px → 0.25rem */
+    border-radius: 20px; 
     font-size: 0.9rem;
     display: flex;
     gap: 0.5rem;
@@ -93,7 +99,7 @@
 }
 
 .game-log-entry-season {
-    min-width: 5.375rem; /* 86px → 5.375rem */
+    min-width: 5.375rem; 
     font-weight: 700;
     color: rgba(0, 0, 0, 0.8);
 }
@@ -110,11 +116,11 @@
 
 /* Dark mode styles */
 .game-log.dark-mode {
-    background: linear-gradient(180deg, #868585 0%, #838080 50%, #989797 100%);
+  background: linear-gradient(180deg, #67534c 0%, #63483d 50%, #6D4C41 100%);
 }
 
 .game-log.dark-mode .game-log-inner {
-    background: #1a1a1a;
+    background: #2b1a09;
     color: #e0e0e0;
 }
 
@@ -124,26 +130,84 @@
 }
 
 .game-log.dark-mode .game-log-tab {
-    background: #1a1a1a;
-    border-color: #4a4a4a;
+    background: #2b1a09;
+    border-color: #6D4C41;
+}
+
+.game-log.dark-mode .game-log-season {
+    color: #ffffff;
 }
 
 .game-log.dark-mode .game-log-tab .tab-arrow {
     color: #ffffff;
 }
 
-.game-log.dark-mode .game-log-entry {
-    background: rgba(255, 255, 255, 0.08);
-}
-
 .game-log.dark-mode .game-log-entry-season {
     color: #ffffff;
 }
 
-.game-log.dark-mode .game-log-entry-message {
-    color: #e0e0e0;
-}
-
 .game-log.dark-mode .game-log-empty {
     color: rgba(255, 255, 255, 0.6);
+}
+
+.game-log-year {
+    background-color: transparent !important;
+    text-align: left;
+    font-size: 1.7rem;
+}
+
+.game-log-season {
+    background-color: transparent !important;
+    font-size: 1.2rem;
+    color: #6D4C41;
+}
+
+.game-log-info {
+    color: #372621;
+    box-shadow: 0px 1px 4px rgba(55, 38, 33, 0.2);
+}
+
+.game-log.dark-mode .spring {
+    background-color: #9e7086;
+    color: white;
+}
+
+.game-log.dark-mode .summer {
+    background-color: #5d8c5a;
+    color: white;
+}
+
+.game-log.dark-mode .fall {
+    background-color: #a47650;
+    color: white;
+}
+
+.game-log.dark-mode .winter {
+    background-color: #4a7c8c;
+    color: white;
+}
+
+.game-log.dark-mode .game-log-disaster {
+    background-color: #fba08bad;
+    color: white;
+}
+
+.spring {
+    background-color: #F5DCE8;
+}
+
+.summer {
+    background-color: #B8D4A9;
+}
+
+.fall {
+    background-color: #FFB867AD;
+}
+
+.winter {
+    background-color: #C1E1E9;
+}
+
+.game-log-disaster {
+    background-color: #fba08bad;
 }

@@ -5,7 +5,6 @@ import './Game.css'
 import GameTop from './GameTop.jsx'
 import GameEnd from './GameEnd.jsx'
 import SpeciesPanel from './SpeciesPanel.jsx'
-import HomeButton from './HomeButton.jsx'
 import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
 import DisasterPopup from '../components/DisasterPopup/DisasterPopup.jsx'
@@ -33,6 +32,7 @@ export default function GameBlank() {
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
   const [gameResult, setGameResult] = useState(null) // "win" | "lose"
   const [showInstructions, setShowInstructions] = useState(true)
+  const [isLogCollapsed, setIsLogCollapsed] = useState(false)
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('biomeBuddyDarkMode')
     return saved !== null ? saved === 'true' : false
@@ -41,6 +41,7 @@ export default function GameBlank() {
     const saved = localStorage.getItem('biomeBuddyAudioEnabled')
     return saved !== null ? saved === 'true' : true
   })
+
 
   // Save dark mode to localStorage whenever it changes
   useEffect(() => {
@@ -135,14 +136,15 @@ export default function GameBlank() {
     if (!hasLoggedInitial.current) {
       hasLoggedInitial.current = true
       // Avoid duplicate startup entries (can happen in Strict Mode / hot reload)
-      const already = gameLogSystem.getEntries().some(e => e.message === 'Game started - Welcome to Biome Buddy!')
+      const already = gameLogSystem.getEntries().some(e => e.message === 'Year 1')
       if (!already) {
         gameLogSystem.addEntry({
-          season: 'Year 1',
+          message: 'Year 1',
+          type: 'game-log-year'
         })
         gameLogSystem.addEntry({
-          season: null,
-          message: 'Game started - Welcome to Biome Buddy!'
+          message: `Spring is here!`,
+          type: 'game-log-season'
         })
       }
     }
@@ -200,11 +202,13 @@ export default function GameBlank() {
     if (seasonBeforeRound !== seasonAfterRound) {
       gameLogSystem.addEntry({
         season: seasonAfterRound,
-        message: `Season changed to ${seasonAfterRound}`
+        message: `${seasonAfterRound} is here!`,
+        type: 'game-log-season'
       })
-      if (seasonAfterRound === 'Spring') {
+      if (seasonAfterRound.toLowerCase() == 'spring') {
         gameLogSystem.addEntry({
-           season: `Year ${engine.context.determineYear()}`,
+           message: `Year ${engine.context.determineYear()}`,
+           type: 'game-log-year'
         })
       }
     }
@@ -213,6 +217,7 @@ export default function GameBlank() {
         season: seasonAfterRound,
         name: engine.context.currentDisaster.title,
         message: `${engine.context.currentDisaster.title}: ${engine.context.currentDisaster.description}`,
+        type: 'game-log-disaster'
       })
     }
 
@@ -246,8 +251,15 @@ export default function GameBlank() {
     if (seasonBeforeRound !== seasonAfterRound) {
       gameLogSystem.addEntry({
         season: seasonAfterRound,
-        message: `Season changed to ${seasonAfterRound}`
+        message: `${seasonAfterRound} is here!`,
+        type: 'game-log-season'
       })
+      if (seasonAfterRound.toLowerCase() == 'spring') {
+        gameLogSystem.addEntry({
+           message: `Year ${engine.context.determineYear()}`,
+           type: 'game-log-year'
+        })
+      }
     }
 
     if (action) {
@@ -336,8 +348,18 @@ export default function GameBlank() {
   return (
   <>
   <div className='rootStyle' style={rootStyleInline} onClick={() => setSelected(null)}>
-      <HomeButton onSaveAndExit={handleSaveAndExit} onJustExit={handleJustExit} darkMode={darkMode} />
-      <GameTop currentSeason={context.determineSeason()} roundNumber={context.roundNumber} health={context.calculateEcosystemHealth() * 100} darkMode={darkMode} onDarkModeToggle={() => setDarkMode(!darkMode)} audioEnabled={audioEnabled} onAudioToggle={handleAudioToggle} />
+      <GameTop
+        currentSeason={context.determineSeason()}
+        roundNumber={context.roundNumber}
+        health={context.calculateEcosystemHealth() * 100}
+        darkMode={darkMode}
+        onDarkModeToggle={() => setDarkMode(!darkMode)}
+        audioEnabled={audioEnabled}
+        onAudioToggle={handleAudioToggle}
+        onSaveAndExit={handleSaveAndExit}
+        onJustExit={handleJustExit}
+        isLogCollapsed={isLogCollapsed}
+      />
       <SpeciesPanel
         speciesArr={speciesMetadata}
         selected={selected}
@@ -346,8 +368,9 @@ export default function GameBlank() {
         onPlayerAction={handlePlayerAction}
         getPopulationSize={getPopulationSize}
         darkMode={darkMode}
+        isLogCollapsed={isLogCollapsed}
       />
-      <GameLog darkMode={darkMode} />
+      <GameLog darkMode={darkMode} onCollapsedChange={setIsLogCollapsed}/>
       <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} darkMode={darkMode} />
       {showInstructions && <InstructionsPopup onClose={() => setShowInstructions(false)} darkMode={darkMode} />}
       
