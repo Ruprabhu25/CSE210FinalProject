@@ -11,13 +11,14 @@ class GameLogSystem extends System {
         // no-op
     }
 
-    addEntry({ season = 'Unknown', message = '', name = '', timestamp = Date.now() } = {}) {
+    addEntry({ season = 'Unknown', message = '', name = '', timestamp = Date.now(), type = 'game-log-info' } = {}) {
         const entry = {
-            season,
+            season: season.toLowerCase(),
             name: name || undefined,
             message: message || name || '',
             timestamp,
             id: `${timestamp}-${Math.random().toString(36).slice(2, 9)}`,
+            type
         }
         // newest first
         this.entries.unshift(entry)

@@ -38,7 +38,7 @@ export default function GameLog({ onCollapsedChange, darkMode }) {
                 aria-label={collapsed ? 'Expand event log' : 'Collapse event log'}
                 onClick={() => setCollapsed((c) => !c)}
             >
-                <span className="tab-arrow">{collapsed ? '‹' : '›'}</span>
+                <span className="tab-arrow">{collapsed ? '◀' : '▶'}</span>
             </button>
 
             <div className="game-log-inner">
@@ -48,8 +48,7 @@ export default function GameLog({ onCollapsedChange, darkMode }) {
                         <div className="game-log-empty">No events yet</div>
                     ) : (
                         entries.map((e) => (
-                            <div className="game-log-entry" key={e.id}>
-                                <div className="game-log-entry-season">{e.season}</div>
+                            <div className={`game-log-entry ${e.type} ${e.season}`} key={e.id}>
                                 <div className="game-log-entry-message">{e.message}</div>
                             </div>
                         ))
