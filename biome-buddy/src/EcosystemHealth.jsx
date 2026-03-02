@@ -67,7 +67,7 @@ export function EcosystemHealth(trophicLevels, populations) {
     if (i < levelScores.length - 1) {
       const nextTrophicLevel = levelScores[i + 1];
       const deviation = calculateRatioDeviation(curr.totalPop, nextTrophicLevel.totalPop, curr.ideal, nextTrophicLevel.ideal);
-      currScore = deviationToScore(deviation, 0.2);
+      currScore = deviationToScore(deviation, 0.05);
     }
     return currScore;
   });

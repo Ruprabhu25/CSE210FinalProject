@@ -38,6 +38,11 @@ function MockTestData(speciesByLevel) {
 }
 
 test("close to ideal ecosystem returns ~100% health", () => {
+  // idealRatios are 1000:400:150:80, giving ideal boundaries of 2.5, 2.667, 1.875.
+  // Populations chosen so every deviation is < 0.05 (the tolerance):
+  //   Producers(100)/Primary(41)   ratio=2.439  dev=0.024 ✓
+  //   Primary(41)/Secondary(15)    ratio=2.733  dev=0.025 ✓
+  //   Secondary(15)/Tertiary(8)    ratio=1.875  dev=0.000 ✓
   const { trophicLevels, populations } = MockTestData({
     "Producers": [
       { population: 50, biomass: 100, energy: 10 },
@@ -47,15 +52,15 @@ test("close to ideal ecosystem returns ~100% health", () => {
       { population: 41, biomass: 10, energy: 0.1 }
     ],
     "Secondary Consumers": [
-      { population: 13, biomass: 10, energy: 0.01 }
+      { population: 15, biomass: 10, energy: 0.01 }
     ],
     "Tertiary Consumers": [
-      { population: 7 , biomass: 1, energy: 0.001 }
+      { population: 8 , biomass: 1, energy: 0.001 }
     ]
   });
 
   const health = EcosystemHealth(trophicLevels, populations);
-  
+
   expect(health).toBeCloseTo(1, 1);
 });
 

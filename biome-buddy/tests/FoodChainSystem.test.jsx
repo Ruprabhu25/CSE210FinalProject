@@ -110,11 +110,13 @@ describe('FoodChainSystem', () => {
   });
 
   it('Overpopulation: predators grow', () => {
+    // D must be large enough that growth = round(D * 0.1 * multiplier) >= 1.
+    // With D=1 and multiplier=4, round(0.4)=0 so D never grows.
     const context = MockTestData({
       producers: { A: 100000 },
       primary: { B: 400 },
       secondary: { C: 8 },
-      tertiary: { D: 1 }
+      tertiary: { D: 3 }
     });
 
     const before = Array.from(context.populations.values()).map(p => p.getCurrentSize());
@@ -128,6 +130,9 @@ describe('FoodChainSystem', () => {
   });
 
   it('Mix over and under population', () => {
+    // Producers(1000) >> Primary(50): primary consumers grow, producers get consumed.
+    // Primary(~70 after growth) < Secondary(100): secondary consumers starve (prey scarce).
+    // Secondary(~88 after starving) >> Tertiary(5): tertiary consumers grow, secondary consumed.
     const context = MockTestData({
       producers: { A: 1000 },
       primary: { B: 50 },
@@ -138,9 +143,13 @@ describe('FoodChainSystem', () => {
     const before = Array.from(context.populations.values()).map(p => p.getCurrentSize());
     system.apply(context);
     const after = Array.from(context.populations.values()).map(p => p.getCurrentSize());
+    // Primary grows (abundant producer prey)
     expect(after[1]).toBeGreaterThan(before[1]);
-    expect(after[2]).toBeGreaterThan(before[2]);
+    // Secondary starves (primary prey is scarce relative to secondary), then also consumed by tertiary
+    expect(after[2]).toBeLessThan(before[2]);
+    // Tertiary grows (abundant secondary prey)
     expect(after[3]).toBeGreaterThan(before[3]);
-    expect(after[0]).toBeGreaterThan(before[0]);
+    // Producers decrease (abundant relative to primary, so they get consumed)
+    expect(after[0]).toBeLessThan(before[0]);
   });
 });
