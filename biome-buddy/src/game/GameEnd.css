@@ -3,8 +3,7 @@
   position: fixed;
   inset: 0;
   display: flex;
-  align-items: center;
-  color: #F5F5DC;
+  flex-direction: column;
 }
 
 .winScreen,
@@ -21,12 +20,17 @@
 /* Victory full-screen image */
 .winScreen {
   background-image: url('../assets/game-win.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* Lose full-screen image */
 .loseScreen {
   background-image: url('../assets/game-lose.png');
-
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* Text styling */
