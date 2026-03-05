@@ -22,14 +22,14 @@ export const disasters = {
       "Forest loss, wildlife displacement, and reduced air quality.",
     actions: [
       {
-        label: "Replant Trees",
+        label: "Cut Dry Grass to Slow Fire",
         target: "Grass",
-        deltaPopulation: 2000
+        deltaPopulation: -450
       },
       {
-        label: "Protect Nesting Zones",
-        target: "Hawk",
-        deltaPopulation: 100
+        label: "Clear Bushes",
+        target: "Blueberry Bush",
+        deltaPopulation: -180
       }
     ],
     icon: wildfireIcon
@@ -45,14 +45,14 @@ export const disasters = {
       "Severe soil erosion and blocked waterways.",
     actions: [
       {
-        label: "Stabilize Slopes",
+        label: "Evacuate Rabbits in Burrows",
         target: "Rabbit",
-        deltaPopulation: 100
+        deltaPopulation: -70
       },
       {
-        label: "Save Cliff Fox Nests",
+        label: "Evacuate Foxes in Dens",
         target: "Fox",
-        deltaPopulation: 30
+        deltaPopulation: -18
       }
     ],
     icon: landslideIcon
@@ -68,14 +68,14 @@ export const disasters = {
       "Plant loss and water contamination.",
     actions: [
       {
-        label: "Build Safe Burrows",
-        target: "Rabbit",
-        deltaPopulation: 45
+        label: "Relocate Deer in Floodplains Out of Ecosystem",
+        target: "Deer",
+        deltaPopulation: -30
       },
       {
-        label: "Divert Flooding",
-        target: "Grass",
-        deltaPopulation: -350
+        label: "Relocate Frogs in Contaminated Water Out of Ecosystem",
+        target: "Frog",
+        deltaPopulation: -10
       }
     ],
     icon: floodIcon
@@ -91,14 +91,14 @@ export const disasters = {
       "Crop failure and wildlife decline.",
     actions: [
       {
-        label: "Conserve Water",
-        target: "Fox",
-        deltaPopulation: 40
+        label: "Trim Bushes to Save Water",
+        target: "Blueberry Bush",
+        deltaPopulation: -140
       },
       {
-        label: "Protect Watering Holes",
-        target: "Rabbit",
-        deltaPopulation: 250
+        label: "Cull Deer at Watering Holes",
+        target: "Deer",
+        deltaPopulation: -20
       }
     ],
     icon: droughtIcon
@@ -114,14 +114,14 @@ export const disasters = {
       "Native species populations declined.",
     actions: [
       {
-        label: "Remove Invaders",
+        label: "Cut Grass to Slow Invasive Growth",
         target: "Grass",
-        deltaPopulation: -400
+        deltaPopulation: -300
       },
       {
-        label: "Allow Spread",
-        target: "Hawk",
-        deltaPopulation: 20
+        label: "Drain Ponds to Remove Invaders",
+        target: "Frog",
+        deltaPopulation: -8
       }
     ],
     icon: invasiveIcon
@@ -137,14 +137,14 @@ export const disasters = {
       "Population declines and disrupted feeding patterns.",
     actions: [
       {
-        label: "Vaccination and Quarantine",
-        target: "Rabbit",
-        deltaPopulation: 25
+        label: "Cull Deer Herds to Slow Disease Spread",
+        target: "Deer",
+        deltaPopulation: -22
       },
       {
-        label: "Culling Infected Groups",
+        label: "Cull Rabbits in Outbreak Areas",
         target: "Rabbit",
-        deltaPopulation: -80
+        deltaPopulation: -55
       }
     ],
     icon: diseaseIcon
@@ -160,14 +160,14 @@ export const disasters = {
       "Weakened populations and reduced reproduction rates.",
     actions: [
       {
-        label: "Emergency Feeding",
-        target: "Rabbit",
-        deltaPopulation: 40
+        label: "Cull Deer to Save Edible Vegetation",
+        target: "Deer",
+        deltaPopulation: -25
       },
       {
-        label: "Ration Resources",
-        target: "Grass",
-        deltaPopulation: -500
+        label: "Harvest Blueberries for Food",
+        target: "Blueberry Bush",
+        deltaPopulation: -120
       }
     ],
     icon: famineIcon
@@ -183,14 +183,14 @@ export const disasters = {
       "Burrow collapse, nest loss, and ecosystem instability.",
     actions: [
       {
-        label: "Rebuild Burrows",
-        target: "Rabbit",
-        deltaPopulation: 30
+        label: "Evacuate Foxes Out of Ecosystem",
+        target: "Fox",
+        deltaPopulation: -12
       },
       {
-        label: "Restore Perches",
+        label: "Evacuate Hawks Out of Ecosystem",
         target: "Hawk",
-        deltaPopulation: 8
+        deltaPopulation: -4
       }
     ],
     icon: earthquakeIcon
@@ -206,14 +206,14 @@ export const disasters = {
       "Predator populations fell and food chain balance shifted.",
     actions: [
       {
-        label: "Anti-Poaching Patrols",
-        target: "Fox",
-        deltaPopulation: 20
+        label: "Relocate Bears Out of Ecosystem",
+        target: "Bear",
+        deltaPopulation: -1
       },
       {
-        label: "Protect Nesting Areas",
+        label: "Relocate Hawks Out of Ecosystem",
         target: "Hawk",
-        deltaPopulation: 10
+        deltaPopulation: -5
       }
     ],
     icon: poacherIcon
@@ -229,14 +229,14 @@ export const disasters = {
       "Habitat fragmentation and reduced producer coverage.",
     actions: [
       {
-        label: "Restrict Logging in the Region",
-        target: "Grass",
-        deltaPopulation: 220
+        label: "Evacuate Denested Hawks Out of Ecosystem",
+        target: "Hawk",
+        deltaPopulation: -4
       },
       {
-        label: "Create Wildlife Corridors",
-        target: "Fox",
-        deltaPopulation: 35
+        label: "Evacuate Affected Rabbits Out of Ecosystem",
+        target: "Rabbit",
+        deltaPopulation: -50
       }
     ],
     icon: deforestationIcon
