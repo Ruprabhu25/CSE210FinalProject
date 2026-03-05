@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 
 const popupClass = '.actions';
 const pageUrl = 'http://localhost:5173/';
@@ -62,7 +62,30 @@ const attemptNextDesiredPlayerAction = async (page, speciesName) => {
   return occurrenceMap; 
 };
 
-// intendedPlayerAction is an array of species names that the player intends to click on, it should be as large as needed to ensure the game ends by the end of the array
+// lacks some checks that runFullGameLoop has, such as checking for disasters and counting them
+// returns true if game ended during the rounds, false otherwise
+const runSomeRoundsOfGame = async (page, intendedPlayerActions) => {
+  // run the rounds
+  let playerActionIndex = 0;
+  while (playerActionIndex < intendedPlayerActions.length) {
+    const occurrenceMap = await attemptNextDesiredPlayerAction(page, intendedPlayerActions[playerActionIndex]);
+
+    if (occurrenceMap['game-end']) {
+      return true; 
+    }
+
+    if(occurrenceMap['disaster']) {
+      // interact with popup to continue
+      await checkAndInteractWithPopup(page);
+    }
+    if (occurrenceMap['species-clicked']) {
+      playerActionIndex += 1;
+    }
+  }
+  return false; 
+}
+
+// intendedPlayerAction is an array of species names that the player intends to click on, should be large enough to end the game
 const runFullGameLoop = async (page, intendedPlayerActions) => {
   // Set up initial state for later comparison
   const gameLogDisasters = page.locator('.game-log-disaster');
@@ -71,7 +94,7 @@ const runFullGameLoop = async (page, intendedPlayerActions) => {
   // run the rounds
   let gameActive = true;
   let playerActionIndex = 0;
-  while (gameActive) {
+  while (gameActive && playerActionIndex < intendedPlayerActions.length) {
     const occurrenceMap = await attemptNextDesiredPlayerAction(page, intendedPlayerActions[playerActionIndex]);
 
     // check what happened and perform checks and interactions accordingly
@@ -89,36 +112,19 @@ const runFullGameLoop = async (page, intendedPlayerActions) => {
       playerActionIndex += 1;
     }
   }
+  return !gameActive; // returns true if game ended, false otherwise
 };
 
-test('Starts playing and then leaves', async ({ page }) => {
-  await page.goto(pageUrl);
-  await page.getByRole('button', { name: 'Settings' }).click();
-  await page.locator('span').nth(3).click();
-  await page.locator('span').nth(1).click();
-  await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
-  await page.getByRole('button', { name: 'Go back' }).click();
-  await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
-  await page.getByRole('button', { name: 'Get started' }).click();
-  await page.getByRole('button', { name: 'Start Playing' }).click();
-});
-
-test('Keep touching grass', async ({ page }) => {
-  await page.goto(pageUrl);
-  await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
-  await page.getByRole('button', { name: 'Get started' }).click();
-  await page.getByRole('button', { name: 'Start Playing' }).click();
-  const intendedPlayerActions = Array(maxPlayerActions).fill('Grass');
-  await runFullGameLoop(page, intendedPlayerActions);
-});
-
-test('Release the hawks', async ({ page }) => {
-  await page.goto(pageUrl);
-  await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
-  await page.getByRole('button', { name: 'Get started' }).click();
-  await page.getByRole('button', { name: 'Start Playing' }).click();
-  const intendedPlayerActions = Array(maxPlayerActions).fill('Hawk');
-  await runFullGameLoop(page, intendedPlayerActions);
-});
-
-
+export {
+    popupClass,
+    pageUrl,
+    maxPlayerActions,
+    checkForPopup,
+    interactWithPopup,
+    checkAndInteractWithPopup,
+    clickSpecies,
+    checkForGameEnd,
+    attemptNextDesiredPlayerAction,
+    runSomeRoundsOfGame,
+    runFullGameLoop,
+}
