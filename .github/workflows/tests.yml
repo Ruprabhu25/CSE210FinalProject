@@ -26,3 +26,19 @@ jobs:
       - name: Run tests
         run: npm test
         working-directory: biome-buddy
+
+      - name: Start Vite dev server
+        run: npm run dev &
+        working-directory: biome-buddy
+
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:5173
+        working-directory: biome-buddy
+
+      - name: Install Playwright browsers
+        run: npx playwright install
+        working-directory: biome-buddy
+
+      - name: Run Playwright tests
+        run: npx playwright test
+        working-directory: biome-buddy

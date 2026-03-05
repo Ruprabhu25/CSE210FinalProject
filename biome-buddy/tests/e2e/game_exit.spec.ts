@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {pageUrl, maxPlayerActions, runSomeRoundsOfGame, checkAndInteractWithPopup} from './helper';
+import {pageUrl, maxPlayerActions, runSomeRoundsOfGame, checkAndInteractWithPopup} from '../../e2e_helper';
 
 test('Starts playing and then leaves', async ({ page }) => {
   await page.goto(pageUrl);
