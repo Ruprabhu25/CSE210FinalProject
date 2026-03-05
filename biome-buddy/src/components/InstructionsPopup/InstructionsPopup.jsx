@@ -42,6 +42,11 @@ export default function InstructionsPopup({ onClose, darkMode = false }) {
           <span className="instr-label">Watch the Event Log</span> on the
           right to track what&apos;s happening in the forest each round.
         </li>
+        <li>
+          <span className="instr-label">Game Duration</span>&mdash;you have 5 years
+          to build a healthy ecosystem. Reach 85% ecosystem health to win!
+          If you don&apos;t reach it by the end of 5 years, you lose.
+        </li>
       </ul>
 
       <div className="actions">
