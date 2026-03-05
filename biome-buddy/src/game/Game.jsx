@@ -52,8 +52,7 @@ export default function GameBlank() {
     const saved = localStorage.getItem('biomeBuddyAudioEnabled')
     return saved !== null ? saved === 'true' : true
   })
-
-
+  
   // Save dark mode to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('biomeBuddyDarkMode', String(darkMode))
@@ -63,6 +62,12 @@ export default function GameBlank() {
   useEffect(() => {
     localStorage.setItem('biomeBuddyAudioEnabled', String(audioEnabled))
   }, [audioEnabled])
+
+  useEffect(() => {
+    if (gameResult) {
+      localStorage.removeItem('biomeBuddySaveData')
+    }
+  }, [gameResult])
 
   // Setup background music
   useEffect(() => {
