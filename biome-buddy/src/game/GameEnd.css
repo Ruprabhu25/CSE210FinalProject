@@ -3,12 +3,15 @@
   inset: 0;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
 
 .winScreen,
 .loseScreen {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -16,10 +19,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20vh;
+  gap: 10vh;
   padding: 4vh 5vw;
   text-align: center;
   position: relative;
+  box-sizing: border-box;
 }
 
 /* Background images */
@@ -34,10 +38,11 @@
 /* Main Title */
 .winScreen h1,
 .loseScreen h1 {
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(2.5rem, 7vw, 5rem);
   font-family: 'Irish Grover', cursive;
   font-weight: bold;
   margin-bottom: 2vh;
+  word-break: break-word;
 }
 
 .winScreen h1 {
@@ -47,43 +52,42 @@
 
 .loseScreen h1 {
   -webkit-text-stroke: 0.2rem #F5F5DC;
-  color: #372621;
+  color: black;
 }
 
 /* Subtitle */
 .winScreen h2,
 .loseScreen h2 {
-  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-size: clamp(1.2rem, 3vw, 3rem);
   font-family: 'Irish Grover', cursive;
   font-weight: bold;
-  margin: 0 8vw;
+  margin: 0 6vw;
+  word-break: break-word;
 }
 
 .winScreen h2 {
-  -webkit-text-stroke: 0.1rem #6D4C41;
+  -webkit-text-stroke: 0.05rem #6D4C41;
   color: #F5F5DC;
 }
 
 .loseScreen h2 {
-  -webkit-text-stroke: 0.1rem #F5F5DC;
+  -webkit-text-stroke: 0.05rem #F5F5DC;
   color: black;
 }
 
-/* Button styling */
 .winScreen button,
 .loseScreen button {
   padding: 1vh 3vw;
   font-family: 'Irish Grover', cursive;
   font-size: clamp(1rem, 2.5vw, 2rem);
   color: #F5F5DC;
-
   border-radius: 1.2rem;
   border: 0.25rem solid #372621;
-
   cursor: pointer;
-
   background-color: #1E6722;
   transition: transform 0.2s ease;
+  width: fit-content;
+  align-self: center;
 }
 
 .winScreen button:hover,
@@ -105,6 +109,7 @@
   background: #6D4C41;
   border: 0.25rem solid #372621;
   padding: 1.5vh 2vw;
+  box-sizing: border-box;
 }
 
 .speciesBox {
@@ -115,23 +120,25 @@
   border-radius: 0 1.5rem 1.5rem 0;
 }
 
+
 /* Stat labels */
 .statLabel {
   font-family: 'Irish Grover', cursive;
-  font-size: clamp(1rem, 2vw, 2rem);
-  color: black;
+  font-size: clamp(1.2rem, 2vw, 2.5rem);
+  color: #F5F5DC;
 }
 
 /* Extinct Section */
 .extinctSection {
   font-family: 'Irish Grover', cursive;
-  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-size: clamp(1rem, 3vw, 2.5rem);
   color: #F5F5DC;
-  -webkit-text-stroke: 0.15rem #6D4C41;
+  -webkit-text-stroke: 0.1rem #6D4C41;
   margin-top: 2vh;
+  word-break: break-word;
 }
 
 /* Remove large fixed margin */
 .notButton {
-  margin-bottom: 10vh;
+  margin-bottom: 6vh;
 }
