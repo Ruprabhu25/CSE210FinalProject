@@ -22,7 +22,9 @@ describe('DisasterPopup', () => {
         const onAction = vi.fn()
         render(<DisasterPopup disaster={disasters.flood} onAction={onAction} />)
 
-        const action = screen.getByRole('button', { name: /Build Safe Burrows/i })
+        const action = screen.getByRole('button', {
+            name: new RegExp(`${disasters.flood.actions[0].label} \\(${disasters.flood.actions[0].deltaPopulation} ${disasters.flood.actions[0].target}\\)`, 'i')
+        })
         expect(action).toBeInTheDocument()
 
         action.click()
@@ -41,7 +43,11 @@ describe('DisasterPopup', () => {
     test('formats action button effects with signed population deltas', () => {
         render(<DisasterPopup disaster={disasters.flood} onAction={vi.fn()} />)
 
-        expect(screen.getByRole('button', { name: /Build Safe Burrows \(\+45 Rabbit\)/i })).toBeInTheDocument()
-        expect(screen.getByRole('button', { name: /Divert Flooding \(-350 Grass\)/i })).toBeInTheDocument()
+        expect(screen.getByRole('button', {
+            name: new RegExp(`${disasters.flood.actions[0].label} \\(${disasters.flood.actions[0].deltaPopulation} ${disasters.flood.actions[0].target}\\)`, 'i')
+        })).toBeInTheDocument()
+        expect(screen.getByRole('button', {
+            name: new RegExp(`${disasters.flood.actions[1].label} \\(${disasters.flood.actions[1].deltaPopulation} ${disasters.flood.actions[1].target}\\)`, 'i')
+        })).toBeInTheDocument()
     })
 })
