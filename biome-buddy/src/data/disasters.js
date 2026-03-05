@@ -24,12 +24,12 @@ export const disasters = {
       {
         label: "Cut Dry Grass to Slow Fire",
         target: "Grass",
-        deltaPopulation: -450
+        deltaPopulation: -300
       },
       {
         label: "Clear Bushes",
         target: "Blueberry Bush",
-        deltaPopulation: -180
+        deltaPopulation: -100
       }
     ],
     icon: wildfireIcon
@@ -45,14 +45,14 @@ export const disasters = {
       "Severe soil erosion and blocked waterways.",
     actions: [
       {
-        label: "Evacuate Rabbits in Burrows",
+        label: "Relocate Rabbits Out of the Ecosystem",
         target: "Rabbit",
         deltaPopulation: -70
       },
       {
-        label: "Evacuate Foxes in Dens",
+        label: "Relocate Foxes Out of the Ecosystem",
         target: "Fox",
-        deltaPopulation: -18
+        deltaPopulation: -20
       }
     ],
     icon: landslideIcon
@@ -70,7 +70,7 @@ export const disasters = {
       {
         label: "Relocate Deer in Floodplains Out of Ecosystem",
         target: "Deer",
-        deltaPopulation: -30
+        deltaPopulation: -25
       },
       {
         label: "Relocate Frogs in Contaminated Water Out of Ecosystem",
@@ -93,12 +93,12 @@ export const disasters = {
       {
         label: "Trim Bushes to Save Water",
         target: "Blueberry Bush",
-        deltaPopulation: -140
+        deltaPopulation: -100
       },
       {
         label: "Cull Deer at Watering Holes",
         target: "Deer",
-        deltaPopulation: -20
+        deltaPopulation: -25
       }
     ],
     icon: droughtIcon
@@ -116,7 +116,7 @@ export const disasters = {
       {
         label: "Cut Grass to Slow Invasive Growth",
         target: "Grass",
-        deltaPopulation: -300
+        deltaPopulation: -330
       },
       {
         label: "Drain Ponds to Remove Invaders",
@@ -139,12 +139,12 @@ export const disasters = {
       {
         label: "Cull Deer Herds to Slow Disease Spread",
         target: "Deer",
-        deltaPopulation: -22
+        deltaPopulation: -20
       },
       {
         label: "Cull Rabbits in Outbreak Areas",
         target: "Rabbit",
-        deltaPopulation: -55
+        deltaPopulation: -50
       }
     ],
     icon: diseaseIcon
@@ -162,12 +162,12 @@ export const disasters = {
       {
         label: "Cull Deer to Save Edible Vegetation",
         target: "Deer",
-        deltaPopulation: -25
+        deltaPopulation: -20
       },
       {
         label: "Harvest Blueberries for Food",
         target: "Blueberry Bush",
-        deltaPopulation: -120
+        deltaPopulation: -70
       }
     ],
     icon: famineIcon
@@ -185,12 +185,12 @@ export const disasters = {
       {
         label: "Evacuate Foxes Out of Ecosystem",
         target: "Fox",
-        deltaPopulation: -12
+        deltaPopulation: -15
       },
       {
         label: "Evacuate Hawks Out of Ecosystem",
         target: "Hawk",
-        deltaPopulation: -4
+        deltaPopulation: -3
       }
     ],
     icon: earthquakeIcon
@@ -208,12 +208,12 @@ export const disasters = {
       {
         label: "Relocate Bears Out of Ecosystem",
         target: "Bear",
-        deltaPopulation: -1
+        deltaPopulation: -2
       },
       {
         label: "Relocate Hawks Out of Ecosystem",
         target: "Hawk",
-        deltaPopulation: -5
+        deltaPopulation: -3
       }
     ],
     icon: poacherIcon
@@ -231,12 +231,12 @@ export const disasters = {
       {
         label: "Evacuate Denested Hawks Out of Ecosystem",
         target: "Hawk",
-        deltaPopulation: -4
+        deltaPopulation: -3
       },
       {
         label: "Evacuate Affected Rabbits Out of Ecosystem",
         target: "Rabbit",
-        deltaPopulation: -50
+        deltaPopulation: -70
       }
     ],
     icon: deforestationIcon

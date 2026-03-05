@@ -76,7 +76,7 @@ class DisasterSystem extends System {
                 return
             }
 
-            if (!context.currentDisaster && Math.random() < 0.4) {
+            if (!context.currentDisaster && Math.random() < 0.3) {
                 const keys = Object.keys(disasters)
                 const key = keys[Math.floor(Math.random() * keys.length)]
                 const disaster = disasters[key]
