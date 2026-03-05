@@ -26,7 +26,6 @@
   box-sizing: border-box;
 }
 
-/* Background images */
 .winScreen {
   background-image: url('../assets/game-win.png');
 }
@@ -35,7 +34,6 @@
   background-image: url('../assets/game-lose.png');
 }
 
-/* Main Title */
 .winScreen h1,
 .loseScreen h1 {
   font-size: clamp(2.5rem, 7vw, 5rem);
@@ -55,7 +53,6 @@
   color: black;
 }
 
-/* Subtitle */
 .winScreen h2,
 .loseScreen h2 {
   font-size: clamp(1.2rem, 3vw, 3rem);
@@ -95,7 +92,6 @@
   transform: scale(1.05);
 }
 
-/* Stats Section */
 .endStats {
   display: flex;
   justify-content: center;
@@ -103,7 +99,6 @@
   flex-wrap: wrap;
 }
 
-/* Stat boxes */
 .speciesBox,
 .healthBox {
   background: #6D4C41;
@@ -121,14 +116,12 @@
 }
 
 
-/* Stat labels */
 .statLabel {
   font-family: 'Irish Grover', cursive;
   font-size: clamp(1.2rem, 2vw, 2.5rem);
   color: #F5F5DC;
 }
 
-/* Extinct Section */
 .extinctSection {
   font-family: 'Irish Grover', cursive;
   font-size: clamp(1rem, 3vw, 2.5rem);
@@ -138,7 +131,6 @@
   word-break: break-word;
 }
 
-/* Remove large fixed margin */
 .notButton {
   margin-bottom: 6vh;
 }
