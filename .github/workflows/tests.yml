@@ -57,6 +57,10 @@ jobs:
         run: npx playwright test
         working-directory: biome-buddy
 
+      - name: List files in biome-buddy
+        run: ls -R
+        working-directory: biome-buddy
+
       - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
         with:
