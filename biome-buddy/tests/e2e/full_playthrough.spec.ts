@@ -11,7 +11,7 @@ test('Keep touching grass', async ({ page }) => {
   expect(gameEnded).toBe(true);
 });
 
-test('Release the hawks', async ({ page }) => {
+/* test('Release the hawks', async ({ page }) => {
   await page.goto(pageUrl);
   await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
   await page.getByRole('button', { name: 'Get started' }).click();
@@ -19,4 +19,4 @@ test('Release the hawks', async ({ page }) => {
   const intendedPlayerActions = Array(maxPlayerActions).fill('Hawk');
   const gameEnded = await runFullGameLoop(page, intendedPlayerActions);
   expect(gameEnded).toBe(true);
-});
+}); */

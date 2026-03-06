@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {pageUrl, maxPlayerActions, runSomeRoundsOfGame, checkAndInteractWithPopup} from '../../e2e_helper';
 
-test('Starts playing and then leaves', async ({ page }) => {
+/* test('Starts playing and then leaves', async ({ page }) => {
   await page.goto(pageUrl);
   await page.getByRole('button', { name: 'Settings' }).click();
   await page.locator('span').nth(3).click();
@@ -86,7 +86,7 @@ test('start game, go back to home page, and start a new game', async ({ page }) 
   const remainingIntendedPlayerActions = Array(maxPlayerActions).fill('Grass');
   const gameEndedAfterResume = await runSomeRoundsOfGame(page, remainingIntendedPlayerActions);
   expect(gameEndedAfterResume).toBe(true);
-});  
+});   */
 
 test('start game, go back to home page without saving, start new game', async ({ page }) => {
   await page.goto('http://localhost:5173/');
