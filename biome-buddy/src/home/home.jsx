@@ -5,6 +5,8 @@ import AboutPopup from './options/AboutPopup'
 import CreditsPopup from './options/CreditsPopup'
 import ConfirmModal from './ConfirmModal'
 import SettingsButton from './SettingsButton'
+import GameTitle from '../assets/game-title.png'
+
 
 function App() {
   const [started, setStarted] = useState(false)
@@ -72,12 +74,11 @@ function App() {
     <>
       <div className="home-container">
         <SettingsButton darkMode={darkMode} onDarkModeToggle={handleDarkModeToggle} />        
-        <h2>Welcome to</h2>
-        <h1>Biome Buddy</h1>
-        <button className="start-btn" onClick={handleForestClick}></button>
+        <img src={GameTitle} alt="Biome Buddy Game Title" className="game-title" />
+        <button className="start-btn" onClick={handleForestClick}>Start Game</button>
         <div className='options-container'>
-          <button className="options-btn" onClick={handleAboutClick}></button>
-          <button className="options-btn" onClick={handleCreditsClick}></button>
+          <button className="options-btn" onClick={handleAboutClick}>About</button>
+          <button className="options-btn" onClick={handleCreditsClick}>Credits</button>
         </div>
         
       {showConfirm ? (
