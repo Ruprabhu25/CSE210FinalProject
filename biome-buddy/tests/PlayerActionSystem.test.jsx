@@ -4,7 +4,13 @@ import PlayerActionSystem from '../src/systems/PlayerActionSystem'
 // Mock Population
 class MockPopulation {
   constructor() {
+    this.size = 10
+    this.carryingCapacity = 100
     this.updatePopulationByGrowthRate = vi.fn()
+  }
+
+  getCurrentSize() {
+    return this.size
   }
 }
 

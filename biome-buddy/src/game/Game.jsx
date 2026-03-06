@@ -9,6 +9,7 @@ import GameLog from '../components/GameLog/GameLog.jsx'
 import gameLogSystem from '../components/GameLog/GameLogSystem.jsx'
 import DisasterPopup from '../components/DisasterPopup/DisasterPopup.jsx'
 import InstructionsPopup from '../components/InstructionsPopup/InstructionsPopup.jsx'
+import ResumePopup from '../components/ResumePopup/ResumePopup.jsx'
 import { getCategoryAndMessage } from '../data/consequenceMessages'
 import bgSummer from '../assets/forest-su.png'
 import bgSpring from '../assets/forest-sp.png'
@@ -32,7 +33,16 @@ export default function GameBlank() {
   const [selected, setSelected] = useState(null)
   const [gameContextState, setGameContextState] = useState(null) // Triggers rerenders when context updates
   const [gameResult, setGameResult] = useState(null) // "win" | "lose"
-  const [showInstructions, setShowInstructions] = useState(true)
+  const [showInstructions, setShowInstructions] = useState(() => {
+    // Don't show instructions if there's a saved game
+    const savedState = localStorage.getItem('biomeBuddySaveData')
+    return !savedState
+  })
+  const [showResume, setShowResume] = useState(() => {
+    // Show resume popup if there's a saved game
+    const savedState = localStorage.getItem('biomeBuddySaveData')
+    return !!savedState
+  })
   const [isLogCollapsed, setIsLogCollapsed] = useState(false)
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('biomeBuddyDarkMode')
@@ -42,8 +52,7 @@ export default function GameBlank() {
     const saved = localStorage.getItem('biomeBuddyAudioEnabled')
     return saved !== null ? saved === 'true' : true
   })
-
-
+  
   // Save dark mode to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('biomeBuddyDarkMode', String(darkMode))
@@ -53,6 +62,12 @@ export default function GameBlank() {
   useEffect(() => {
     localStorage.setItem('biomeBuddyAudioEnabled', String(audioEnabled))
   }, [audioEnabled])
+
+  useEffect(() => {
+    if (gameResult) {
+      localStorage.removeItem('biomeBuddySaveData')
+    }
+  }, [gameResult])
 
   // Setup background music
   useEffect(() => {
@@ -387,6 +402,7 @@ export default function GameBlank() {
       <GameLog darkMode={darkMode} onCollapsedChange={setIsLogCollapsed}/>
       <DisasterPopup disaster={context?.currentDisaster || null} onAction={handleDisasterAction} darkMode={darkMode} />
       {showInstructions && <InstructionsPopup onClose={() => setShowInstructions(false)} darkMode={darkMode} />}
+      {showResume && <ResumePopup onClose={() => setShowResume(false)} darkMode={darkMode} />}
       
       </div>
       <GameEnd

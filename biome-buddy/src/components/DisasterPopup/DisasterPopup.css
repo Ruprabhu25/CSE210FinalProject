@@ -65,3 +65,7 @@
   color: #e0e0e0;
   border: 1px solid #6D4C41;
 }
+
+.popup-frame.disaster-frame {
+  transform: translateY(-1in);
+}
