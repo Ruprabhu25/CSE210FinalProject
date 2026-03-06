@@ -76,12 +76,12 @@ function App() {
         <SettingsButton darkMode={darkMode} onDarkModeToggle={handleDarkModeToggle} />
         <div className="game-header">
           <img src={GameTitle} alt="Biome Buddy Game Title" className="game-title" />
-          <button className="start-btn" onClick={handleForestClick}>Start Game</button>
+          <button aria-label="Start Game" className="start-btn" onClick={handleForestClick}>Start Game</button>
         </div>     
         
         <span className='options-container'>
-          <button className="options-btn" onClick={handleAboutClick}>About</button>
-          <button className="options-btn" onClick={handleCreditsClick}>Credits</button>
+          <button aria-label="About" className="options-btn" onClick={handleAboutClick}>About</button>
+          <button aria-label="Credits" className="options-btn" onClick={handleCreditsClick}>Credits</button>
         </span>
         
       {showConfirm ? (
