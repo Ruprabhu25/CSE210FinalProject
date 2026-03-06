@@ -60,7 +60,7 @@ jobs:
       - name: List files in biome-buddy
         run: ls -R
         working-directory: biome-buddy
-        continue-on-error: true 
+        continue-on-error: true
 
       - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
