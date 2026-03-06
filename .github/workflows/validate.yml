@@ -16,4 +16,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Validate YAML file
-        run: yamllint validate.yml
+        run: yamllint .github/workflows/tests.yml
