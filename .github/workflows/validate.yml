@@ -6,9 +6,9 @@ name: Validate-YAML
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   validate-yaml:
