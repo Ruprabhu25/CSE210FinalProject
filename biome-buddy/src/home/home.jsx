@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import './home.css'
 import GameBlank from '../game/Game'
-import LeftPane from './LeftPane'
-import RightPane from './RightPane'
+import AboutPopup from './options/AboutPopup'
+import CreditsPopup from './options/CreditsPopup'
 import ConfirmModal from './ConfirmModal'
+import SettingsButton from './SettingsButton'
 
 function App() {
   const [started, setStarted] = useState(false)
+  const [showAbout, setShowAbout] = useState(false)
+  const [showCredits, setShowCredits] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [confirmedBiome, setConfirmedBiome] = useState(null)
   const [darkMode, setDarkMode] = useState(() => {
@@ -47,6 +50,10 @@ function App() {
     return <GameBlank/>;
   }
   const handleForestClick = () => setShowConfirm(true)
+  const handleAboutClick = () => setShowAbout(true)
+  const handleCreditsClick = () => setShowCredits(true)
+
+
 
   const handleConfirm = () => {
     setConfirmedBiome('forest')
@@ -57,17 +64,30 @@ function App() {
     setShowConfirm(false)
   }
 
+    const handleDarkModeToggle = () => {
+    setDarkMode(!darkMode)
+    }
+
   return (
     <>
       <div className="home-container">
-        <LeftPane onForestClick={handleForestClick} darkMode={darkMode} />
-        <RightPane darkMode={darkMode} setDarkMode={setDarkMode} />
-      </div>
-
+        <SettingsButton darkMode={darkMode} onDarkModeToggle={handleDarkModeToggle} />        
+        <h2>Welcome to</h2>
+        <h1>Biome Buddy</h1>
+        <button className="start-btn" onClick={handleForestClick}></button>
+        <div className='options-container'>
+          <button className="options-btn" onClick={handleAboutClick}></button>
+          <button className="options-btn" onClick={handleCreditsClick}></button>
+        </div>
+        
       {showConfirm ? (
         <ConfirmModal onClose={() => setShowConfirm(false)} onConfirm={handleConfirm} darkMode={darkMode} />
       ) : null}
+      {showAbout && <AboutPopup onClose={() => setShowAbout(false)} darkMode={darkMode} />}
+      {showCredits && <CreditsPopup onClose={() => setShowCredits(false)} darkMode={darkMode} />}
+    </div>
     </>
+    
   )
 }
 

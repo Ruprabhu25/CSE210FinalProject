@@ -44,7 +44,7 @@ export default function ConfirmModal({ onClose, onConfirm, darkMode }) {
           </>
         ) : (
           <>
-            <h2>You chose the Forest Biome</h2>
+            <h2>Welcome to the Forest Biome</h2>
             <p style={{ marginTop: 8, marginBottom: 18 }}>Be prepared to encounter wildfires, landslides, outbreaks and more!</p>
             <div className="confirm-actions">
               <button className="btn-primary" onClick={handleGetStarted}>
