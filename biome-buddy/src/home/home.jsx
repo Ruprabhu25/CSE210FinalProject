@@ -73,13 +73,16 @@ function App() {
   return (
     <>
       <div className="home-container">
-        <SettingsButton darkMode={darkMode} onDarkModeToggle={handleDarkModeToggle} />        
-        <img src={GameTitle} alt="Biome Buddy Game Title" className="game-title" />
-        <button className="start-btn" onClick={handleForestClick}>Start Game</button>
-        <div className='options-container'>
+        <SettingsButton darkMode={darkMode} onDarkModeToggle={handleDarkModeToggle} />
+        <div className="game-header">
+          <img src={GameTitle} alt="Biome Buddy Game Title" className="game-title" />
+          <button className="start-btn" onClick={handleForestClick}>Start Game</button>
+        </div>     
+        
+        <span className='options-container'>
           <button className="options-btn" onClick={handleAboutClick}>About</button>
           <button className="options-btn" onClick={handleCreditsClick}>Credits</button>
-        </div>
+        </span>
         
       {showConfirm ? (
         <ConfirmModal onClose={() => setShowConfirm(false)} onConfirm={handleConfirm} darkMode={darkMode} />
