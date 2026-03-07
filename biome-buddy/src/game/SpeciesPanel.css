@@ -111,6 +111,14 @@
   transform: translateX(-50%) translateY(-12px);
 }
 
+/* Dark mode for species tooltip */
+.innerPanelStyle.dark-mode .species-tooltip {
+  background: #2b1a09;
+  color: #e0e0e0;
+  border-color: #6D4C41;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
 .tooltip-title {
   font-weight: 700;
   margin-bottom: 4px;

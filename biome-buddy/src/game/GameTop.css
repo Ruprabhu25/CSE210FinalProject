@@ -138,6 +138,21 @@
     background: #053c11;
 }
 
+/* Dark mode for health tooltip */
+.topBar.dark-mode .health-tooltip {
+  background: #2b1a09;
+  border-color: #6D4C41;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.topBar.dark-mode .health-tooltip h4 {
+  color: #ffffff;
+}
+
+.topBar.dark-mode .health-tooltip li {
+  color: #e0e0e0;
+}
+
 .top-controls {
   display: flex;
   gap: 16px;
