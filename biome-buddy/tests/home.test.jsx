@@ -16,28 +16,28 @@ describe('Home page — modal and navigation behaviors', () => {
   test('Forest button is accessible and opens the confirm modal', () => {
     render(<App />)
 
-    const forestButton = screen.getByLabelText(/Choose Forest Biome/i)
+    const forestButton = screen.getByLabelText(/Start Game/i)
     expect(forestButton).toBeInTheDocument()
 
     fireEvent.click(forestButton)
-    expect(screen.getByText(/You chose the Forest Biome/i)).toBeInTheDocument()
+    expect(screen.getByText(/Welcome to the Forest Biome/i)).toBeInTheDocument()
   })
 
   test('Clicking backdrop closes the modal', () => {
     render(<App />)
-    fireEvent.click(screen.getByLabelText(/Choose Forest Biome/i))
+    fireEvent.click(screen.getByLabelText(/Start Game/i))
 
     // dialog role is on the backdrop (modal-backdrop)
     const backdrop = screen.getByRole('dialog')
     fireEvent.click(backdrop) // clicking backdrop should close
 
     // modal content should no longer be in the document
-    expect(screen.queryByText(/You chose the Forest Biome/i)).toBeNull()
+    expect(screen.queryByText(/Welcome to the Forest Biome/i)).toBeNull()
   })
 
   test('Pressing Escape closes the modal', () => {
     render(<App />)
-    fireEvent.click(screen.getByLabelText(/Choose Forest Biome/i))
+    fireEvent.click(screen.getByLabelText(/Start Game/i))
 
     // fire Escape keyboard event
     fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' })
@@ -47,7 +47,7 @@ describe('Home page — modal and navigation behaviors', () => {
 
   test('Close button (✕) closes the modal', () => {
     render(<App />)
-    fireEvent.click(screen.getByLabelText(/Choose Forest Biome/i))
+    fireEvent.click(screen.getByLabelText(/Start Game/i))
 
     const closeButton = screen.getByLabelText(/Close/i) || screen.getByText('✕')
     fireEvent.click(closeButton)
@@ -59,7 +59,7 @@ describe('Home page — modal and navigation behaviors', () => {
     render(<App />)
 
     const pushSpy = vi.spyOn(window.history, 'pushState')
-    fireEvent.click(screen.getByLabelText(/Choose Forest Biome/i))
+    fireEvent.click(screen.getByLabelText(/Start Game/i))
 
     const getStarted = screen.getByRole('button', { name: /Get started/i }) || screen.getByText(/Get started/i)
     fireEvent.click(getStarted)
@@ -69,9 +69,23 @@ describe('Home page — modal and navigation behaviors', () => {
     expect(screen.queryByText(/You chose the Forest Biome/i)).toBeNull()
   })
 
-  test('Right pane renders title and descriptive paragraphs', () => {
+  test('About button is accessible and opens the about modal', () => {
     render(<App />)
-    expect(screen.getByText(/Biome Buddy/i)).toBeInTheDocument()
+
+    const forestButton = screen.getByLabelText(/About/i)
+    expect(forestButton).toBeInTheDocument()
+
+    fireEvent.click(forestButton)
     expect(screen.getByText(/Step into the role of a community/i)).toBeInTheDocument()
+  })
+
+  test('About button is accessible and opens the about modal', () => {
+    render(<App />)
+
+    const forestButton = screen.getByLabelText(/Credits/i)
+    expect(forestButton).toBeInTheDocument()
+
+    fireEvent.click(forestButton)
+    expect(screen.getByText(/Biome Buddies was lovingly made by:/i)).toBeInTheDocument()
   })
 })

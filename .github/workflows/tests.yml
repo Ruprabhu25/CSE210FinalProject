@@ -2,12 +2,12 @@ name: Run Tests
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-  test:
+  test-unit-and-integration:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,3 +26,45 @@ jobs:
       - name: Run tests
         run: npm test
         working-directory: biome-buddy
+
+  test-e2e:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: biome-buddy
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        working-directory: biome-buddy
+
+      - name: Start Vite dev server
+        run: npm run dev &
+        working-directory: biome-buddy
+
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:5173
+        working-directory: biome-buddy
+
+      - name: Run Playwright tests
+        run: npx playwright test
+        working-directory: biome-buddy
+
+      - name: List files in biome-buddy
+        run: ls -R
+        working-directory: biome-buddy
+        if: always()
+
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: biome-buddy/playwright-report/
+          retention-days: 30
