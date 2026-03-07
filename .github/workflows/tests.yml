@@ -60,11 +60,11 @@ jobs:
       - name: List files in biome-buddy
         run: ls -R
         working-directory: biome-buddy
-        continue-on-error: true 
+        if: always()
 
       - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
-          path: /biome-buddy/playwright-report/
+          path: biome-buddy/playwright-report/
           retention-days: 30

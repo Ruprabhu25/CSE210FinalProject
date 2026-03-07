@@ -68,6 +68,20 @@ class FoodChainSystem extends System {
                 }
             }
         }
+
+        const guarantee = context.roundGrowthGuarantee
+        if (guarantee?.speciesName) {
+            const pop = this.populations.get(guarantee.speciesName)
+            if (pop) {
+                const curr = pop.getCurrentSize()
+                const cap = pop.carryingCapacity == null ? Infinity : pop.carryingCapacity
+                const enforced = Math.min(cap, guarantee.minSize)
+                if (curr < enforced) {
+                    pop.size = enforced
+                }
+            }
+        }
+        context.roundGrowthGuarantee = null
     }
 }
 

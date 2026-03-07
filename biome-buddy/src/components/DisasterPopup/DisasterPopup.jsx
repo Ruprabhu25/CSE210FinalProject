@@ -12,7 +12,7 @@ export default function DisasterPopup({ disaster, onAction, darkMode }) {
   const formatEffect = (delta, target) => `${delta > 0 ? "+" : ""}${delta} ${target}`;
 
   return (
-    <Popup darkMode={darkMode}>
+    <Popup darkMode={darkMode} frameClassName="disaster-frame">
       <div className="disaster-help">
         <span className="disaster-help-icon">?</span>
         <div className="disaster-help-tooltip">

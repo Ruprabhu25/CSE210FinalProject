@@ -1,0 +1,54 @@
+.resume-frame {
+  max-width: 60vw;
+}
+
+.resume-message {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  margin: 16px 0 24px 0;
+}
+
+.resume-frame.dark-mode .resume-message {
+  color: #e0e0e0;
+}
+
+.resume-frame .popup-header {
+  margin-bottom: 12px;
+}
+
+.resume-frame .popup-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.resume-frame .actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.resume-frame .actions .primary {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #1E6722;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 200ms ease;
+}
+
+.resume-frame .actions .primary:hover {
+  background: #45a049;
+}
+
+.resume-frame.dark-mode .actions .primary {
+  background: #66bb6a;
+}
+
+.resume-frame.dark-mode .actions .primary:hover {
+  background: #4caf50;
+}

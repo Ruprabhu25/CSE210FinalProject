@@ -1,120 +1,136 @@
-/* Full screen container */
 .endScreen {
   position: fixed;
   inset: 0;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  color: #F5F5DC;
 }
+
 
 .winScreen,
 .loseScreen {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10vh;
+  padding: 4vh 5vw;
+  text-align: center;
   position: relative;
+  box-sizing: border-box;
 }
-/* Victory full-screen image */
+
 .winScreen {
   background-image: url('../assets/game-win.png');
 }
 
-/* Lose full-screen image */
 .loseScreen {
   background-image: url('../assets/game-lose.png');
-
 }
 
-/* Text styling */
-.winScreen h1 {
-  font-size: 100px;
+.winScreen h1,
+.loseScreen h1 {
+  font-size: clamp(2.5rem, 7vw, 5rem);
   font-family: 'Irish Grover', cursive;
   font-weight: bold;
-  -webkit-text-stroke: 3px #6D4C41;
+  margin-bottom: 2vh;
+  word-break: break-word;
+}
 
-  margin-bottom: 20px;
-
+.winScreen h1 {
+  color: #F5F5DC;
+  -webkit-text-stroke: 0.2rem #6D4C41;
 }
 
 .loseScreen h1 {
-  font-size: 100px;
+  -webkit-text-stroke: 0.2rem #F5F5DC;
+  color: black;
+}
+
+.winScreen h2,
+.loseScreen h2 {
+  font-size: clamp(1.2rem, 3vw, 3rem);
   font-family: 'Irish Grover', cursive;
   font-weight: bold;
-  -webkit-text-stroke: 3px #F5F5DC;
-  color:#372621;
-  margin-bottom: 0.5px;
-
+  margin: 0 6vw;
+  word-break: break-word;
 }
 
 .winScreen h2 {
-  font-size: 50px;
-  font-family: 'Irish Grover', cursive;
-  font-weight: bold;
-  -webkit-text-stroke: 2px #6D4C41;
-  margin-left: 200px;
-  margin-right: 200px;
+  -webkit-text-stroke: 0.05rem #6D4C41;
+  color: #F5F5DC;
 }
 
 .loseScreen h2 {
-  font-size: 50px;
-  font-family: 'Irish Grover', cursive;
-  font-weight: bold;
-  -webkit-text-stroke: 1px #F5F5DC;
-  margin-left: 200px;
-  margin-right: 200px;    
-  color:black;
-
+  -webkit-text-stroke: 0.05rem #F5F5DC;
+  color: black;
 }
-/* Button styling */
+
 .winScreen button,
 .loseScreen button {
-  padding: 12px 30px;
+  padding: 1vh 3vw;
   font-family: 'Irish Grover', cursive;
-  font-size: 32px;
+  font-size: clamp(1rem, 2.5vw, 2rem);
   color: #F5F5DC;
-  border-radius: 18px;
-  border: 4px solid #372621;
+  border-radius: 1.2rem;
+  border: 0.25rem solid #372621;
   cursor: pointer;
-  position: absolute;
-  bottom: 90px;
   background-color: #1E6722;
+  transition: transform 0.2s ease;
+  width: fit-content;
+  align-self: center;
+}
+
+.winScreen button:hover,
+.loseScreen button:hover {
+  transform: scale(1.05);
 }
 
 .endStats {
-   display: flex;
-   justify-content: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 3vh;
+  flex-wrap: wrap;
 }
 
-.speciesBox, .healthBox {
-  background:  #6D4C41;
-  border: 4px solid  #372621;
-  padding: 15px 25px;
-  
+.speciesBox,
+.healthBox {
+  background: #6D4C41;
+  border: 0.25rem solid #372621;
+  padding: 1.5vh 2vw;
+  box-sizing: border-box;
 }
 
-.speciesBox{
-  border-radius: 20px 0px  0 20px;
+.speciesBox {
+  border-radius: 1.5rem 0 0 1.5rem;
 }
 
-.healthBox{
-  border-radius: 0px 20px 20px 0px;
+.healthBox {
+  border-radius: 0 1.5rem 1.5rem 0;
 }
+
+
 .statLabel {
   font-family: 'Irish Grover', cursive;
-  font-size: 32px;
+  font-size: clamp(1.2rem, 2vw, 2.5rem);
+  color: #F5F5DC;
 }
 
 .extinctSection {
   font-family: 'Irish Grover', cursive;
-  font-size: 50px;
+  font-size: clamp(1rem, 3vw, 2.5rem);
   color: #F5F5DC;
-  -webkit-text-stroke: 2px #6D4C41;
+  -webkit-text-stroke: 0.1rem #6D4C41;
+  margin-top: 2vh;
+  word-break: break-word;
 }
 
-.notButton{
-    margin-bottom: 500px;
+.notButton {
+  margin-bottom: 6vh;
 }
