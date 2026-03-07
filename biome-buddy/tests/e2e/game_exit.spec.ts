@@ -13,7 +13,7 @@ test('Starts playing and then leaves', async ({ page }) => {
   await page.getByRole('button', { name: 'Start Playing' }).click();
 });
 
-/* test('start game, go back to home page, and start off where left off', async ({ page }) => {
+test('start game, go back to home page, and start off where left off', async ({ page }) => {
   await page.goto('http://localhost:5173/');
   await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
   await page.getByRole('button', { name: 'Get started' }).click();
@@ -86,9 +86,9 @@ test('start game, go back to home page, and start a new game', async ({ page }) 
   const remainingIntendedPlayerActions = Array(maxPlayerActions).fill('Grass');
   const gameEndedAfterResume = await runSomeRoundsOfGame(page, remainingIntendedPlayerActions);
   expect(gameEndedAfterResume).toBe(true);
-});   */
+});  
 
-/* test('start game, go back to home page without saving, start new game', async ({ page }) => {
+test('start game, go back to home page without saving, start new game', async ({ page }) => {
   await page.goto('http://localhost:5173/');
   await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
   await page.getByRole('button', { name: 'Get started' }).click();
@@ -111,6 +111,6 @@ test('start game, go back to home page, and start a new game', async ({ page }) 
   const remainingIntendedPlayerActions = Array(maxPlayerActions).fill('Grass');
   const gameEndedAfterResume = await runSomeRoundsOfGame(page, remainingIntendedPlayerActions);
   expect(gameEndedAfterResume).toBe(true);
-});   */
+});  
 
 
