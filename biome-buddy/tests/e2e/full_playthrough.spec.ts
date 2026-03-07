@@ -3,7 +3,7 @@ import {pageUrl, maxPlayerActions, runFullGameLoop} from '../../e2e_helper';
 
 test('Keep touching grass', async ({ page }) => {
   await page.goto(pageUrl);
-  await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
+  await page.getByRole('button', { name: 'Start Game' }).click();
   await page.getByRole('button', { name: 'Get started' }).click();
   await page.getByRole('button', { name: 'Start Playing' }).click();
   const intendedPlayerActions = Array(maxPlayerActions).fill('Grass');
@@ -13,7 +13,7 @@ test('Keep touching grass', async ({ page }) => {
 
 test('Release the hawks', async ({ page }) => {
   await page.goto(pageUrl);
-  await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
+  await page.getByRole('button', { name: 'Start Game' }).click();
   await page.getByRole('button', { name: 'Get started' }).click();
   await page.getByRole('button', { name: 'Start Playing' }).click();
   const intendedPlayerActions = Array(maxPlayerActions).fill('Hawk');
