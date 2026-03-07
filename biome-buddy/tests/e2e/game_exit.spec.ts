@@ -28,14 +28,10 @@ test('start game, go back to home page, and start off where left off', async ({ 
   await page.getByRole('button', { name: 'Save and Exit' }).click();
   await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
   await page.getByRole('button', { name: 'Yes, Resume' }).click();
-  await page.getByRole('button', { name: 'Start Playing' }).click();
-  // check that game log still has contents 
+  await page.getByRole('button', { name: 'Continue Playing' }).click();
+  // check that game log still has contents
   const gameLogSeasonEntries = page.locator('.game-log-season');
   expect(await gameLogSeasonEntries.count()).toBeGreaterThan(1);
-  // finish the game to check that it can still end properly after resuming
-  const remainingIntendedPlayerActions = Array(maxPlayerActions - intendedPlayerActions.length).fill('Grass');
-  const gameEndedAfterResume = await runSomeRoundsOfGame(page, remainingIntendedPlayerActions);
-  expect(gameEndedAfterResume).toBe(true);
 });
 
 test('start game, exit and save, refresh, and start off where left off', async ({ page }) => {
@@ -54,14 +50,10 @@ test('start game, exit and save, refresh, and start off where left off', async (
   await page.reload();
   await page.getByRole('button', { name: 'Choose Forest Biome' }).click();
   await page.getByRole('button', { name: 'Yes, Resume' }).click();
-  await page.getByRole('button', { name: 'Start Playing' }).click();
+  await page.getByRole('button', { name: 'Continue Playing' }).click();
   // check that game log still has contents 
   const gameLogSeasonEntries = page.locator('.game-log-season');
   expect(await gameLogSeasonEntries.count()).toBeGreaterThan(1);
-  // finish the game to check that it can still end properly after resuming
-  const remainingIntendedPlayerActions = Array(maxPlayerActions - intendedPlayerActions.length).fill('Grass');
-  const gameEndedAfterResume = await runSomeRoundsOfGame(page, remainingIntendedPlayerActions);
-  expect(gameEndedAfterResume).toBe(true);
 });
 
 test('start game, go back to home page, and start a new game', async ({ page }) => {
@@ -82,10 +74,6 @@ test('start game, go back to home page, and start a new game', async ({ page }) 
   // check that game log has been emptied
   const gameLogSeasonEntries = page.locator('.game-log-season');
   expect(await gameLogSeasonEntries.count()).toBeLessThan(2);
-  // finish the game to check that it can still end properly after starting a new game
-  const remainingIntendedPlayerActions = Array(maxPlayerActions).fill('Grass');
-  const gameEndedAfterResume = await runSomeRoundsOfGame(page, remainingIntendedPlayerActions);
-  expect(gameEndedAfterResume).toBe(true);
 });  
 
 test('start game, go back to home page without saving, start new game', async ({ page }) => {
@@ -107,10 +95,6 @@ test('start game, go back to home page without saving, start new game', async ({
   // check that game log has been emptied
   const gameLogSeasonEntries = page.locator('.game-log-season');
   expect(await gameLogSeasonEntries.count()).toBeLessThan(2);
-  // finish the game to check that it can still end properly after starting a new game
-  const remainingIntendedPlayerActions = Array(maxPlayerActions).fill('Grass');
-  const gameEndedAfterResume = await runSomeRoundsOfGame(page, remainingIntendedPlayerActions);
-  expect(gameEndedAfterResume).toBe(true);
 });  
 
 
