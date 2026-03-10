@@ -18,7 +18,7 @@ export default function CreditsPopup({ onClose, darkMode = false }) {
           <br></br>
           Angie
           <br></br>
-          Shimbhavi 
+          Shambhavi 
           <br></br>
           Junyue
           <br></br>
