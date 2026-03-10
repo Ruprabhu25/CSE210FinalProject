@@ -22,7 +22,7 @@ class GameLogSystem extends System {
         }
         // newest first
         this.entries.push(entry)
-        this.entries.sort((a, b) => b.timestamp - a.timestamp)
+        this.entries.sort((a, b) => a.timestamp - b.timestamp)
         this.emit()
         return entry
     }
