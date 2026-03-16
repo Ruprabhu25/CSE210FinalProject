@@ -18,10 +18,11 @@ export default function GameLog({ onCollapsedChange, darkMode }) {
     }, [])
 
     useEffect(() => {
-        // when new entry added, scroll to top of the list area
+        // when new entry added, scroll to bottom of the list area
         if (listRef.current) {
-            listRef.current.scrollTop = 0
+            listRef.current.scrollTop = listRef.current.scrollHeight
         }
+        console.log(entries);
     }, [entries])
 
     useEffect(() => {
