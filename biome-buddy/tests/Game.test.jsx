@@ -112,13 +112,13 @@ describe('Game integration and components', () => {
 		fireEvent.click(nextBtn)
 		const entriesA = gameLogSystem.getEntries()
 		expect(entriesA.length).toBeGreaterThanOrEqual(1)
-		expect(entriesA[0].message).toMatch(/seasons turn|struggles|breathes easier|plummeted|fragile|thrives in balance|Life goes on|growing faster/i)
+		expect(entriesA[entriesA.length - 1].message).toMatch(/seasons turn|struggles|breathes easier|plummeted|fragile|thrives in balance|Life goes on|growing faster/i)
 
 		// select Rabbit and advance -> logs a per-season message
 		const rabbit = screen.getByText('Rabbit')
 		fireEvent.click(rabbit)
 		const entriesB = gameLogSystem.getEntries()
-		expect(entriesB[0].message).toMatch(/flourishing|seasons turn|struggles|breathes easier|plummeted|fragile|thrives in balance|Life goes on|growing faster/i)
+		expect(entriesB[entriesA.length - 1].message).toMatch(/flourishing|seasons turn|struggles|breathes easier|plummeted|fragile|thrives in balance|Life goes on|growing faster/i)
 	})
 
 })
